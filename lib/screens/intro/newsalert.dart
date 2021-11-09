@@ -25,7 +25,6 @@ class _NewsSelectState extends State<NewsSelect> {
         child: Scaffold(
       backgroundColor: ColorTheme.white,
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 22),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -24,4 +24,5 @@ class ImageProvide{
   static const String spam = "assets/images/spam.png";
   static const String today = "assets/images/today.png";
   static const String user = "assets/images/user.png";
+  static const String paperlogo = "assets/images/paperlogo.png";
 }

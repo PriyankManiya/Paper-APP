@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paper_app/constants/buttonstyle.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
+import 'package:paper_app/screens/auth/signin/signin.dart';
 import 'package:paper_app/screens/intro/locationaccess.dart';
 import 'package:paper_app/screens/intro/newsalert.dart';
 
@@ -32,9 +34,12 @@ class _IntroPageviewState extends State<IntroPageview> {
               sizedbox(context, 8),
               InkWell(
                 onTap: () {
+                  if (introcontroller.page.round() == 1) {
+                    Get.to(() => SignIn(), transition: Transition.cupertino);
+                  }
                   introcontroller.nextPage(
                       duration: Duration(milliseconds: 500),
-                      curve: Curves.ease);
+                      curve: Curves.easeInOut);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -51,7 +56,11 @@ class _IntroPageviewState extends State<IntroPageview> {
                 ),
               ),
               sizedbox(context, 40),
-              Text("Skip"),
+              InkWell(
+                  onTap: () {
+                    Get.to(() => SignIn(), transition: Transition.cupertino);
+                  },
+                  child: Text("Skip")),
               sizedbox(context, 20),
             ],
           ),
