@@ -154,24 +154,23 @@ class _CreatePasswordState extends State<CreatePassword> {
 
   String validatepass1(String value) {
     if (value.isEmpty || value.length < 6) {
-      return "Password required";
+      return "Password Must be same or minimum 6 letter";
     }
     return null;
   }
 
   String validatepass2(String value) {
     if (value.isEmpty || value.length < 6) {
-      return "Password required";
+      return "Password Must be same or minimum 6 letter";
     }
     return null;
   }
 
   void checkvalidation() {
     final isValid = forgotkey.currentState.validate();
-    if (!isValid) {
+    if (!isValid || pwdcontroller.text != confirmcontroller.text) {
       return;
     }
     forgotkey.currentState.save();
-    // Get.to(() => OnBoarding(), transition: Transition.cupertino);
   }
 }
