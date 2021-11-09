@@ -10,7 +10,7 @@ class NewsSelect extends StatefulWidget {
 }
 
 class _NewsSelectState extends State<NewsSelect> {
-  bool _selected = false;
+  bool selected = false;
   List demo = [
     "local news",
     "Headline",
