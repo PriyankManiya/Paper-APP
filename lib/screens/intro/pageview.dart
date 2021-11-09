@@ -7,7 +7,8 @@ import 'package:paper_app/screens/auth/signin/signin.dart';
 import 'package:paper_app/screens/intro/locationaccess.dart';
 import 'package:paper_app/screens/intro/newsalert.dart';
 
-PageController introcontroller = PageController(initialPage: 0);
+import 'widget/indicator.dart';
+
 
 class IntroPageview extends StatefulWidget {
   IntroPageview({Key key}) : super(key: key);
@@ -17,6 +18,8 @@ class IntroPageview extends StatefulWidget {
 }
 
 class _IntroPageviewState extends State<IntroPageview> {
+PageController introcontroller = PageController(initialPage: 0);
+int indicator = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,15 +29,32 @@ class _IntroPageviewState extends State<IntroPageview> {
           child: Column(
             children: [
               Expanded(
-                child: PageView(
+                child: PageView(onPageChanged: (tab) {
+                  setState(() {
+                    indicator = tab;
+                  });
+                },
                   controller: introcontroller,
                   children: <Widget>[LocationAccess(), NewsSelect()],
                 ),
               ),
-              sizedbox(context, 8),
+              // sizedbox(context, 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IntroWidget().Indicator(indicator == 0 ? ColorTheme.btnshade2 : ColorTheme.lightgrey),
+                  SizedBox(width: 5,),
+                  IntroWidget().Indicator(indicator == 1 ? ColorTheme.btnshade2 : ColorTheme.lightgrey)
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // sizedbox(context, 15),
               InkWell(
                 onTap: () {
                   if (introcontroller.page.round() == 1) {
+                    // introcontroller.jumpTo(1);
                     Get.to(() => SignIn(), transition: Transition.cupertino);
                   }
                   introcontroller.nextPage(
@@ -47,7 +67,7 @@ class _IntroPageviewState extends State<IntroPageview> {
                   width: MediaQuery.of(context).size.width,
                   height: 55,
                   child: Text(
-                    "Allow",
+                    indicator == 1 ? "Done" :"Allow",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: MediaQuery.of(context).size.height / 50,

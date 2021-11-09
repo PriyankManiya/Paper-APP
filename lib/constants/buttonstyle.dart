@@ -7,5 +7,5 @@ BoxDecoration boxDecoration = BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [ColorTheme.btnshade1, ColorTheme.btnshade2]),
+              colors: [ColorTheme.btnshade2, ColorTheme.btnshade2]),
 );
