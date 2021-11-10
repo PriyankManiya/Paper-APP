@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/screens/following/follow.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 
 class Home extends StatefulWidget {
@@ -227,13 +228,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                             minRadius: 15,
                                           ),
                                           sizedboxwidth(context, 30),
-                                          Text("The New York Times",
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .height /
-                                                          60)),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.to(() => FollowDisplay(),
+                                                  transition:
+                                                      Transition.cupertino);
+                                            },
+                                            child: Text("The New York Times",
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            60)),
+                                          ),
                                           Spacer(),
                                           InkWell(
                                             onTap: () {

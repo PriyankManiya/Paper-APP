@@ -9,4 +9,5 @@ class ColorTheme{
   static const Color white = Color(0xFFffffff);
   static const Color green = Color(0xFF2DA004);
   static const Color textboxgrey = Color(0xFFF3F3F3);
+  static const Color link = Color(0xFF1976D2);
 }
