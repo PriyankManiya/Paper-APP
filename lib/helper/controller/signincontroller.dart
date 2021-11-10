@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paper_app/widgets/bottombar.dart';
 
 class SigninController extends GetxController {
   GlobalKey<FormState> signformkey = new GlobalKey<FormState>();
@@ -43,7 +44,7 @@ class SigninController extends GetxController {
     }
     signformkey.currentState.save();
 
-    // Get.to(() => OnBoarding(),transition: Transition.cupertino);
+    Get.to(() => Bottombar(), transition: Transition.cupertino);
     // _authcontroller.signIn(emailController.text, passwordController.text);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/screens/intro/pageview.dart';
+import 'package:paper_app/widgets/bottombar.dart';
 
 import 'helper/controller/signincontroller.dart';
 import 'helper/controller/signupcontroller.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         disabledColor: Colors.transparent,
       ),
       debugShowCheckedModeBanner: false,
-      home: IntroPageview(),
+      home: Bottombar(),
     );
   }
 }

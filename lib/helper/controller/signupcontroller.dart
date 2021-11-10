@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-class SignupController extends GetxController {
-   final GlobalKey<FormState> loginFormKey = new GlobalKey<FormState>();
+import 'package:paper_app/widgets/bottombar.dart';
 
-  TextEditingController emailController, passwordController, namecontroller, confrimcontroller;
+class SignupController extends GetxController {
+  final GlobalKey<FormState> loginFormKey = new GlobalKey<FormState>();
+
+  TextEditingController emailController,
+      passwordController,
+      namecontroller,
+      confrimcontroller;
 
   var email = '';
   var password = '';
@@ -15,7 +20,7 @@ class SignupController extends GetxController {
     emailController = new TextEditingController();
     passwordController = new TextEditingController();
     namecontroller = new TextEditingController();
-    confrimcontroller =new  TextEditingController();
+    confrimcontroller = new TextEditingController();
   }
 
   @override
@@ -32,7 +37,8 @@ class SignupController extends GetxController {
     }
     return null;
   }
-   String validateName(String value) {
+
+  String validateName(String value) {
     if (!GetUtils.isUsername(value)) {
       return "Provide valid Username";
     }
@@ -54,7 +60,6 @@ class SignupController extends GetxController {
       return;
     }
     loginFormKey.currentState.save();
-    // Get.to(() => OnBoarding(), transition: Transition.cupertino);
-    // _authcontroller.signIn(emailController.text, passwordController.text);
+    Get.to(() => Bottombar(), transition: Transition.cupertino);
   }
 }
