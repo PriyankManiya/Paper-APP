@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:paper_app/screens/intro/pageview.dart';
+import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/widgets/bottombar.dart';
 
 import 'helper/controller/signincontroller.dart';
 import 'helper/controller/signupcontroller.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: ColorTheme.black,
+      statusBarIconBrightness: Brightness.light));
   WidgetsFlutterBinding.ensureInitialized();
-
 
   Get.put(SignupController());
   Get.put(SigninController());
