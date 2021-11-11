@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/screens/usersetting/editprofile.dart';
+import 'package:paper_app/screens/usersetting/history.dart';
+import 'package:paper_app/screens/usersetting/location.dart';
+import 'package:paper_app/screens/usersetting/notification.dart';
+import 'package:paper_app/screens/usersetting/saved.dart';
 
 class ProfileAsLogin extends StatefulWidget {
   ProfileAsLogin({Key key}) : super(key: key);
@@ -68,12 +74,19 @@ class _ProfileAsLoginState extends State<ProfileAsLogin> {
                                       MediaQuery.of(context).size.height / 45),
                             ),
                             SizedBox(height: 10),
-                            Text(
-                              "Edit Profile",
-                              style: TextStyle(
-                                  color: ColorTheme.btnshade2,
-                                  fontSize:
-                                      MediaQuery.of(context).size.height / 60),
+                            InkWell(
+                              onTap: () {
+                                Get.to(() => EditProfile(),
+                                    transition: Transition.cupertino);
+                              },
+                              child: Text(
+                                "Edit Profile",
+                                style: TextStyle(
+                                    color: ColorTheme.btnshade2,
+                                    fontSize:
+                                        MediaQuery.of(context).size.height /
+                                            60),
+                              ),
                             ),
                           ],
                         ),
@@ -83,50 +96,62 @@ class _ProfileAsLoginState extends State<ProfileAsLogin> {
                       height: MediaQuery.of(context).size.height / 15,
                       thickness: 1,
                     ),
-                    Row(
-                      children: [
-                        Image.asset(
-                          ImageProvide.minilocation,
-                          height: MediaQuery.of(context).size.height / 35,
-                        ),
-                        sizedboxwidth(context, 20),
-                        Text(
-                          "Locations",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 50),
-                        ),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => EditLocation(),
+                            transition: Transition.cupertino);
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            ImageProvide.minilocation,
+                            height: MediaQuery.of(context).size.height / 35,
+                          ),
+                          sizedboxwidth(context, 20),
+                          Text(
+                            "Locations",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 50),
+                          ),
+                        ],
+                      ),
                     ),
                     Divider(
                       height: MediaQuery.of(context).size.height / 15,
                       thickness: 1,
                     ),
-                    Row(
-                      children: [
-                        Image.asset(
-                          ImageProvide.notification,
-                          color: ColorTheme.btnshade2,
-                          height: MediaQuery.of(context).size.height / 35,
-                        ),
-                        sizedboxwidth(context, 20),
-                        Text(
-                          "Notifications",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 50),
-                        ),
-                        Spacer(),
-                        Text(
-                          "ON",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 45),
-                        ),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => Notificationss(),
+                            transition: Transition.cupertino);
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            ImageProvide.notification,
+                            color: ColorTheme.btnshade2,
+                            height: MediaQuery.of(context).size.height / 35,
+                          ),
+                          sizedboxwidth(context, 20),
+                          Text(
+                            "Notifications",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 50),
+                          ),
+                          Spacer(),
+                          Text(
+                            "ON",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 45),
+                          ),
+                        ],
+                      ),
                     ),
                     sizedbox(context, 25),
                   ],
@@ -141,42 +166,54 @@ class _ProfileAsLoginState extends State<ProfileAsLogin> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          ImageProvide.saved,
-                          height: MediaQuery.of(context).size.height / 35,
-                        ),
-                        sizedboxwidth(context, 20),
-                        Text(
-                          "Locations",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 50),
-                        ),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => SavedNews(),
+                            transition: Transition.cupertino);
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            ImageProvide.saved,
+                            height: MediaQuery.of(context).size.height / 35,
+                          ),
+                          sizedboxwidth(context, 20),
+                          Text(
+                            "Saved",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 50),
+                          ),
+                        ],
+                      ),
                     ),
                     Divider(
                       height: MediaQuery.of(context).size.height / 15,
                       thickness: 1,
                     ),
-                    Row(
-                      children: [
-                        Image.asset(
-                          ImageProvide.history,
-                          color: ColorTheme.btnshade2,
-                          height: MediaQuery.of(context).size.height / 35,
-                        ),
-                        sizedboxwidth(context, 20),
-                        Text(
-                          "Notifications",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 50),
-                        ),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => History(),
+                            transition: Transition.cupertino);
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            ImageProvide.history,
+                            color: ColorTheme.btnshade2,
+                            height: MediaQuery.of(context).size.height / 35,
+                          ),
+                          sizedboxwidth(context, 20),
+                          Text(
+                            "History",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 50),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
