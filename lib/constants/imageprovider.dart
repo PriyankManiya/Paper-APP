@@ -27,4 +27,6 @@ class ImageProvide{
   static const String paperlogo = "assets/images/paperlogo.png";
   static const String minilocation = "assets/images/minilocation.png";
   static const String outlineshare = "assets/images/outlineshare.png";
+  static const String saved = "assets/images/save.png";
+  static const String history = "assets/images/history.png";
 }

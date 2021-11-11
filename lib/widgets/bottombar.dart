@@ -4,7 +4,8 @@ import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/screens/bottombarscr/following.dart';
 import 'package:paper_app/screens/bottombarscr/home.dart';
 import 'package:paper_app/screens/bottombarscr/notification.dart';
-import 'package:paper_app/screens/bottombarscr/profile.dart';
+import 'package:paper_app/screens/bottombarscr/profile/profileasguest.dart';
+import 'package:paper_app/screens/bottombarscr/profile/profileaslogin.dart';
 import 'package:paper_app/screens/bottombarscr/today.dart';
 
 // bottom bar for mobile
@@ -216,7 +217,7 @@ class _BottombarState extends State<Bottombar>
                   new Today(),
                   new Following(),
                   new Notifications(),
-                  new Profile()
+                  new ProfileAsLogin()
                 ]),
           ),
         ),
