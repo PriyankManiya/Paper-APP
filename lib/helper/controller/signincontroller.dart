@@ -44,7 +44,7 @@ class SigninController extends GetxController {
     }
     signformkey.currentState.save();
 
-    Get.to(() => Bottombar(), transition: Transition.cupertino);
+    Get.off(() => Bottombar(), transition: Transition.cupertino);
     // _authcontroller.signIn(emailController.text, passwordController.text);
   }
 }

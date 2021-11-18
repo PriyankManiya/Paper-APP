@@ -114,6 +114,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
           ),
           bottom: AppBar(
+            leading: SizedBox(),
             backgroundColor: ColorTheme.btnshade2,
             flexibleSpace: Column(
               children: [
