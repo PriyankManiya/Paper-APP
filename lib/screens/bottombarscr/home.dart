@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
@@ -172,9 +173,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         children: [
                                           CircleAvatar(
                                             backgroundColor: Colors.transparent,
-                                            backgroundImage: AssetImage(
-                                              "assets/images/trash.png",
-                                            ),
+                                            backgroundImage: NetworkImage(newsController
+                                                    .newsList
+                                                    .value
+                                                    .value[0]
+                                                    .subCards[index]
+                                                    .provider
+                                                    .logo.url),
                                             maxRadius: 20,
                                             minRadius: 15,
                                           ),
@@ -240,16 +245,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "Post-election rifts emerge in Germany’scentre-right alliance",
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    45),
+                                          Html(
+                                            data : newsController.newsList.value.value[0]
+                                          .subCards[index].images[0].caption,
+                                            // maxLines: 2,
+                                            // overflow: TextOverflow.ellipsis,
+                                            // style: TextStyle(
+                                            //     fontWeight: FontWeight.bold,
+                                            //     fontSize: MediaQuery.of(context)
+                                            //             .size
+                                            //             .height /
+                                            //         45),
                                           ),
                                           sizedbox(context, 60),
                                           Row(
