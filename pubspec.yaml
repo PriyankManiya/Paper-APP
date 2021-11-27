@@ -37,6 +37,9 @@ dependencies:
   get: ^4.3.8
   flutter_html: ^2.1.5
   http:
+  pull_to_refresh: ^2.0.0
+  cached_network_image: ^3.1.0+1
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

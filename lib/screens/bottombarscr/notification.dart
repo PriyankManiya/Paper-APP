@@ -17,7 +17,7 @@ class _NotificationsState extends State<Notifications> {
         appBar: AppBar(
           backgroundColor: ColorTheme.white,
           bottom: PreferredSize(
-              preferredSize: Size.fromHeight(48.0),
+              preferredSize: Size.fromHeight(15.0),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

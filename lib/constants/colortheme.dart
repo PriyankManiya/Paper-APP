@@ -4,7 +4,8 @@ class ColorTheme{
   static const Color btnshade1 = Color(0xFFFF6B6B);
   static const Color btnshade2 = Color(0xFFFF1616);
   static const Color grey = Color(0xFF616161);
-  static const Color lightgrey = Color(0xFFD9D9D9);
+  static const Color lightgrey = Color(0xFFE5E5E5);
+  // static const Color lightgrey = Color(0xFFD9D9D9);
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFffffff);
   static const Color green = Color(0xFF2DA004);

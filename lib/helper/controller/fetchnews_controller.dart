@@ -18,7 +18,6 @@ class NewsController extends GetxController {
       var productss = await RemoteServices.fetchNews();
       if (productss != null) {
         newsList.value = productss;
-        
       }
     } finally {
       isLoading(false);

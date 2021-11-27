@@ -20,10 +20,10 @@ class _SignUpState extends State<SignUp> {
   SignupController signupcontroller = Get.find<SignupController>();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorTheme.white,
-        body: Form(
+    return Scaffold(
+      backgroundColor: ColorTheme.white,
+      body: SafeArea(
+        child: Form(
           key: signupcontroller.loginFormKey,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -172,7 +172,7 @@ class _SignUpState extends State<SignUp> {
                       width: MediaQuery.of(context).size.width,
                       decoration: boxDecoration,
                       child: Text(
-                        "LOGIN",
+                        "SIGNUP",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: MediaQuery.of(context).size.height / 55,
@@ -187,7 +187,7 @@ class _SignUpState extends State<SignUp> {
                     },
                     child: RichText(
                         text: TextSpan(
-                            text: "Don't have an account? ",
+                            text: "Already have an account? ",
                             style: TextStyle(
                                 color: ColorTheme.grey,
                                 fontWeight: FontWeight.bold,

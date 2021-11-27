@@ -22,17 +22,13 @@ class _TodayState extends State<Today> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: ColorTheme.white,
-        toolbarHeight: 90,
-        flexibleSpace: Container(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 30),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Today News",
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.height / 35,
-                  color: ColorTheme.btnshade2,
-                  fontWeight: FontWeight.bold),
-            )),
+        title: Text(
+          "Today News",
+          style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 35,
+              color: ColorTheme.btnshade2,
+              fontWeight: FontWeight.bold),
+        ),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,

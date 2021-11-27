@@ -24,20 +24,13 @@ class _ProfileAsLoginState extends State<ProfileAsLogin> {
       backgroundColor: Color(0xffF5F5F5),
       appBar: AppBar(
         backgroundColor: ColorTheme.white,
-        bottom: PreferredSize(
-            preferredSize: Size.fromHeight(48.0),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "My Profile",
-                    style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height / 35,
-                        color: ColorTheme.btnshade2,
-                        fontWeight: FontWeight.bold),
-                  )),
-            )),
+        title: Text(
+          "My Profile",
+          style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height / 35,
+              color: ColorTheme.btnshade2,
+              fontWeight: FontWeight.bold),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
