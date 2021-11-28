@@ -78,6 +78,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+<<<<<<< HEAD
   crypto:
     dependency: transitive
     description:
@@ -85,6 +86,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   csslib:
     dependency: transitive
     description:
@@ -113,6 +116,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+<<<<<<< HEAD
   file:
     dependency: transitive
     description:
@@ -120,11 +124,14 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.2"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
   flutter_blurhash:
     dependency: transitive
     description:
@@ -139,6 +146,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.0"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   flutter_html:
     dependency: "direct main"
     description:
@@ -254,6 +263,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+<<<<<<< HEAD
   octo_image:
     dependency: transitive
     description:
@@ -261,6 +271,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   path:
     dependency: transitive
     description:
@@ -282,6 +294,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
+<<<<<<< HEAD
   path_provider:
     dependency: transitive
     description:
@@ -338,6 +351,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.1"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   petitparser:
     dependency: transitive
     description:
@@ -345,6 +360,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
+<<<<<<< HEAD
   platform:
     dependency: transitive
     description:
@@ -352,6 +368,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -359,6 +377,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+<<<<<<< HEAD
   process:
     dependency: transitive
     description:
@@ -366,6 +385,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   provider:
     dependency: transitive
     description:
@@ -373,6 +394,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.1"
+<<<<<<< HEAD
   pull_to_refresh:
     dependency: "direct main"
     description:
@@ -380,6 +402,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   quiver:
     dependency: transitive
     description:
@@ -387,6 +411,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1+1"
+<<<<<<< HEAD
   rxdart:
     dependency: transitive
     description:
@@ -401,6 +426,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+=======
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   sky_engine:
     dependency: transitive
     description: flutter
@@ -566,14 +593,22 @@ packages:
       name: webview_flutter_android
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "2.3.1"
+=======
+    version: "2.3.0"
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   webview_flutter_platform_interface:
     dependency: transitive
     description:
       name: webview_flutter_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "1.5.1"
+=======
+    version: "1.4.0"
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   webview_flutter_wkwebview:
     dependency: transitive
     description:
@@ -587,6 +622,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "2.3.1"
   xdg_directories:
     dependency: transitive
@@ -595,6 +631,9 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+=======
+    version: "2.3.0"
+>>>>>>> 140350ddc13a59383dc099d31975735866368057
   xml:
     dependency: transitive
     description:
