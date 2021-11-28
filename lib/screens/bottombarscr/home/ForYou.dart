@@ -25,7 +25,7 @@ class _ForYouState extends State<ForYou> {
     setState(() {
       isLoading = true;
     });
-    NewsController().fetchProducts();
+    NewsController().newsList();
     await Future.delayed(Duration(milliseconds: 2000));
     refershControllers.refreshCompleted();
     setState(() {
@@ -227,7 +227,6 @@ class _ForYouState extends State<ForYou> {
                                 ),
                                 sizedbox(context, 60),
                                 //body part
-
                                 Container(
                                   height:
                                       MediaQuery.of(context).size.height / 3.8,
@@ -249,6 +248,7 @@ class _ForYouState extends State<ForYou> {
                                         Icon(Icons.error),
                                   ),
                                 ),
+
                                 sizedbox(context, 50),
                                 Container(
                                   alignment: Alignment.centerLeft,
@@ -259,8 +259,8 @@ class _ForYouState extends State<ForYou> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        newsController.newsList.value.value[0]
-                                            .subCards[index].title,
+                                        newsController.newsList.value
+                                            .value[0].subCards[index].title,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
