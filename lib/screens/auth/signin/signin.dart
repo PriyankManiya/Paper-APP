@@ -20,10 +20,10 @@ class _SignInState extends State<SignIn> {
   SigninController controller = Get.find<SigninController>();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorTheme.white,
-        body: Form(
+    return Scaffold(
+      backgroundColor: ColorTheme.white,
+      body: SafeArea(
+        child: Form(
           key: controller.signformkey,
           child: Container(
             height: MediaQuery.of(context).size.height,

@@ -46,7 +46,7 @@ class _FollowingState extends State<Following> with TickerProviderStateMixin {
       appBar: AppBar(
         backgroundColor: Colors.white,
         bottom: PreferredSize(
-            preferredSize: Size.fromHeight(48.0),
+            preferredSize: Size.fromHeight(15.0),
             child: Column(
               children: [
                 Row(

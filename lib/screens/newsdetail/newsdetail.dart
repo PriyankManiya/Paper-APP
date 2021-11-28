@@ -15,10 +15,9 @@ class NewsDetails extends StatefulWidget {
 class _NewsDetailsState extends State<NewsDetails> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: Color(0xffE5E5E5),
-          bottomNavigationBar: Container(
+    return Scaffold(
+        bottomNavigationBar: SafeArea(
+          child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             color: ColorTheme.white,
             child: Row(
@@ -62,12 +61,15 @@ class _NewsDetailsState extends State<NewsDetails> {
               ],
             ),
           ),
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: ColorTheme.white,
-            flexibleSpace: Container(
-              padding: EdgeInsets.only(left: 10),
-              alignment: Alignment.centerLeft,
+        ),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: ColorTheme.white,
+          elevation: 1.0,
+          flexibleSpace: Container(
+            padding: EdgeInsets.only(left: 10),
+            alignment: Alignment.centerLeft,
+            child: SafeArea(
               child: Row(
                 children: [
                   InkWell(
@@ -80,24 +82,33 @@ class _NewsDetailsState extends State<NewsDetails> {
                   Container(
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width / 2,
-                    child: ListTile(
-                        minVerticalPadding: 0,
-                        visualDensity: VisualDensity.adaptivePlatformDensity,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        horizontalTitleGap: 0,
-                        leading: CircleAvatar(
-                          radius: 15,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 17,
                           backgroundImage:
                               AssetImage("assets/images/trash.png"),
                         ),
-                        title: Text("The New York Times",
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 60)),
-                        subtitle: Text("83.3 K Followers",
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 65))),
+                        SizedBox(width: 5),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("The New York Times",
+                                softWrap: true,
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height /
+                                            60)),
+                            Text("83.3 K Followers",
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height /
+                                            65))
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                   sizedboxwidth(context, 70),
                   InkWell(
@@ -118,114 +129,111 @@ class _NewsDetailsState extends State<NewsDetails> {
               ),
             ),
           ),
-          body: CustomScrollView(
-            physics: BouncingScrollPhysics(),
-            slivers: [
-              SliverFillRemaining(
-                hasScrollBody: true,
-                child: Container(
-                  color: ColorTheme.white,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          child: ListView(
-                        children: [
-                          Column(
-                            children: [
-                              sizedbox(context, 30),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Text(
-                                  "Post-election rifts emerge in Germany’scentre-right alliance.",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+        ),
+        body: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: true,
+              child: Container(
+                color: ColorTheme.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: ListView(
+                      children: [
+                        Column(
+                          children: [
+                            sizedbox(context, 30),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(
+                                "Post-election rifts emerge in Germany’scentre-right alliance.",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        MediaQuery.of(context).size.height /
+                                            35),
+                              ),
+                            ),
+                            sizedbox(context, 40),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                children: [
+                                  Image.asset(ImageProvide.minilocation,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              55),
+                                  sizedboxwidth(context, 50),
+                                  Text(
+                                    "New York",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                60),
+                                  ),
+                                  sizedboxwidth(context, 20),
+                                  CircleAvatar(
+                                    backgroundColor: ColorTheme.btnshade2,
+                                    radius: 3,
+                                  ),
+                                  sizedboxwidth(context, 50),
+                                  Text(
+                                    "1 day ago",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                60),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            sizedbox(context, 50),
+                            Image.asset(
+                              "assets/images/trash1.png",
+                              height: MediaQuery.of(context).size.height / 3.8,
+                              fit: BoxFit.cover,
+                            ),
+                            sizedbox(context, 40),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "A leading German conservative has made a public show of congratulating the Social Democrats’ candidate on winning Sunday’s national electionin a sign of division within the centre-right alliance of outgoing chancellor Angela Merkel after it plunged to historic losses.",
+                                    style: TextStyle(
+                                      height: 1.5,
                                       fontSize:
                                           MediaQuery.of(context).size.height /
-                                              35),
-                                ),
+                                              50,
+                                    ),
+                                  ),
+                                  sizedbox(context, 30),
+                                  Text(
+                                    "A leading German conservative has made a public show of congratulating the Social Democrats’ candidate on winning Sunday’s national electionin a sign of division within the centre-right alliance of outgoing chancellor Angela Merkel after it plunged to historic losses.",
+                                    style: TextStyle(
+                                      height: 1.5,
+                                      fontSize:
+                                          MediaQuery.of(context).size.height /
+                                              50,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              sizedbox(context, 40),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Row(
-                                  children: [
-                                    Image.asset(ImageProvide.minilocation,
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                55),
-                                    sizedboxwidth(context, 50),
-                                    Text(
-                                      "New York",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              60),
-                                    ),
-                                    sizedboxwidth(context, 20),
-                                    CircleAvatar(
-                                      backgroundColor: ColorTheme.btnshade2,
-                                      radius: 3,
-                                    ),
-                                    sizedboxwidth(context, 50),
-                                    Text(
-                                      "1 day ago",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              60),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              sizedbox(context, 50),
-                              Image.asset(
-                                "assets/images/trash1.png",
-                                height:
-                                    MediaQuery.of(context).size.height / 3.8,
-                                fit: BoxFit.cover,
-                              ),
-                              sizedbox(context, 40),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "A leading German conservative has made a public show of congratulating the Social Democrats’ candidate on winning Sunday’s national electionin a sign of division within the centre-right alliance of outgoing chancellor Angela Merkel after it plunged to historic losses.",
-                                      style: TextStyle(
-                                        height: 1.5,
-                                        fontSize:
-                                            MediaQuery.of(context).size.height /
-                                                50,
-                                      ),
-                                    ),
-                                    sizedbox(context, 30),
-                                    Text(
-                                      "A leading German conservative has made a public show of congratulating the Social Democrats’ candidate on winning Sunday’s national electionin a sign of division within the centre-right alliance of outgoing chancellor Angela Merkel after it plunged to historic losses.",
-                                      style: TextStyle(
-                                        height: 1.5,
-                                        fontSize:
-                                            MediaQuery.of(context).size.height /
-                                                50,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )),
-                    ],
-                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )),
+                  ],
                 ),
-              )
-            ],
-          )),
-    );
+              ),
+            )
+          ],
+        ));
   }
 }

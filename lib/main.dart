@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
+import 'package:paper_app/screens/bottombarscr/home.dart';
 import 'package:paper_app/screens/intro/pageview.dart';
 import 'package:paper_app/widgets/bottombar.dart';
 
@@ -34,8 +35,8 @@ class MyApp extends StatelessWidget {
         disabledColor: Colors.transparent,
       ),
       debugShowCheckedModeBanner: false,
-      // home: Bottombar(),
-      home: IntroPageview(),
+      home: Home(),
+      // home: IntroPageview(),
     );
   }
 }
