@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+
 import 'home/ForYou.dart';
 
 class Home extends StatefulWidget {
@@ -131,263 +131,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
           ),
         ),
-<<<<<<< HEAD
       ),
       body: Container(
-          child: TabBarView(
-        controller: _tabController,
+          child: Column(
         children: [
-          ForYou(),
-          ForYou(),
-          ForYou(),
-          ForYou(),
-          ForYou(),
-          ForYou(),
-          ],
-      )),
-=======
-        SliverFillRemaining(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
+          Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: myTabs.map((Tab tab) {
-                return Obx(() {
-                  return newsController.isLoading.value
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : ListView.separated(
-                          separatorBuilder: (context, index) {
-                            return sizedbox(context, 50);
-                          },
-                          // physics: BouncingScrollPhysics(),
-                          itemCount: newsController
-                              .newsList.value.value[0].subCards.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Get.to(() => NewsDetails(),
-                                    transition: Transition.cupertino);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                width: MediaQuery.of(context).size.width,
-                                color: ColorTheme.white,
-                                child: Column(
-                                  children: [
-                                    //top part
-                                    Container(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: Colors.transparent,
-                                            backgroundImage: NetworkImage(newsController
-                                                    .newsList
-                                                    .value
-                                                    .value[0]
-                                                    .subCards[index]
-                                                    .provider
-                                                    .logo.url),
-                                            maxRadius: 20,
-                                            minRadius: 15,
-                                          ),
-                                          sizedboxwidth(context, 30),
-                                          InkWell(
-                                            onTap: () {
-                                              Get.to(() => FollowDisplay(),
-                                                  transition:
-                                                      Transition.cupertino);
-                                            },
-                                            child: Text(
-                                                newsController
-                                                    .newsList
-                                                    .value
-                                                    .value[0]
-                                                    .subCards[index]
-                                                    .provider
-                                                    .name
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            60)),
-                                          ),
-                                          Spacer(),
-                                          InkWell(
-                                            onTap: () {
-                                              print("Follow Part");
-                                            },
-                                            child: Text("FOLLOW",
-                                                style: TextStyle(
-                                                    color: ColorTheme.green,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            60)),
-                                          ),
-                                          sizedboxwidth(context, 20),
-                                          Icon(Icons.more_vert_rounded)
-                                        ],
-                                      ),
-                                    ),
-                                    sizedbox(context, 60),
-                                    //body part
-                                    Image.network(
-                                      newsController.newsList.value.value[0]
-                                          .subCards[index].images[0].url,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              3.8,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    sizedbox(context, 50),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Html(
-                                            data : newsController.newsList.value.value[0]
-                                          .subCards[index].images[0].caption,
-                                            // maxLines: 2,
-                                            // overflow: TextOverflow.ellipsis,
-                                            // style: TextStyle(
-                                            //     fontWeight: FontWeight.bold,
-                                            //     fontSize: MediaQuery.of(context)
-                                            //             .size
-                                            //             .height /
-                                            //         45),
-                                          ),
-                                          sizedbox(context, 60),
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                  ImageProvide.minilocation,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      55),
-                                              sizedboxwidth(context, 50),
-                                              Text(
-                                                "New York",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            60),
-                                              ),
-                                              sizedboxwidth(context, 20),
-                                              CircleAvatar(
-                                                backgroundColor:
-                                                    ColorTheme.btnshade2,
-                                                radius: 3,
-                                              ),
-                                              sizedboxwidth(context, 50),
-                                              Text(
-                                                "1 day ago",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            60),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    sizedbox(context, 30),
-                                    //bottom part
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          //like
-                                          Image.asset(ImageProvide.like,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  40),
-                                          sizedboxwidth(context, 25),
-                                          Text(
-                                            "290",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    50),
-                                          ),
-                                          Spacer(),
-                                          //comment
-                                          Image.asset(ImageProvide.cmt,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  40),
-                                          sizedboxwidth(context, 25),
-                                          Text(
-                                            "38",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    50),
-                                          ),
-                                          Spacer(),
-                                          //share
-                                          Image.asset(ImageProvide.outlineshare,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  40),
-                                          sizedboxwidth(context, 25),
-                                          Text(
-                                            "22",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    50),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                });
-              }).toList(),
+              children: [
+                ForYou(),
+                ForYou(),
+                ForYou(),
+                ForYou(),
+                ForYou(),
+                ForYou(),
+              ],
             ),
           ),
-        )
-      ]),
->>>>>>> 140350ddc13a59383dc099d31975735866368057
+        ],
+      )),
     );
   }
 }

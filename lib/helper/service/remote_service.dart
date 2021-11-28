@@ -8,13 +8,13 @@ class RemoteServices {
   static final String _headline = "headline";
 
   static var client = http.Client();
-  static Future<NewsData> fetchNews() async {
+  static Future<Newsdata> fetchNews() async {
     var response = await client.get(Uri.parse(
         'https://api.msn.com/MSN/Feed?query=$_market=en-us&msnonly=true&top=10&select=sourceid,type,url,provider,title,images,publishedDateTime,categories&apikey=pgTCfC2akTTBabLZL1S7tnEy2GD310OTB8NZLWRdtW'));
     if (response.statusCode == 200) {
       var jsonString = response.body;
       print("API SUCCESS...");
-      return newsDataFromJson(jsonString);
+      return newsdataFromJson(jsonString);
     } else {
       //show error message
       return null;

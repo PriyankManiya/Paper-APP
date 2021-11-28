@@ -4,7 +4,7 @@ import 'package:paper_app/helper/service/remote_service.dart';
 
 class NewsController extends GetxController {
   var isLoading = true.obs;
-  var newsList = NewsData().obs;
+  var newsList = Newsdata().obs;
 
   @override
   void onInit() {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/buttonstyle.dart';
@@ -6,6 +7,7 @@ import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/signupcontroller.dart';
 import 'package:paper_app/screens/auth/signin/signin.dart';
+import 'package:paper_app/widgets/bottombar.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({Key key}) : super(key: key);
@@ -15,16 +17,17 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+   GlobalKey<FormState> loginFormKey =  GlobalKey<FormState>();
   bool _isVisible = false;
   bool _isCVisible = false;
-  SignupController signupcontroller = Get.find<SignupController>();
+  final SignupController signupcontroller = Get.put(SignupController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorTheme.white,
       body: SafeArea(
         child: Form(
-          key: signupcontroller.loginFormKey,
+          key: loginFormKey,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(
@@ -164,7 +167,7 @@ class _SignUpState extends State<SignUp> {
                   sizedbox(context, 25),
                   InkWell(
                     onTap: () {
-                      signupcontroller.checkSignUp();
+                      checkSignUp();
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -183,7 +186,9 @@ class _SignUpState extends State<SignUp> {
                   sizedbox(context, 25),
                   InkWell(
                     onTap: () {
-                      Get.to(() => SignIn(), transition: Transition.cupertino);
+                      // Get.to(() => SignIn(), transition: Transition.cupertino,binding: SignInBind());
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) => SignIn()));
                     },
                     child: RichText(
                         text: TextSpan(
@@ -211,5 +216,13 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+    void checkSignUp() {
+    final isValid = loginFormKey.currentState.validate();
+    if (!isValid) {
+      return;
+    }
+    loginFormKey.currentState.save();
+    Get.to(() => Bottombar(), transition: Transition.cupertino);
   }
 }
