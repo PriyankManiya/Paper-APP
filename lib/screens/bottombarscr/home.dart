@@ -132,16 +132,22 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         ),
       ),
       body: Container(
-          child: TabBarView(
-        controller: _tabController,
+          child: Column(
         children: [
-          ForYou(),
-          ForYou(),
-          ForYou(),
-          ForYou(),
-          ForYou(),
-          ForYou(),
-          ],
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                ForYou(),
+                ForYou(),
+                ForYou(),
+                ForYou(),
+                ForYou(),
+                ForYou(),
+              ],
+            ),
+          ),
+        ],
       )),
     );
   }

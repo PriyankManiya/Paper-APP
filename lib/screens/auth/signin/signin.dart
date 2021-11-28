@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/buttonstyle.dart';
@@ -7,6 +8,9 @@ import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/signincontroller.dart';
 import 'package:paper_app/screens/auth/forgetpwd/forgetpassword.dart';
 import 'package:paper_app/screens/auth/signup/signup.dart';
+import 'package:paper_app/widgets/bottombar.dart';
+
+
 
 class SignIn extends StatefulWidget {
   SignIn({Key key}) : super(key: key);
@@ -16,15 +20,16 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  GlobalKey<FormState> signformkey = new GlobalKey<FormState>();
   bool _isVisible = false;
-  SigninController controller = Get.find<SigninController>();
+  final SigninController controller = Get.put(SigninController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorTheme.white,
       body: SafeArea(
         child: Form(
-          key: controller.signformkey,
+          key: signformkey,
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -119,7 +124,7 @@ class _SignInState extends State<SignIn> {
                   sizedbox(context, 15),
                   InkWell(
                     onTap: () {
-                      controller.checkSignUp();
+                     checkSignIn();
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -138,7 +143,11 @@ class _SignInState extends State<SignIn> {
                   sizedbox(context, 20),
                   InkWell(
                     onTap: () {
-                      Get.to(() => SignUp(), transition: Transition.cupertino);
+                      // Get.to(() => SignUp(),
+                          // transition: Transition.cupertino,
+                          // binding: SignUpBind());
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) => SignUp()));
                     },
                     child: RichText(
                         text: TextSpan(
@@ -214,5 +223,15 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+  }
+    void checkSignIn() {
+    final isValid = signformkey.currentState.validate();
+    if (!isValid) {
+      return;
+    }
+    signformkey.currentState.save();
+
+    Get.off(() => Bottombar(), transition: Transition.cupertino);
+    // _authcontroller.signIn(emailController.text, passwordController.text);
   }
 }

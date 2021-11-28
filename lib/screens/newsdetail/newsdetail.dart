@@ -1,12 +1,15 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/helper/model/entertainment_news.dart';
 
 class NewsDetails extends StatefulWidget {
-  NewsDetails({Key key}) : super(key: key);
+  SubCard subCard;
+  NewsDetails({Key key, this.subCard}) : super(key: key);
 
   @override
   _NewsDetailsState createState() => _NewsDetailsState();
@@ -85,17 +88,20 @@ class _NewsDetailsState extends State<NewsDetails> {
                     child: Row(
                       children: [
                         CircleAvatar(
+                          backgroundColor: Colors.transparent,
                           radius: 17,
                           backgroundImage:
-                              AssetImage("assets/images/trash.png"),
+                              NetworkImage(widget.subCard.provider.logo.url),
                         ),
                         SizedBox(width: 5),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("The New York Times",
+                            Text(widget.subCard.provider.name,
                                 softWrap: true,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontSize:
                                         MediaQuery.of(context).size.height /
@@ -149,7 +155,9 @@ class _NewsDetailsState extends State<NewsDetails> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Text(
-                                "Post-election rifts emerge in Germany’scentre-right alliance.",
+                                widget.subCard.title,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize:
@@ -182,7 +190,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                                   ),
                                   sizedboxwidth(context, 50),
                                   Text(
-                                    "1 day ago",
+                                    widget.subCard.publishedDateTime.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize:
@@ -193,10 +201,22 @@ class _NewsDetailsState extends State<NewsDetails> {
                               ),
                             ),
                             sizedbox(context, 50),
-                            Image.asset(
-                              "assets/images/trash1.png",
+                            Container(
                               height: MediaQuery.of(context).size.height / 3.8,
-                              fit: BoxFit.cover,
+                              child: CachedNetworkImage(
+                                fadeInDuration: Duration(milliseconds: 500),
+                                fit: BoxFit.cover,
+                                imageUrl: widget.subCard.images[0].url,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) => Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        ColorTheme.btnshade2),
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ),
                             ),
                             sizedbox(context, 40),
                             Container(
@@ -204,17 +224,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                               child: Column(
                                 children: [
                                   Text(
-                                    "A leading German conservative has made a public show of congratulating the Social Democrats’ candidate on winning Sunday’s national electionin a sign of division within the centre-right alliance of outgoing chancellor Angela Merkel after it plunged to historic losses.",
-                                    style: TextStyle(
-                                      height: 1.5,
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              50,
-                                    ),
-                                  ),
-                                  sizedbox(context, 30),
-                                  Text(
-                                    "A leading German conservative has made a public show of congratulating the Social Democrats’ candidate on winning Sunday’s national electionin a sign of division within the centre-right alliance of outgoing chancellor Angela Merkel after it plunged to historic losses.",
+                                    widget.subCard.subCardAbstract,
                                     style: TextStyle(
                                       height: 1.5,
                                       fontSize:
@@ -227,6 +237,71 @@ class _NewsDetailsState extends State<NewsDetails> {
                             ),
                           ],
                         ),
+                        sizedbox(context, 40),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 10,
+                          color: ColorTheme.lightgrey,
+                        ),
+                        sizedbox(context, 40),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            "You May also like",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 50,
+                                color: ColorTheme.black.withOpacity(0.2)),
+                          ),
+                        ),
+                        sizedbox(context, 40),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "14 Cuts in 25 Minutes: How Hong Kong Censors Movies ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              45),
+                                    ),
+                                    sizedbox(context, 40),
+                                    Text(
+                                      "Khaleej Times",
+                                      style: TextStyle(
+                                          color:
+                                              ColorTheme.black.withOpacity(0.4),
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              60),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/images/trash2.jpg"),
+                                        fit: BoxFit.cover)),
+                              )
+                            ],
+                          ),
+                        ),
+                        sizedbox(context, 40),
                       ],
                     )),
                   ],

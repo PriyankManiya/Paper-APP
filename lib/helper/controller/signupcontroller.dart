@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paper_app/widgets/bottombar.dart';
+
+// GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
 class SignupController extends GetxController {
-  final GlobalKey<FormState> loginFormKey = new GlobalKey<FormState>();
-
   TextEditingController emailController,
       passwordController,
       namecontroller,
@@ -52,14 +51,5 @@ class SignupController extends GetxController {
       return "Please Enter Your password";
     }
     return null;
-  }
-
-  void checkSignUp() {
-    final isValid = loginFormKey.currentState.validate();
-    if (!isValid) {
-      return;
-    }
-    loginFormKey.currentState.save();
-    Get.to(() => Bottombar(), transition: Transition.cupertino);
   }
 }

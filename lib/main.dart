@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
-import 'package:paper_app/screens/bottombarscr/home.dart';
-import 'package:paper_app/screens/intro/pageview.dart';
 import 'package:paper_app/widgets/bottombar.dart';
 
 import 'helper/controller/fetchnews_controller.dart';
@@ -18,7 +16,7 @@ void main() {
 
   Get.put(SignupController());
   Get.put(SigninController());
-   Get.put(NewsController());
+  Get.put(NewsController());
   runApp(const MyApp());
 }
 
@@ -35,8 +33,8 @@ class MyApp extends StatelessWidget {
         disabledColor: Colors.transparent,
       ),
       debugShowCheckedModeBanner: false,
-      home: Home(),
-      // home: IntroPageview(),
+      // home: Home(),
+      home: Bottombar(),
     );
   }
 }
