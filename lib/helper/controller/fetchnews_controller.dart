@@ -20,7 +20,9 @@ class NewsController extends GetxController {
 
   void fetchMarketnews({int page}) async {
     try {
-      isLoading(true);
+      if(page==1){
+        isLoading.value = true;
+      }
       var productss = await RemoteServices.fetchMarketNews(page: page);
       print("NEWSLIST :: ${newsList.firstRebuild}");
       if (productss != null && newsList.firstRebuild) {
@@ -28,8 +30,10 @@ class NewsController extends GetxController {
       } else {
         newsList.value.articles.addAll(productss.articles);
       }
-    } finally {
       isLoading(false);
+    } catch (e) {
+      isLoading(false);
+      print(e);
     }
   }
 
