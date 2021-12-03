@@ -19,8 +19,8 @@ class ForYou extends StatefulWidget {
 
 class _ForYouState extends State<ForYou> {
   StreamController _streamController;
-
   bool isLoading = false;
+  int pagination = 2;
 
   final NewsController newsController = Get.find<NewsController>();
   RefreshController refershControllers =
@@ -36,10 +36,13 @@ class _ForYouState extends State<ForYou> {
 
   void _onLoading() async {
     _streamController = new StreamController();
-    await newsController.fetchMarketnews(page: 2);
+    await newsController.fetchMarketnews(page: pagination);
     await _streamController.add(newsController.newsList.value);
     await Future.delayed(Duration(milliseconds: 1000));
-    if (mounted) setState(() {});
+    if (mounted)
+      setState(() {
+        pagination++;
+      });
     refershControllers.loadComplete();
   }
 
@@ -54,7 +57,17 @@ class _ForYouState extends State<ForYou> {
   Widget build(BuildContext context) {
     return Obx(() {
       return newsController.isLoading.value
-          ? CircularProgressIndicator()
+          ? Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                      child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              ColorTheme.btnshade2))),
+                ],
+              ),
+            )
           : Column(
               children: [
                 Container(
