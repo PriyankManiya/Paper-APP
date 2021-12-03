@@ -25,8 +25,7 @@ class _ForYouState extends State<ForYou> {
     setState(() {
       isLoading = true;
     });
-    setState(() {
-    });
+    setState(() {});
   }
 
   void _onLoading() async {
@@ -107,15 +106,13 @@ class _ForYouState extends State<ForYou> {
                           child: sizedbox(context, 50),
                         );
                       },
-                      itemCount: newsController
-                          .newsList.value.value[0].subCards.length,
+                      itemCount: newsController.newsList.value.articles.length,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: () {
                             Get.to(
                                 () => NewsDetails(
-                                    subCard: newsController.newsList.value
-                                        .value[0].subCards[index]),
+                                    subCard: newsController.newsList.value.articles[index]),
                                 transition: Transition.cupertino);
                           },
                           child: Container(
@@ -129,58 +126,59 @@ class _ForYouState extends State<ForYou> {
                                   padding: EdgeInsets.symmetric(horizontal: 20),
                                   child: Row(
                                     children: [
-                                      CircleAvatar(
-                                        backgroundColor: Colors.transparent,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(50))),
-                                            child: CachedNetworkImage(
-                                              useOldImageOnUrlChange: false,
-                                              fadeInDuration:
-                                                  Duration(milliseconds: 500),
-                                              fit: BoxFit.cover,
-                                              imageUrl: newsController
-                                                  .newsList
-                                                  .value
-                                                  .value[0]
-                                                  .subCards[index]
-                                                  .provider
-                                                  .logo
-                                                  .url,
-                                              progressIndicatorBuilder:
-                                                  (context, url,
-                                                          downloadProgress) =>
-                                                      Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                              Color>(
-                                                          ColorTheme.btnshade2),
-                                                ),
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      Icon(Icons.error),
-                                            ),
-                                          ),
-                                        ),
-                                        // backgroundImage: NetworkImage(
-                                        //     newsController
-                                        //         .newsList
-                                        //         .value
-                                        //         .value[0]
-                                        //         .subCards[index]
-                                        //         .provider
-                                        //         .logo
-                                        //         .url),
-                                      ),
+                                      // CircleAvatar(
+                                      //   backgroundColor: Colors.transparent,
+                                      //   child: ClipRRect(
+                                      //     borderRadius:
+                                      //         BorderRadius.circular(50),
+                                      //     child: Container(
+                                      //       height: 50,
+                                      //       width: 50,
+                                      //       decoration: BoxDecoration(
+                                      //           borderRadius: BorderRadius.all(
+                                      //               Radius.circular(50))),
+                                      //       child: CachedNetworkImage(
+                                      //         useOldImageOnUrlChange: false,
+                                      //         fadeInDuration:
+                                      //             Duration(milliseconds: 500),
+                                      //         fit: BoxFit.cover,
+                                      //         imageUrl: newsController
+                                      //             .newsList
+                                      //             .value
+                                      //             .value[0]
+                                      //             .subCards[index]
+                                      //             .provider
+                                      //             .logo
+                                      //             .url,
+                                      //         progressIndicatorBuilder:
+                                      //             (context, url,
+                                      //                     downloadProgress) =>
+                                      //                 Center(
+                                      //           child:
+                                      //               CircularProgressIndicator(
+                                      //             valueColor:
+                                      //                 AlwaysStoppedAnimation<
+                                      //                         Color>(
+                                      //                     ColorTheme.btnshade2),
+                                      //           ),
+                                      //         ),
+                                      //         errorWidget:
+                                      //             (context, url, error) =>
+                                      //                 Icon(Icons.error),
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      //   // backgroundImage: NetworkImage(
+                                      //   //     newsController
+                                      //   //         .newsList
+                                      //   //         .value
+                                      //   //         .value[0]
+                                      //   //         .subCards[index]
+                                      //   //         .provider
+                                      //   //         .logo
+                                      //   //         .url),
+                                      // ),
+
                                       sizedboxwidth(context, 30),
                                       InkWell(
                                         onTap: () {
@@ -188,13 +186,8 @@ class _ForYouState extends State<ForYou> {
                                               transition: Transition.cupertino);
                                         },
                                         child: Text(
-                                            newsController
-                                                .newsList
-                                                .value
-                                                .value[0]
-                                                .subCards[index]
-                                                .provider
-                                                .name
+                                            newsController.newsList.value
+                                                .articles[index].author
                                                 .toString(),
                                             style: TextStyle(
                                                 fontSize: MediaQuery.of(context)
@@ -230,7 +223,7 @@ class _ForYouState extends State<ForYou> {
                                     fadeInDuration: Duration(milliseconds: 500),
                                     fit: BoxFit.cover,
                                     imageUrl: newsController.newsList.value
-                                        .value[0].subCards[index].images[0].url,
+                                        .articles[index].urlToImage,
                                     progressIndicatorBuilder:
                                         (context, url, downloadProgress) =>
                                             Center(
@@ -256,7 +249,7 @@ class _ForYouState extends State<ForYou> {
                                     children: [
                                       Text(
                                         newsController.newsList.value
-                                            .value[0].subCards[index].title,
+                                            .articles[index].title,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,

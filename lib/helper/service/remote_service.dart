@@ -11,11 +11,11 @@ class RemoteServices {
   //-----------------------------------------------------
   static Future<Newsdata> fetchMarketNews() async {
     var response = await client.get(Uri.parse(
-        'https://api.msn.com/MSN/Feed?query=$_market=en-us&msnonly=true&top=10&select=sourceid,type,url,provider,title,images,publishedDateTime,categories&apikey=pgTCfC2akTTBabLZL1S7tnEy2GD310OTB8NZLWRdtW'));
+        'https://newsapi.org/v2/everything?q=$_market&apiKey=b795d9ec49ad4d44959058bb2d211d6f'));
     if (response.statusCode == 200) {
       var jsonString = response.body;
       print("API SUCCESS...");
-      return newsdataFromJson(jsonString);
+      return newsModel(jsonString);
     } else {
       //show error message
       return null;
@@ -24,11 +24,11 @@ class RemoteServices {
   //-----------------------------------------------------
   static Future<Newsdata> fetchEntertainmentNews() async {
     var response = await client.get(Uri.parse(
-        'https://api.msn.com/MSN/Feed?query=$_entertainment=en-us&msnonly=true&top=10&select=sourceid,type,url,provider,title,images,publishedDateTime,categories&apikey=pgTCfC2akTTBabLZL1S7tnEy2GD310OTB8NZLWRdtW'));
+       'https://newsapi.org/v2/everything?q=$_entertainment&apiKey=b795d9ec49ad4d44959058bb2d211d6f'));
     if (response.statusCode == 200) {
       var jsonString = response.body;
       print("API SUCCESS...");
-      return newsdataFromJson(jsonString);
+      return newsModel(jsonString);
     } else {
       //show error message
       return null;
@@ -37,11 +37,11 @@ class RemoteServices {
   //-----------------------------------------------------
   static Future<Newsdata> fetchNews() async {
     var response = await client.get(Uri.parse(
-        'https://api.msn.com/MSN/Feed?query=$_news=en-us&msnonly=true&top=10&select=sourceid,type,url,provider,title,images,publishedDateTime,categories&apikey=pgTCfC2akTTBabLZL1S7tnEy2GD310OTB8NZLWRdtW'));
+        'https://newsapi.org/v2/everything?q=$_news&apiKey=b795d9ec49ad4d44959058bb2d211d6f'));
     if (response.statusCode == 200) {
       var jsonString = response.body;
       print("API SUCCESS...");
-      return newsdataFromJson(jsonString);
+      return newsModel(jsonString);
     } else {
       //show error message
       return null;
@@ -50,11 +50,11 @@ class RemoteServices {
   //-----------------------------------------------------
   static Future<Newsdata> fetchHeadlineNews() async {
     var response = await client.get(Uri.parse(
-        'https://api.msn.com/MSN/Feed?query=$_headline=en-us&msnonly=true&top=10&select=sourceid,type,url,provider,title,images,publishedDateTime,categories&apikey=pgTCfC2akTTBabLZL1S7tnEy2GD310OTB8NZLWRdtW'));
+       'https://newsapi.org/v2/everything?q=$_headline&apiKey=b795d9ec49ad4d44959058bb2d211d6f'));
     if (response.statusCode == 200) {
       var jsonString = response.body;
       print("API SUCCESS...");
-      return newsdataFromJson(jsonString);
+      return newsModel(jsonString);
     } else {
       //show error message
       return null;
