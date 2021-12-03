@@ -6,6 +6,7 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/service/remote_service.dart';
 import 'package:paper_app/screens/following/follow.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -22,11 +23,12 @@ class _ForYouState extends State<ForYou> {
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
+    await RemoteServices.fetchEntertainmentNews();
+    await Future.delayed(Duration(milliseconds: 1000));
     setState(() {
       isLoading = true;
     });
-    setState(() {
-    });
+    refershControllers.refreshCompleted();
   }
 
   void _onLoading() async {
@@ -255,8 +257,8 @@ class _ForYouState extends State<ForYou> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        newsController.newsList.value
-                                            .value[0].subCards[index].title,
+                                        newsController.newsList.value.value[0]
+                                            .subCards[index].title,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
