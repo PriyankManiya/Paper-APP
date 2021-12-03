@@ -23,8 +23,7 @@ class _ForYouState extends State<ForYou> {
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
-    await RemoteServices.fetchMarketNews();
-
+    await newsController.fetchMarketnews(page: 1);
     await Future.delayed(Duration(milliseconds: 1000));
     setState(() {
       isLoading = true;
@@ -33,6 +32,7 @@ class _ForYouState extends State<ForYou> {
   }
 
   void _onLoading() async {
+    await newsController.fetchMarketnews(page: 2);
     await Future.delayed(Duration(milliseconds: 1000));
     if (mounted) setState(() {});
     refershControllers.loadComplete();
@@ -98,293 +98,307 @@ class _ForYouState extends State<ForYou> {
                               ColorTheme.btnshade2)),
                     ),
                   )
-                : SmartRefresher(
-                    enablePullDown: true,
-                    enablePullUp: true,
-                    controller: refershControllers,
-                    onRefresh: _onRefresh,
-                    onLoading: _onLoading,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) {
-                        return Container(
-                          child: sizedbox(context, 50),
-                        );
-                      },
-                      itemCount: newsController.newsList.value.articles.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                          onTap: () {
-                            Get.to(
-                                () => NewsDetails(
-                                    subCard: newsController
-                                        .newsList.value.articles[index]),
-                                transition: Transition.cupertino);
+                : Scrollbar(
+                    child: SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        controller: refershControllers,
+                        onRefresh: _onRefresh,
+                        onLoading: _onLoading,
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) {
+                            return Container(
+                              child: sizedbox(context, 50),
+                            );
                           },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            width: MediaQuery.of(context).size.width,
-                            color: ColorTheme.white,
-                            child: Column(
-                              children: [
-                                //top part
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Row(
-                                    children: [
-                                      // CircleAvatar(
-                                      //   backgroundColor: Colors.transparent,
-                                      //   child: ClipRRect(
-                                      //     borderRadius:
-                                      //         BorderRadius.circular(50),
-                                      //     child: Container(
-                                      //       height: 50,
-                                      //       width: 50,
-                                      //       decoration: BoxDecoration(
-                                      //           borderRadius: BorderRadius.all(
-                                      //               Radius.circular(50))),
-                                      //       child: CachedNetworkImage(
-                                      //         useOldImageOnUrlChange: false,
-                                      //         fadeInDuration:
-                                      //             Duration(milliseconds: 500),
-                                      //         fit: BoxFit.cover,
-                                      //         imageUrl: newsController
-                                      //             .newsList
-                                      //             .value
-                                      //             .value[0]
-                                      //             .subCards[index]
-                                      //             .provider
-                                      //             .logo
-                                      //             .url,
-                                      //         progressIndicatorBuilder:
-                                      //             (context, url,
-                                      //                     downloadProgress) =>
-                                      //                 Center(
-                                      //           child:
-                                      //               CircularProgressIndicator(
-                                      //             valueColor:
-                                      //                 AlwaysStoppedAnimation<
-                                      //                         Color>(
-                                      //                     ColorTheme.btnshade2),
-                                      //           ),
-                                      //         ),
-                                      //         errorWidget:
-                                      //             (context, url, error) =>
-                                      //                 Icon(Icons.error),
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      //   // backgroundImage: NetworkImage(
-                                      //   //     newsController
-                                      //   //         .newsList
-                                      //   //         .value
-                                      //   //         .value[0]
-                                      //   //         .subCards[index]
-                                      //   //         .provider
-                                      //   //         .logo
-                                      //   //         .url),
-                                      // ),
+                          itemCount:
+                              newsController.newsList.value.articles.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                Get.to(
+                                    () => NewsDetails(
+                                        subCard: newsController
+                                            .newsList.value.articles[index]),
+                                    transition: Transition.cupertino);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                width: MediaQuery.of(context).size.width,
+                                color: ColorTheme.white,
+                                child: Column(
+                                  children: [
+                                    //top part
+                                    Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      child: Row(
+                                        children: [
+                                          // CircleAvatar(
+                                          //   backgroundColor: Colors.transparent,
+                                          //   child: ClipRRect(
+                                          //     borderRadius:
+                                          //         BorderRadius.circular(50),
+                                          //     child: Container(
+                                          //       height: 50,
+                                          //       width: 50,
+                                          //       decoration: BoxDecoration(
+                                          //           borderRadius: BorderRadius.all(
+                                          //               Radius.circular(50))),
+                                          //       child: CachedNetworkImage(
+                                          //         useOldImageOnUrlChange: false,
+                                          //         fadeInDuration:
+                                          //             Duration(milliseconds: 500),
+                                          //         fit: BoxFit.cover,
+                                          //         imageUrl: newsController
+                                          //             .newsList
+                                          //             .value
+                                          //             .value[0]
+                                          //             .subCards[index]
+                                          //             .provider
+                                          //             .logo
+                                          //             .url,
+                                          //         progressIndicatorBuilder:
+                                          //             (context, url,
+                                          //                     downloadProgress) =>
+                                          //                 Center(
+                                          //           child:
+                                          //               CircularProgressIndicator(
+                                          //             valueColor:
+                                          //                 AlwaysStoppedAnimation<
+                                          //                         Color>(
+                                          //                     ColorTheme.btnshade2),
+                                          //           ),
+                                          //         ),
+                                          //         errorWidget:
+                                          //             (context, url, error) =>
+                                          //                 Icon(Icons.error),
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          //   // backgroundImage: NetworkImage(
+                                          //   //     newsController
+                                          //   //         .newsList
+                                          //   //         .value
+                                          //   //         .value[0]
+                                          //   //         .subCards[index]
+                                          //   //         .provider
+                                          //   //         .logo
+                                          //   //         .url),
+                                          // ),
 
-                                      sizedboxwidth(context, 30),
-                                      Container(
-                                        width: Get.width * 0.5,
-                                        child: InkWell(
-                                          onTap: () {
-                                            Get.to(() => FollowDisplay(),
-                                                transition:
-                                                    Transition.cupertino);
-                                          },
-                                          child: Text(
-                                              newsController
+                                          sizedboxwidth(context, 30),
+                                          Container(
+                                            width: Get.width * 0.5,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Get.to(() => FollowDisplay(),
+                                                    transition:
+                                                        Transition.cupertino);
+                                              },
+                                              child: Text(
+                                                  newsController
+                                                              .newsList
+                                                              .value
+                                                              .articles[index]
+                                                              .author ==
+                                                          null
+                                                      ? "Paper-App"
+                                                      : newsController
                                                           .newsList
                                                           .value
                                                           .articles[index]
-                                                          .author ==
-                                                      null
-                                                  ? "Paper-App"
-                                                  : newsController
-                                                      .newsList
-                                                      .value
-                                                      .articles[index]
-                                                      .author,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .height /
-                                                          60)),
-                                        ),
+                                                          .author,
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height /
+                                                              60)),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          InkWell(
+                                            onTap: () {
+                                              print("Follow Part");
+                                            },
+                                            child: Text("FOLLOW",
+                                                style: TextStyle(
+                                                    color: ColorTheme.green,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            60)),
+                                          ),
+                                          sizedboxwidth(context, 20),
+                                          Icon(Icons.more_vert_rounded)
+                                        ],
                                       ),
-                                      Spacer(),
-                                      InkWell(
-                                        onTap: () {
-                                          print("Follow Part");
-                                        },
-                                        child: Text("FOLLOW",
+                                    ),
+                                    sizedbox(context, 60),
+                                    //body part
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              3.8,
+                                      child: CachedNetworkImage(
+                                        fadeInDuration:
+                                            Duration(milliseconds: 500),
+                                        fit: BoxFit.cover,
+                                        imageUrl: newsController.newsList.value
+                                            .articles[index].urlToImage,
+                                        progressIndicatorBuilder:
+                                            (context, url, downloadProgress) =>
+                                                Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    ColorTheme.btnshade2),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
+                                    ),
+
+                                    sizedbox(context, 50),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            newsController.newsList.value
+                                                .articles[index].title,
+                                            textAlign: TextAlign.start,
                                             style: TextStyle(
-                                                color: ColorTheme.green,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: MediaQuery.of(context)
                                                         .size
                                                         .height /
-                                                    60)),
-                                      ),
-                                      sizedboxwidth(context, 20),
-                                      Icon(Icons.more_vert_rounded)
-                                    ],
-                                  ),
-                                ),
-                                sizedbox(context, 60),
-                                //body part
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height / 3.8,
-                                  child: CachedNetworkImage(
-                                    fadeInDuration: Duration(milliseconds: 500),
-                                    fit: BoxFit.cover,
-                                    imageUrl: newsController.newsList.value
-                                        .articles[index].urlToImage,
-                                    progressIndicatorBuilder:
-                                        (context, url, downloadProgress) =>
-                                            Center(
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                ColorTheme.btnshade2),
+                                                    50),
+                                          ),
+                                          sizedbox(context, 60),
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                  ImageProvide.minilocation,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      55),
+                                              sizedboxwidth(context, 50),
+                                              Text(
+                                                "New York",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            60),
+                                              ),
+                                              sizedboxwidth(context, 20),
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                    ColorTheme.btnshade2,
+                                                radius: 3,
+                                              ),
+                                              sizedboxwidth(context, 50),
+                                              Text(
+                                                "1 day ago",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            60),
+                                              ),
+                                            ],
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
-                                ),
-
-                                sizedbox(context, 50),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        newsController.newsList.value
-                                            .articles[index].title,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                50),
-                                      ),
-                                      sizedbox(context, 60),
-                                      Row(
+                                    sizedbox(context, 30),
+                                    //bottom part
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          Image.asset(ImageProvide.minilocation,
+                                          //like
+                                          Image.asset(ImageProvide.like,
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height /
-                                                  55),
-                                          sizedboxwidth(context, 50),
+                                                  40),
+                                          sizedboxwidth(context, 25),
                                           Text(
-                                            "New York",
+                                            "290",
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w400,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: MediaQuery.of(context)
                                                         .size
                                                         .height /
-                                                    60),
+                                                    50),
                                           ),
-                                          sizedboxwidth(context, 20),
-                                          CircleAvatar(
-                                            backgroundColor:
-                                                ColorTheme.btnshade2,
-                                            radius: 3,
-                                          ),
-                                          sizedboxwidth(context, 50),
+                                          Spacer(),
+                                          //comment
+                                          Image.asset(ImageProvide.cmt,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  40),
+                                          sizedboxwidth(context, 25),
                                           Text(
-                                            "1 day ago",
+                                            "38",
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w400,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: MediaQuery.of(context)
                                                         .size
                                                         .height /
-                                                    60),
+                                                    50),
+                                          ),
+                                          Spacer(),
+                                          //share
+                                          Image.asset(ImageProvide.outlineshare,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  40),
+                                          sizedboxwidth(context, 25),
+                                          Text(
+                                            "22",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    50),
                                           ),
                                         ],
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                sizedbox(context, 30),
-                                //bottom part
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      //like
-                                      Image.asset(ImageProvide.like,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              40),
-                                      sizedboxwidth(context, 25),
-                                      Text(
-                                        "290",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                50),
-                                      ),
-                                      Spacer(),
-                                      //comment
-                                      Image.asset(ImageProvide.cmt,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              40),
-                                      sizedboxwidth(context, 25),
-                                      Text(
-                                        "38",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                50),
-                                      ),
-                                      Spacer(),
-                                      //share
-                                      Image.asset(ImageProvide.outlineshare,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              40),
-                                      sizedboxwidth(context, 25),
-                                      Text(
-                                        "22",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                50),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ));
+                              ),
+                            );
+                          },
+                        )),
+                  );
           }),
         ),
       ],

@@ -18,12 +18,15 @@ class NewsController extends GetxController {
     super.onInit();
   }
 
-  void fetchMarketnews() async {
+  void fetchMarketnews({int page}) async {
     try {
       isLoading(true);
-      var productss = await RemoteServices.fetchMarketNews();
-      if (productss != null) {
+      var productss = await RemoteServices.fetchMarketNews(page: page);
+      print("NEWSLIST :: ${newsList.firstRebuild}");
+      if (productss != null && newsList.firstRebuild) {
         newsList.value = productss;
+      } else {
+        newsList.value.articles.addAll(productss.articles);
       }
     } finally {
       isLoading(false);
