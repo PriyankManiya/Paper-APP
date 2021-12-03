@@ -6,6 +6,7 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/service/remote_service.dart';
 import 'package:paper_app/screens/following/follow.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -22,10 +23,13 @@ class _ForYouState extends State<ForYou> {
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
+    await RemoteServices.fetchMarketNews();
+
+    await Future.delayed(Duration(milliseconds: 1000));
     setState(() {
       isLoading = true;
     });
-    setState(() {});
+    refershControllers.refreshCompleted();
   }
 
   void _onLoading() async {
@@ -96,7 +100,7 @@ class _ForYouState extends State<ForYou> {
                   )
                 : SmartRefresher(
                     enablePullDown: true,
-                    enablePullUp: false,
+                    enablePullUp: true,
                     controller: refershControllers,
                     onRefresh: _onRefresh,
                     onLoading: _onLoading,
@@ -112,7 +116,8 @@ class _ForYouState extends State<ForYou> {
                           onTap: () {
                             Get.to(
                                 () => NewsDetails(
-                                    subCard: newsController.newsList.value.articles[index]),
+                                    subCard: newsController
+                                        .newsList.value.articles[index]),
                                 transition: Transition.cupertino);
                           },
                           child: Container(
@@ -180,20 +185,34 @@ class _ForYouState extends State<ForYou> {
                                       // ),
 
                                       sizedboxwidth(context, 30),
-                                      InkWell(
-                                        onTap: () {
-                                          Get.to(() => FollowDisplay(),
-                                              transition: Transition.cupertino);
-                                        },
-                                        child: Text(
-                                            newsController.newsList.value
-                                                .articles[index].author
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    60)),
+                                      Container(
+                                        width: Get.width * 0.5,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Get.to(() => FollowDisplay(),
+                                                transition:
+                                                    Transition.cupertino);
+                                          },
+                                          child: Text(
+                                              newsController
+                                                          .newsList
+                                                          .value
+                                                          .articles[index]
+                                                          .author ==
+                                                      null
+                                                  ? "Paper-App"
+                                                  : newsController
+                                                      .newsList
+                                                      .value
+                                                      .articles[index]
+                                                      .author,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height /
+                                                          60)),
+                                        ),
                                       ),
                                       Spacer(),
                                       InkWell(
