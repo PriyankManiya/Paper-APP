@@ -138,9 +138,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             child: TabBarView(
               controller: _tabController,
               children: [
-                ForYou(),
-                ForYou(),
-                ForYou(),
+                ForYou(topic:"latest"),
+                ForYou(topic:"local"),
+                ForYou(topic:"headline"),
                 ForYou(),
                 ForYou(),
                 ForYou(),

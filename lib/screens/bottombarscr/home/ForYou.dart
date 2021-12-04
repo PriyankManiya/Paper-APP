@@ -13,6 +13,8 @@ import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ForYou extends StatefulWidget {
+  String topic;
+  ForYou({Key key, this.topic}) : super(key: key);
   @override
   _ForYouState createState() => _ForYouState();
 }
@@ -36,7 +38,7 @@ class _ForYouState extends State<ForYou> {
 
   void _onLoading() async {
     _streamController = new StreamController();
-    await newsController.fetchMarketnews(page: 2);
+    await newsController.fetchMarketnews(page: 2, topic: widget.topic);
     await _streamController.add(newsController.newsList.value);
     await Future.delayed(Duration(milliseconds: 1000));
     if (mounted) setState(() {});
@@ -47,7 +49,19 @@ class _ForYouState extends State<ForYou> {
   void initState() {
     super.initState();
     _streamController = new StreamController();
+    getnewsdata();
+  }
+
+  void getnewsdata() async {
+    await newsController.fetchMarketnews(page: 2, topic: widget.topic);
+    print(newsController.newsList.value);
     _streamController.add(newsController.newsList.value);
+  }
+
+  @override
+  void dispose() {
+    _streamController.close();
+    super.dispose();
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
-import 'package:paper_app/helper/model/entertainment_news.dart';
+import 'package:paper_app/helper/model/news_model.dart';
 
 class NewsDetails extends StatefulWidget {
   Article subCard;

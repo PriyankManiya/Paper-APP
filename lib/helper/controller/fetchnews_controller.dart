@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:paper_app/helper/model/entertainment_news.dart';
+import 'package:paper_app/helper/model/news_model.dart';
 import 'package:paper_app/helper/service/remote_service.dart';
 
 class NewsController extends GetxController {
@@ -11,19 +11,19 @@ class NewsController extends GetxController {
 
   @override
   void onInit() {
-    fetchMarketnews();
+    // fetchMarketnews();
     // fetchEntertainmentNews();
     // fetchHeadlineNews();
     // fetchNews();
     super.onInit();
   }
 
-  void fetchMarketnews({int page}) async {
+  void fetchMarketnews({int page,String topic}) async {
     try {
       if(page==1){
         isLoading.value = true;
       }
-      var productss = await RemoteServices.fetchMarketNews(page: page);
+      var productss = await RemoteServices.fetchMarketNews(page: page,topic: topic);
       print("NEWSLIST :: ${newsList.firstRebuild}");
       if (productss != null && newsList.firstRebuild) {
         newsList.value = productss;
@@ -34,42 +34,6 @@ class NewsController extends GetxController {
     } catch (e) {
       isLoading(false);
       print(e);
-    }
-  }
-
-  void fetchEntertainmentNews() async {
-    try {
-      isLoading(true);
-      var productss = await RemoteServices.fetchEntertainmentNews();
-      if (productss != null) {
-        newsList.value = productss;
-      }
-    } finally {
-      isLoading(false);
-    }
-  }
-
-  void fetchNews() async {
-    try {
-      isLoading(true);
-      var productss = await RemoteServices.fetchNews();
-      if (productss != null) {
-        newsList.value = productss;
-      }
-    } finally {
-      isLoading(false);
-    }
-  }
-
-  void fetchHeadlineNews() async {
-    try {
-      isLoading(true);
-      var productss = await RemoteServices.fetchNews();
-      if (productss != null) {
-        newsList.value = productss;
-      }
-    } finally {
-      isLoading(false);
     }
   }
 }
