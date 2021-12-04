@@ -18,17 +18,22 @@ class NewsController extends GetxController {
     super.onInit();
   }
 
-  void fetchMarketnews({int page,String topic}) async {
+  void fetchMarketnews({int page, String topic, bool isNewTab = false}) async {
     try {
-      if(page==1){
+      if (page == 1) {
         isLoading.value = true;
       }
-      var productss = await RemoteServices.fetchMarketNews(page: page,topic: topic);
-      print("NEWSLIST :: ${newsList.firstRebuild}");
-      if (productss != null && newsList.firstRebuild) {
+      var productss =
+          await RemoteServices.fetchMarketNews(page: page, topic: topic);
+      if (isNewTab && !newsList.firstRebuild) {
+        print("isNewTab ........ ......");
         newsList.value = productss;
       } else {
-        newsList.value.articles.addAll(productss.articles);
+        if (productss != null && newsList.firstRebuild) {
+          newsList.value = productss;
+        } else {
+          newsList.value.articles.addAll(productss.articles);
+        }
       }
       isLoading(false);
     } catch (e) {

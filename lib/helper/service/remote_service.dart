@@ -12,12 +12,13 @@ class RemoteServices {
   static final String apikey = "b795d9ec49ad4d44959058bb2d211d6f";
   static var client = http.Client();
   //-----------------------------------------------------
-  static Future<Newsdata> fetchMarketNews({int page,String topic}) async {
+  static Future<Newsdata> fetchMarketNews({int page, String topic}) async {
+    print(
+        "URL ::  ${'https://newsapi.org/v2/everything?q=$topic&apiKey=$apikey&pageSize=10&page=$page&sortBy=publishedAt'}");
     var response = await client.get(Uri.parse(
         'https://newsapi.org/v2/everything?q=$topic&apiKey=$apikey&pageSize=10&page=$page&sortBy=publishedAt'));
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      print("API SUCCESS... ${newsModel(jsonString).articles[0].title}");
       return newsModel(jsonString);
     } else {
       //show error message
