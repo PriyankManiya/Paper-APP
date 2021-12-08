@@ -8,27 +8,26 @@ class NewsController extends GetxController {
   var marketList = Newsdata().obs;
   var entertainmentList = Newsdata().obs;
   var headlineList = Newsdata().obs;
+  Newsdata productss;
 
-  @override
-  void onInit() {
-    // fetchMarketnews();
-    // fetchEntertainmentNews();
-    // fetchHeadlineNews();
-    // fetchNews();
-    super.onInit();
-  }
 
-  void fetchMarketnews({int page,String topic}) async {
+  void fetchMarketnews({int page, String topic}) async {
     try {
-      if(page==1){
+      if (page == 1) {
         isLoading.value = true;
       }
-      var productss = await RemoteServices.fetchMarketNews(page: page,topic: topic);
-      print("NEWSLIST :: ${newsList.firstRebuild}");
+
+      try {
+        productss = await RemoteServices.fetchMarketNews(page: page, topic: topic);
+            
+      } catch (e) {
+        print("API ERROR" + e);
+      }
+
       if (productss != null && newsList.firstRebuild) {
         newsList.value = productss;
       } else {
-        newsList.value.articles.addAll(productss.articles);
+        newsList.value.value[0].subCards.addAll(productss.value[0].subCards);
       }
       isLoading(false);
     } catch (e) {

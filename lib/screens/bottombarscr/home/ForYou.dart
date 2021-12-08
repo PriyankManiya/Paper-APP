@@ -57,7 +57,6 @@ class _ForYouState extends State<ForYou> {
 
   void getnewsdata() async {
     await newsController.fetchMarketnews(page: 2, topic: widget.topic);
-    print(newsController.newsList.value);
     _streamController.add(newsController.newsList.value);
   }
 
@@ -147,14 +146,14 @@ class _ForYouState extends State<ForYou> {
                               );
                             },
                             itemCount:
-                                newsController.newsList.value.articles.length,
+                                newsController.newsList.value.value[0].subCards.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
                                   Get.to(
                                       () => NewsDetails(
                                           subCard: newsController
-                                              .newsList.value.articles[index]),
+                                              .newsList.value.value[0].subCards[index]),
                                       transition: Transition.cupertino);
                                 },
                                 child: Container(
@@ -235,15 +234,15 @@ class _ForYouState extends State<ForYou> {
                                                     newsController
                                                                 .newsList
                                                                 .value
-                                                                .articles[index]
-                                                                .author ==
+                                                                .value[0]
+                                                                .subCards[index].provider.name ==
                                                             null
                                                         ? "Paper-App"
                                                         : newsController
-                                                            .newsList
-                                                            .value
-                                                            .articles[index]
-                                                            .author,
+                                                                .newsList
+                                                                .value
+                                                                .value[0]
+                                                                .subCards[index].provider.name ,
                                                     style: TextStyle(
                                                         fontSize: MediaQuery.of(
                                                                     context)
@@ -284,7 +283,7 @@ class _ForYouState extends State<ForYou> {
                                               Duration(milliseconds: 500),
                                           fit: BoxFit.cover,
                                           imageUrl: newsController.newsList
-                                              .value.articles[index].urlToImage,
+                                              .value.value[0].subCards[index].images[0].url,
                                           progressIndicatorBuilder: (context,
                                                   url, downloadProgress) =>
                                               Center(
@@ -311,8 +310,8 @@ class _ForYouState extends State<ForYou> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              newsController.newsList.value
-                                                  .articles[index].title,
+                                              newsController.newsList
+                                              .value.value[0].subCards[index].images[0].title,
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,

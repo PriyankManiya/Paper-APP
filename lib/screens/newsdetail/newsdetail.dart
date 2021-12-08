@@ -8,7 +8,7 @@ import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/model/news_model.dart';
 
 class NewsDetails extends StatefulWidget {
-  Article subCard;
+  SubCard subCard;
   NewsDetails({Key key, this.subCard}) : super(key: key);
 
   @override
@@ -98,7 +98,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              child: Text(widget.subCard.author,
+                              child: Text(widget.subCard.provider.name,
                                   softWrap: true,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -191,7 +191,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                                   ),
                                   sizedboxwidth(context, 50),
                                   Text(
-                                    widget.subCard.publishedAt.toString(),
+                                    widget.subCard.publishedDateTime.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize:
@@ -207,7 +207,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                               child: CachedNetworkImage(
                                 fadeInDuration: Duration(milliseconds: 500),
                                 fit: BoxFit.cover,
-                                imageUrl: widget.subCard.urlToImage,
+                                imageUrl: widget.subCard.images[0].url,
                                 progressIndicatorBuilder:
                                     (context, url, downloadProgress) => Center(
                                   child: CircularProgressIndicator(
@@ -225,7 +225,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                               child: Column(
                                 children: [
                                   Text(
-                                    widget.subCard.content,
+                                    widget.subCard.images[0].caption,
                                     style: TextStyle(
                                       height: 1.5,
                                       fontSize:
@@ -236,23 +236,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                                 ],
                               ),
                             ),
-                            sizedbox(context, 20),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    widget.subCard.description,
-                                    style: TextStyle(
-                                      height: 1.5,
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              50,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                           
                           ],
                         ),
                         sizedbox(context, 40),
