@@ -32,7 +32,8 @@ class NewsController extends GetxController {
       isLoading(false);
     } catch (e) {
       isLoading(false);
-      print(e);
+      print("ERROR ****** ERROR");
+      print("ERROR WHILE FETCHING DATA : $e");
     }
   }
 }
