@@ -21,24 +21,20 @@ class ForYou extends StatefulWidget {
 
 class _ForYouState extends State<ForYou> {
   StreamController _streamController;
-  bool isLoading = false;
   int pagination = 2;
 
   final NewsController newsController = Get.find<NewsController>();
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
-    await newsController.fetchMarketnews(page: 1);
+    // await newsController.fetchMarketnews(page: 1);
     await Future.delayed(Duration(milliseconds: 1000));
-    setState(() {
-      isLoading = true;
-    });
     refershControllers.refreshCompleted();
   }
 
   void _onLoading() async {
     _streamController = new StreamController();
-    await newsController.fetchMarketnews(page: pagination);
+    await newsController.fetchMarketnews(page: pagination,topic: widget.topic);
     await _streamController.add(newsController.newsList.value);
     await Future.delayed(Duration(milliseconds: 1000));
     if (mounted)
