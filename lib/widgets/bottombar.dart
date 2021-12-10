@@ -195,7 +195,7 @@ class _BottombarState extends State<Bottombar>
         ),
         body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
           new Home(),
-          new Today(),
+          new Today(topic: "TODAY",),
           new Following(),
           new Notifications(),
           new ProfileAsLogin()

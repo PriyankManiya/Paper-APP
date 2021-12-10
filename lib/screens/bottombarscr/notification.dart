@@ -12,7 +12,8 @@ class Notifications extends StatefulWidget {
 class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Container(
+      color:  Color(0xffF5F5F5),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: ColorTheme.white,

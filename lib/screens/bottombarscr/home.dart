@@ -3,7 +3,15 @@ import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/screens/bottombarscr/home/Travel.dart';
+import 'home/FoodDrink.dart';
 import 'home/ForYou.dart';
+import 'home/HealthFitness.dart';
+import 'home/LifeStyle.dart';
+import 'home/Money.dart';
+import 'home/Sports.dart';
+import 'home/Weather.dart';
+import 'home/local.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -13,14 +21,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  final NewsController newsController = Get.find<NewsController>();
+  final TodayController newsController = Get.find<TodayController>();
   final List<Tab> myTabs = <Tab>[
     Tab(text: 'For You'),
     Tab(text: 'Local'),
-    Tab(text: 'Headline'),
-    Tab(text: 'Entertainment'),
-    Tab(text: 'Entertainment'),
-    Tab(text: 'Entertainment'),
+    Tab(text: 'Sports'),
+    Tab(text: 'Weather'),
+    Tab(text: 'Money'),
+    Tab(text: 'Lifestyle'),
+    Tab(text: 'Health & Fitness'),
+    Tab(text: 'Food & Drink'),
+    Tab(text: 'Travel'),
   ];
   TabController _tabController;
 
@@ -138,12 +149,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             child: TabBarView(
               controller: _tabController,
               children: [
-                ForYou(topic:"latest"),
-                ForYou(topic:"local"),
-                ForYou(topic:"headline"),
-                ForYou(),
-                ForYou(),
-                ForYou(),
+                ForYouScreen(topic:"NEWS"),
+                LocalScreen(topic:"local"),
+                SportScreen(topic:"SPORTS"),
+                WeatherScreen(topic:"WEATHER"),
+                MoneyScreen(topic: "MONEY",),
+                LifeStyleScreen(topic: "LIFESTYLE",),
+                HealthFitnessScreen(topic: "HEALTH & FITNESS",),
+                FoodDrinkScreen(topic: "FOOD & DRINK",),
+                TravelScreen(topic: "TRAVEL",),
+                
               ],
             ),
           ),

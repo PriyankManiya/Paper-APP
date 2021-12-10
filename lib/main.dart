@@ -16,7 +16,15 @@ void main() {
 
   Get.put(SignupController());
   Get.put(SigninController());
-  Get.put(NewsController());
+  Get.put(ForYouController());
+  Get.put(LocalController());
+  Get.put(SportsController());
+  Get.put(WeatherController());
+  Get.put(MoneyController());
+  Get.put(LifeStyleController());
+  Get.put(HealthFitnessController());
+  Get.put(FoodDrinkController());
+  Get.put(TodayController());
   runApp(const MyApp());
 }
 

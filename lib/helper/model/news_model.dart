@@ -4,7 +4,9 @@
 
 import 'dart:convert';
 
-Newsdata newsModel(String str) => Newsdata.fromJson(json.decode(str));
+Newsdata newsdataFromJson(String str) => Newsdata.fromJson(json.decode(str));
+
+String newsdataToJson(Newsdata data) => json.encode(data.toJson());
 
 class Newsdata {
     Newsdata({
@@ -16,13 +18,13 @@ class Newsdata {
     List<Value> value;
 
     factory Newsdata.fromJson(Map<String, dynamic> json) => Newsdata(
-        odataContext: json["@odata.context"],
-        value: List<Value>.from(json["value"].map((x) => Value.fromJson(x))),
+        odataContext: json["@odata.context"] == null ? null : json["@odata.context"],
+        value: json["value"] == null ? null : List<Value>.from(json["value"].map((x) => Value.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "@odata.context": odataContext,
-        "value": List<dynamic>.from(value.map((x) => x.toJson())),
+        "@odata.context": odataContext == null ? null : odataContext,
+        "value": value == null ? null : List<dynamic>.from(value.map((x) => x.toJson())),
     };
 }
 
@@ -44,46 +46,46 @@ class Value {
     String id;
 
     factory Value.fromJson(Map<String, dynamic> json) => Value(
-        nextPageUrl: json["nextPageUrl"],
-        subCards: List<SubCard>.from(json["subCards"].map((x) => SubCard.fromJson(x))),
-        metadata: Metadata.fromJson(json["metadata"]),
-        title: json["title"],
-        deleted: json["deleted"],
-        id: json["id"],
+        nextPageUrl: json["nextPageUrl"] == null ? null : json["nextPageUrl"],
+        subCards: json["subCards"] == null ? null : List<SubCard>.from(json["subCards"].map((x) => SubCard.fromJson(x))),
+        metadata: json["metadata"] == null ? null : Metadata.fromJson(json["metadata"]),
+        title: json["title"] == null ? null : json["title"],
+        deleted: json["deleted"] == null ? null : json["deleted"],
+        id: json["id"] == null ? null : json["id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "nextPageUrl": nextPageUrl,
-        "subCards": List<dynamic>.from(subCards.map((x) => x.toJson())),
-        "metadata": metadata.toJson(),
-        "title": title,
-        "deleted": deleted,
-        "id": id,
+        "nextPageUrl": nextPageUrl == null ? null : nextPageUrl,
+        "subCards": subCards == null ? null : List<dynamic>.from(subCards.map((x) => x.toJson())),
+        "metadata": metadata == null ? null : metadata.toJson(),
+        "title": title == null ? null : title,
+        "deleted": deleted == null ? null : deleted,
+        "id": id == null ? null : id,
     };
 }
 
 class Metadata {
     Metadata({
-        this.aAarac57EnUs,
+        this.aAarf8NoEnUs,
         this.entertainment,
     });
 
-    List<AAarac57EnUs> aAarac57EnUs;
+    List<AAarf8NoEnUs> aAarf8NoEnUs;
     List<Entertainment> entertainment;
 
     factory Metadata.fromJson(Map<String, dynamic> json) => Metadata(
-        aAarac57EnUs: List<AAarac57EnUs>.from(json["A_AARAC57_en-us"].map((x) => AAarac57EnUs.fromJson(x))),
-        entertainment: List<Entertainment>.from(json["Entertainment"].map((x) => Entertainment.fromJson(x))),
+        aAarf8NoEnUs: json["A_AARF8no_en-us"] == null ? null : List<AAarf8NoEnUs>.from(json["A_AARF8no_en-us"].map((x) => AAarf8NoEnUs.fromJson(x))),
+        entertainment: json["Entertainment"] == null ? null : List<Entertainment>.from(json["Entertainment"].map((x) => Entertainment.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "A_AARAC57_en-us": List<dynamic>.from(aAarac57EnUs.map((x) => x.toJson())),
-        "Entertainment": List<dynamic>.from(entertainment.map((x) => x.toJson())),
+        "A_AARF8no_en-us": aAarf8NoEnUs == null ? null : List<dynamic>.from(aAarf8NoEnUs.map((x) => x.toJson())),
+        "Entertainment": entertainment == null ? null : List<dynamic>.from(entertainment.map((x) => x.toJson())),
     };
 }
 
-class AAarac57EnUs {
-    AAarac57EnUs({
+class AAarf8NoEnUs {
+    AAarf8NoEnUs({
         this.type,
         this.feedName,
         this.feedId,
@@ -97,20 +99,20 @@ class AAarac57EnUs {
     List<Kicker> kicker;
     String source;
 
-    factory AAarac57EnUs.fromJson(Map<String, dynamic> json) => AAarac57EnUs(
-        type: json["\u0024type"],
-        feedName: json["feedName"],
-        feedId: json["feedId"],
-        kicker: List<Kicker>.from(json["kicker"].map((x) => Kicker.fromJson(x))),
-        source: json["source"],
+    factory AAarf8NoEnUs.fromJson(Map<String, dynamic> json) => AAarf8NoEnUs(
+        type: json["\$type"] == null ? null : json["\$type"],
+        feedName: json["feedName"] == null ? null : json["feedName"],
+        feedId: json["feedId"] == null ? null : json["feedId"],
+        kicker: json["kicker"] == null ? null : List<Kicker>.from(json["kicker"].map((x) => Kicker.fromJson(x))),
+        source: json["source"] == null ? null : json["source"],
     );
 
     Map<String, dynamic> toJson() => {
-        "\u0024type": type,
-        "feedName": feedName,
-        "feedId": feedId,
-        "kicker": List<dynamic>.from(kicker.map((x) => x.toJson())),
-        "source": source,
+        "\$type": type == null ? null : type,
+        "feedName": feedName == null ? null : feedName,
+        "feedId": feedId == null ? null : feedId,
+        "kicker": kicker == null ? null : List<dynamic>.from(kicker.map((x) => x.toJson())),
+        "source": source == null ? null : source,
     };
 }
 
@@ -124,13 +126,13 @@ class Kicker {
     String id;
 
     factory Kicker.fromJson(Map<String, dynamic> json) => Kicker(
-        feedName: json["feedName"],
-        id: json["id"],
+        feedName: json["feedName"] == null ? null : json["feedName"],
+        id: json["id"] == null ? null : json["id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "feedName": feedName,
-        "id": id,
+        "feedName": feedName == null ? null : feedName,
+        "id": id == null ? null : id,
     };
 }
 
@@ -146,15 +148,15 @@ class Entertainment {
     SovTargeting sovTargeting;
 
     factory Entertainment.fromJson(Map<String, dynamic> json) => Entertainment(
-        type: json["\u0024type"],
-        infoPaneCount: json["infoPaneCount"],
-        sovTargeting: SovTargeting.fromJson(json["sovTargeting"]),
+        type: json["\$type"] == null ? null : json["\$type"],
+        infoPaneCount: json["infoPaneCount"] == null ? null : json["infoPaneCount"],
+        sovTargeting: json["sovTargeting"] == null ? null : SovTargeting.fromJson(json["sovTargeting"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "\u0024type": type,
-        "infoPaneCount": infoPaneCount,
-        "sovTargeting": sovTargeting.toJson(),
+        "\$type": type == null ? null : type,
+        "infoPaneCount": infoPaneCount == null ? null : infoPaneCount,
+        "sovTargeting": sovTargeting == null ? null : sovTargeting.toJson(),
     };
 }
 
@@ -188,7 +190,7 @@ class SubCard {
     String cmsId;
     DateTime publishedDateTime;
     Provider provider;
-    List<Imagee> images;
+    List<Image> images;
     String title;
     String subCardType;
     String url;
@@ -196,36 +198,36 @@ class SubCard {
     String id;
 
     factory SubCard.fromJson(Map<String, dynamic> json) => SubCard(
-        type: json["\u0024type"],
-        sourceId: json["sourceId"],
-        cmsId: json["cmsId"],
-        publishedDateTime: DateTime.parse(json["publishedDateTime"]),
-        provider: Provider.fromJson(json["provider"]),
-        images: List<Imagee>.from(json["images"].map((x) => Imagee.fromJson(x))),
-        title: json["title"],
-        subCardType: json["type"],
-        url: json["url"],
-        deleted: json["deleted"],
-        id: json["id"],
+        type: json["\$type"] == null ? null : json["\$type"],
+        sourceId: json["sourceId"] == null ? null : json["sourceId"],
+        cmsId: json["cmsId"] == null ? null : json["cmsId"],
+        publishedDateTime: json["publishedDateTime"] == null ? null : DateTime.parse(json["publishedDateTime"]),
+        provider: json["provider"] == null ? null : Provider.fromJson(json["provider"]),
+        images: json["images"] == null ? null : List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
+        title: json["title"] == null ? null : json["title"],
+        subCardType: json["type"] == null ? null : json["type"],
+        url: json["url"] == null ? null : json["url"],
+        deleted: json["deleted"] == null ? null : json["deleted"],
+        id: json["id"] == null ? null : json["id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "\u0024type": type,
-        "sourceId": sourceId,
-        "cmsId": cmsId,
-        "publishedDateTime": publishedDateTime.toIso8601String(),
-        "provider": provider.toJson(),
-        "images": List<dynamic>.from(images.map((x) => x.toJson())),
-        "title": title,
-        "type": subCardType,
-        "url": url,
-        "deleted": deleted,
-        "id": id,
+        "\$type": type == null ? null : type,
+        "sourceId": sourceId == null ? null : sourceId,
+        "cmsId": cmsId == null ? null : cmsId,
+        "publishedDateTime": publishedDateTime == null ? null : publishedDateTime.toIso8601String(),
+        "provider": provider == null ? null : provider.toJson(),
+        "images": images == null ? null : List<dynamic>.from(images.map((x) => x.toJson())),
+        "title": title == null ? null : title,
+        "type": subCardType == null ? null : subCardType,
+        "url": url == null ? null : url,
+        "deleted": deleted == null ? null : deleted,
+        "id": id == null ? null : id,
     };
 }
 
-class Imagee {
-    Imagee({
+class Image {
+    Image({
         this.width,
         this.height,
         this.quality,
@@ -235,6 +237,7 @@ class Imagee {
         this.caption,
         this.focalRegion,
         this.source,
+        this.colorSamples,
     });
 
     int width;
@@ -246,29 +249,72 @@ class Imagee {
     String caption;
     FocalRegion focalRegion;
     String source;
+    ColorSamples colorSamples;
 
-    factory Imagee.fromJson(Map<String, dynamic> json) => Imagee(
-        width: json["width"],
-        height: json["height"],
-        quality: json["quality"],
-        url: json["url"],
-        attribution: json["attribution"],
-        title: json["title"],
-        caption: json["caption"],
-        focalRegion: FocalRegion.fromJson(json["focalRegion"]),
-        source: json["source"],
+    factory Image.fromJson(Map<String, dynamic> json) => Image(
+        width: json["width"] == null ? null : json["width"],
+        height: json["height"] == null ? null : json["height"],
+        quality: json["quality"] == null ? null : json["quality"],
+        url: json["url"] == null ? null : json["url"],
+        attribution: json["attribution"] == null ? null : json["attribution"],
+        title: json["title"] == null ? null : json["title"],
+        caption: json["caption"] == null ? null : json["caption"],
+        focalRegion: json["focalRegion"] == null ? null : FocalRegion.fromJson(json["focalRegion"]),
+        source: json["source"] == null ? null : json["source"],
+        colorSamples: json["colorSamples"] == null ? null : ColorSamples.fromJson(json["colorSamples"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "width": width,
-        "height": height,
-        "quality": quality,
-        "url": url,
-        "attribution": attribution,
-        "title": title,
-        "caption": caption,
-        "focalRegion": focalRegion.toJson(),
-        "source": source,
+        "width": width == null ? null : width,
+        "height": height == null ? null : height,
+        "quality": quality == null ? null : quality,
+        "url": url == null ? null : url,
+        "attribution": attribution == null ? null : attribution,
+        "title": title == null ? null : title,
+        "caption": caption == null ? null : caption,
+        "focalRegion": focalRegion == null ? null : focalRegion.toJson(),
+        "source": source == null ? null : source,
+        "colorSamples": colorSamples == null ? null : colorSamples.toJson(),
+    };
+}
+
+class ColorSamples {
+    ColorSamples({
+        this.type,
+        this.values,
+    });
+
+    String type;
+    List<ValueElement> values;
+
+    factory ColorSamples.fromJson(Map<String, dynamic> json) => ColorSamples(
+        type: json["\$type"] == null ? null : json["\$type"],
+        values: json["\$values"] == null ? null : List<ValueElement>.from(json["\$values"].map((x) => ValueElement.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "\$type": type == null ? null : type,
+        "\$values": values == null ? null : List<dynamic>.from(values.map((x) => x.toJson())),
+    };
+}
+
+class ValueElement {
+    ValueElement({
+        this.isDarkMode,
+        this.hexColor,
+    });
+
+    bool isDarkMode;
+    String hexColor;
+
+    factory ValueElement.fromJson(Map<String, dynamic> json) => ValueElement(
+        isDarkMode: json["isDarkMode"] == null ? null : json["isDarkMode"],
+        hexColor: json["hexColor"] == null ? null : json["hexColor"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "isDarkMode": isDarkMode == null ? null : isDarkMode,
+        "hexColor": hexColor == null ? null : hexColor,
     };
 }
 
@@ -286,17 +332,17 @@ class FocalRegion {
     int y2;
 
     factory FocalRegion.fromJson(Map<String, dynamic> json) => FocalRegion(
-        x1: json["x1"],
-        x2: json["x2"],
-        y1: json["y1"],
-        y2: json["y2"],
+        x1: json["x1"] == null ? null : json["x1"],
+        x2: json["x2"] == null ? null : json["x2"],
+        y1: json["y1"] == null ? null : json["y1"],
+        y2: json["y2"] == null ? null : json["y2"],
     );
 
     Map<String, dynamic> toJson() => {
-        "x1": x1,
-        "x2": x2,
-        "y1": y1,
-        "y2": y2,
+        "x1": x1 == null ? null : x1,
+        "x2": x2 == null ? null : x2,
+        "y1": y1 == null ? null : y1,
+        "y2": y2 == null ? null : y2,
     };
 }
 
@@ -314,17 +360,17 @@ class Provider {
     Logo logo;
 
     factory Provider.fromJson(Map<String, dynamic> json) => Provider(
-        id: json["id"],
-        name: json["name"],
-        adNetworkId: json["adNetworkId"],
-        logo: Logo.fromJson(json["logo"]),
+        id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
+        adNetworkId: json["adNetworkId"] == null ? null : json["adNetworkId"],
+        logo: json["logo"] == null ? null : Logo.fromJson(json["logo"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "adNetworkId": adNetworkId,
-        "logo": logo.toJson(),
+        "id": id == null ? null : id,
+        "name": name == null ? null : name,
+        "adNetworkId": adNetworkId == null ? null : adNetworkId,
+        "logo": logo == null ? null : logo.toJson(),
     };
 }
 
@@ -338,12 +384,12 @@ class Logo {
     String source;
 
     factory Logo.fromJson(Map<String, dynamic> json) => Logo(
-        url: json["url"],
-        source: json["source"],
+        url: json["url"] == null ? null : json["url"],
+        source: json["source"] == null ? null : json["source"],
     );
 
     Map<String, dynamic> toJson() => {
-        "url": url,
-        "source": source,
+        "url": url == null ? null : url,
+        "source": source == null ? null : source,
     };
 }

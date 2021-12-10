@@ -1,25 +1,27 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
 import 'package:paper_app/helper/model/news_model.dart';
 
-// value[0].subCards[0]
 class RemoteServices {
-  final NewsController newsController = Get.find<NewsController>();
+  final TodayController newsController = Get.find<TodayController>();
   static final String apikey = "b795d9ec49ad4d44959058bb2d211d6f";
   static var client = http.Client();
-  //-----------------------------------------------------
-  static Future<Newsdata> fetchMarketNews({int page, String topic}) async {
-    var response = await client.get(Uri.parse(
-        'https://api.msn.com/MSN/Feed?ocid=sm-simcast&market=en-us&query=entertainment&top=10&apikey=JqC57c4yWyNYYn5KCzO7CGvoNo70YD0R5GPbX9hSyR&skip=0&select=sourceid,type,url,provider,title,images,publishedDateTime'));
-    if (response.statusCode == 200) {
-      var jsonString = response.body;
-      
-      return newsModel(jsonString);
-    } else {
-      print("error");
+  static String URL =
+      "https://api.msn.com/MSN/Feed?ocid=sm-simcast&market=en-us&query=entertainment&apikey=JqC57c4yWyNYYn5KCzO7CGvoNo70YD0R5GPbX9hSyR&\$top=10&\$skip=0&\$select=sourceid,type,url,provider,title,images,publishedDateTime";
+
+  static Future<Newsdata> fetchMarketNews({int page, String topic, String nextUrl}) async {
+    try {
+      print("************ NEXTURL $topic *********** : $nextUrl");
+      var response = await client.get(Uri.parse(nextUrl != null ? nextUrl : "https://api.msn.com/MSN/Feed?ocid=sm-simcast&market=en-us&query=$topic&apikey=JqC57c4yWyNYYn5KCzO7CGvoNo70YD0R5GPbX9hSyR&\$top=10&\$skip=0&\$select=sourceid,type,url,provider,title,images,publishedDateTime"));
+      return Newsdata.fromJson(jsonDecode(response.body));
+    } catch (e) {
+      print("***** ERROR *****");
+      print(e.toString());
       //show error message
-      return null;
+      return Newsdata.fromJson(e.response.data);
     }
   }
 }

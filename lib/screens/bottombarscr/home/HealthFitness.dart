@@ -14,38 +14,39 @@ import 'package:paper_app/screens/following/follow.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class ForYouScreen extends StatefulWidget {
+class HealthFitnessScreen extends StatefulWidget {
   String topic;
-  ForYouScreen({Key key, this.topic}) : super(key: key);
+  HealthFitnessScreen({Key key, this.topic}) : super(key: key);
   @override
-  _ForYouScreenState createState() => _ForYouScreenState();
+  _HealthFitnessScreenState createState() => _HealthFitnessScreenState();
 }
 
-class _ForYouScreenState extends State<ForYouScreen> {
+class _HealthFitnessScreenState extends State<HealthFitnessScreen> {
   StreamController _streamController;
   int pagination = 2;
-  bool isLoading = true;
-  final ForYouController newsController = Get.find<ForYouController>();
+
+  final HealthFitnessController healt_fitness_controller = Get.find<HealthFitnessController>();
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
-    // await newsController.fetchMarketnews(page: 1);
+    // await lifestyle_controller.fetchMarketnews(page: 1);
     await Future.delayed(Duration(milliseconds: 1000));
     refershControllers.refreshCompleted();
   }
 
   void _onLoading() async {
     _streamController = new StreamController();
-    await newsController.fetchMarketnews(
+    await healt_fitness_controller.fetchMarketnews(
         page: pagination,
         topic: widget.topic,
-        nextUrl: newsController.newsList.value.value[0].nextPageUrl);
-    await _streamController.add(newsController.newsList.value);
+        nextUrl: healt_fitness_controller.localList.value.value[0].nextPageUrl
+        );
+    await _streamController.add(healt_fitness_controller.localList.value);
     await Future.delayed(Duration(milliseconds: 1000));
-    if (mounted) 
-    setState(() {
-      pagination++;
-    });
+    if (mounted)
+      setState(() {
+        pagination++;
+      });
     refershControllers.loadComplete();
   }
 
@@ -53,14 +54,16 @@ class _ForYouScreenState extends State<ForYouScreen> {
   void initState() {
     super.initState();
     _streamController = new StreamController();
-    newsController.isLoading(true);
     getnewsdata();
   }
 
   void getnewsdata() async {
-    await newsController.fetchMarketnews(
-        page: 1, topic: widget.topic, nextUrl: null);
-    _streamController.add(newsController.newsList.value);
+    await healt_fitness_controller.fetchMarketnews(
+        page: 1,
+        topic: widget.topic,
+        nextUrl: null
+        );
+    _streamController.add(healt_fitness_controller.localList.value);
   }
 
   @override
@@ -72,7 +75,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return newsController.isLoading.value
+      return healt_fitness_controller.isLoading.value
           ? Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -148,14 +151,14 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                 child: sizedbox(context, 50),
                               );
                             },
-                            itemCount: newsController
-                                .newsList.value.value[0].subCards.length,
+                            itemCount: healt_fitness_controller
+                                .localList.value.value[0].subCards.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
                                   Get.to(
                                       () => NewsDetails(
-                                          subCard: newsController.newsList.value
+                                          subCard: healt_fitness_controller.localList.value
                                               .value[0].subCards[index]),
                                       transition: Transition.cupertino);
                                 },
@@ -171,9 +174,8 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                             horizontal: 20),
                                         child: Row(
                                           children: [
-                                            CircleAvatar(
-                                              backgroundColor:
-                                                  Colors.transparent,
+                                           CircleAvatar(
+                                              backgroundColor: Colors.transparent,
                                               child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(50),
@@ -181,18 +183,15 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                   height: 50,
                                                   width: 50,
                                                   decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  50))),
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(50))),
                                                   child: CachedNetworkImage(
-                                                    useOldImageOnUrlChange:
-                                                        false,
-                                                    fadeInDuration: Duration(
-                                                        milliseconds: 500),
+                                                    useOldImageOnUrlChange: false,
+                                                    fadeInDuration:
+                                                        Duration(milliseconds: 500),
                                                     fit: BoxFit.cover,
-                                                    imageUrl: newsController
-                                                        .newsList
+                                                    imageUrl: healt_fitness_controller
+                                                        .localList
                                                         .value
                                                         .value[0]
                                                         .subCards[index]
@@ -208,8 +207,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                         valueColor:
                                                             AlwaysStoppedAnimation<
                                                                     Color>(
-                                                                ColorTheme
-                                                                    .btnshade2),
+                                                                ColorTheme.btnshade2),
                                                       ),
                                                     ),
                                                     errorWidget:
@@ -219,8 +217,8 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                 ),
                                               ),
                                               // backgroundImage: NetworkImage(
-                                              //     newsController
-                                              //         .newsList
+                                              //     lifestyle_controller
+                                              //         .localList
                                               //         .value
                                               //         .value[0]
                                               //         .subCards[index]
@@ -228,6 +226,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                               //         .logo
                                               //         .url),
                                             ),
+
                                             sizedboxwidth(context, 30),
                                             Container(
                                               width: Get.width * 0.5,
@@ -238,8 +237,8 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                   //         Transition.cupertino);
                                                 },
                                                 child: Text(
-                                                    newsController
-                                                                .newsList
+                                                    healt_fitness_controller
+                                                                .localList
                                                                 .value
                                                                 .value[0]
                                                                 .subCards[index]
@@ -247,8 +246,8 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                                 .name ==
                                                             null
                                                         ? "Paper-App"
-                                                        : newsController
-                                                            .newsList
+                                                        : healt_fitness_controller
+                                                            .localList
                                                             .value
                                                             .value[0]
                                                             .subCards[index]
@@ -293,15 +292,15 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                           fadeInDuration:
                                               Duration(milliseconds: 500),
                                           fit: BoxFit.cover,
-                                          imageUrl: newsController
-                                                      .newsList
+                                          imageUrl: healt_fitness_controller
+                                                      .localList
                                                       .value
                                                       .value[0]
                                                       .subCards[index]
                                                       .images !=
                                                   null
-                                              ? newsController
-                                                  .newsList
+                                              ? healt_fitness_controller
+                                                  .localList
                                                   .value
                                                   .value[0]
                                                   .subCards[index]
@@ -334,15 +333,15 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              newsController
-                                                          .newsList
+                                              healt_fitness_controller
+                                                          .localList
                                                           .value
                                                           .value[0]
                                                           .subCards[index]
                                                           .images !=
                                                       null
-                                                  ? newsController
-                                                      .newsList
+                                                  ? healt_fitness_controller
+                                                      .localList
                                                       .value
                                                       .value[0]
                                                       .subCards[index]
@@ -388,8 +387,8 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                 ),
                                                 sizedboxwidth(context, 50),
                                                 Text(
-                                                  timeago.format(newsController
-                                                      .newsList
+                                                  timeago.format(healt_fitness_controller
+                                                      .localList
                                                       .value
                                                       .value[0]
                                                       .subCards[index]

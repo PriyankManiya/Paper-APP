@@ -1,14 +1,15 @@
 import 'dart:ui';
-
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
-import 'package:paper_app/helper/model/news_model.dart';
+import 'package:paper_app/helper/model/news_model.dart' as news_model;
 
 class NewsDetails extends StatefulWidget {
-  SubCard subCard;
+  news_model.SubCard subCard;
   NewsDetails({Key key, this.subCard}) : super(key: key);
 
   @override
@@ -18,6 +19,7 @@ class NewsDetails extends StatefulWidget {
 class _NewsDetailsState extends State<NewsDetails> {
   @override
   Widget build(BuildContext context) {
+    print("widget.subCard.images :: ${widget.subCard.images}");
     return Scaffold(
         bottomNavigationBar: SafeArea(
           child: Container(
@@ -89,8 +91,42 @@ class _NewsDetailsState extends State<NewsDetails> {
                       children: [
                         CircleAvatar(
                           backgroundColor: Colors.transparent,
-                          radius: 17,
-                          backgroundImage: AssetImage(ImageProvide.logo),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50))),
+                              child: CachedNetworkImage(
+                                  useOldImageOnUrlChange: false,
+                                  fadeInDuration: Duration(milliseconds: 500),
+                                  fit: BoxFit.cover,
+                                  imageUrl:
+                                      widget.subCard.provider.logo.url + "1",
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          Center(
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      ColorTheme.btnshade2),
+                                            ),
+                                          ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset("assets/images/logo.png")),
+                            ),
+                          ),
+                          //   // backgroundImage: NetworkImage(
+                          //   //     lifestyle_controller
+                          //   //         .localList
+                          //   //         .value
+                          //   //         .value[0]
+                          //   //         .subCards[index]
+                          //   //         .provider
+                          //   //         .logo
+                          //   //         .url),
                         ),
                         SizedBox(width: 5),
                         Column(
@@ -98,7 +134,10 @@ class _NewsDetailsState extends State<NewsDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              child: Text(widget.subCard.provider.name,
+                              child: Text(
+                                  widget.subCard.provider.name != null
+                                      ? widget.subCard.provider.name
+                                      : "",
                                   softWrap: true,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -156,7 +195,9 @@ class _NewsDetailsState extends State<NewsDetails> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Text(
-                                widget.subCard.title,
+                                widget.subCard.title != null
+                                    ? widget.subCard.title
+                                    : "",
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -191,7 +232,9 @@ class _NewsDetailsState extends State<NewsDetails> {
                                   ),
                                   sizedboxwidth(context, 50),
                                   Text(
-                                    widget.subCard.publishedDateTime.toString(),
+                                    widget.subCard.publishedDateTime != null
+                                        ? timeago.format(widget.subCard.publishedDateTime)
+                                        : "",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize:
@@ -224,86 +267,104 @@ class _NewsDetailsState extends State<NewsDetails> {
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
                                 children: [
-                                  Text(
-                                    widget.subCard.images[0].caption,
-                                    style: TextStyle(
-                                      height: 1.5,
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              50,
-                                    ),
+                                  // Text(
+                                  //   widget.subCard.images != null
+                                  //       ? widget.subCard.images[0].caption !=
+                                  //               null
+                                  //           ? widget.subCard.images[0].caption
+                                  //           : ""
+                                  //       : "",
+                                  //   style: TextStyle(
+                                  //     height: 1.5,
+                                  //     fontSize:
+                                  //         MediaQuery.of(context).size.height /
+                                  //             50,
+                                  //   ),
+                                  // ),
+                                  Html(
+                                    data :widget.subCard.images != null
+                                        ? widget.subCard.images[0].caption !=
+                                                null
+                                            ? widget.subCard.images[0].caption
+                                            : ""
+                                        : "",
+                                    // style: TextStyle(
+                                    //   height: 1.5,
+                                    //   fontSize:
+                                    //       MediaQuery.of(context).size.height /
+                                    //           50,
+                                    // ),
                                   ),
                                 ],
                               ),
                             ),
-                           
                           ],
                         ),
-                        sizedbox(context, 40),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 10,
-                          color: ColorTheme.lightgrey,
-                        ),
-                        sizedbox(context, 40),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "You May also like",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 50,
-                                color: ColorTheme.black.withOpacity(0.2)),
-                          ),
-                        ),
-                        sizedbox(context, 40),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "14 Cuts in 25 Minutes: How Hong Kong Censors Movies ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              45),
-                                    ),
-                                    sizedbox(context, 40),
-                                    Text(
-                                      "Khaleej Times",
-                                      style: TextStyle(
-                                          color:
-                                              ColorTheme.black.withOpacity(0.4),
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              60),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 80,
-                                width: 80,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/trash2.jpg"),
-                                        fit: BoxFit.cover)),
-                              )
-                            ],
-                          ),
-                        ),
-                        sizedbox(context, 40),
+                        // sizedbox(context, 40),
+                        // Container(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   height: 10,
+                        //   color: ColorTheme.lightgrey,
+                        // ),
+                        // sizedbox(context, 40),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                        //   child: Text(
+                        //     "You May also like",
+                        //     style: TextStyle(
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize:
+                        //             MediaQuery.of(context).size.height / 50,
+                        //         color: ColorTheme.black.withOpacity(0.2)),
+                        //   ),
+                        // ),
+                        // sizedbox(context, 40),
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(horizontal: 10),
+                        //   child: Row(
+                        //     children: [
+                        //       Expanded(
+                        //         flex: 2,
+                        //         child: Column(
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             Text(
+                        //               "14 Cuts in 25 Minutes: How Hong Kong Censors Movies ",
+                        //               style: TextStyle(
+                        //                   fontWeight: FontWeight.bold,
+                        //                   fontSize: MediaQuery.of(context)
+                        //                           .size
+                        //                           .height /
+                        //                       45),
+                        //             ),
+                        //             sizedbox(context, 40),
+                        //             Text(
+                        //               "Khaleej Times",
+                        //               style: TextStyle(
+                        //                   color:
+                        //                       ColorTheme.black.withOpacity(0.4),
+                        //                   fontSize: MediaQuery.of(context)
+                        //                           .size
+                        //                           .height /
+                        //                       60),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         height: 80,
+                        //         width: 80,
+                        //         decoration: BoxDecoration(
+                        //             borderRadius: BorderRadius.circular(15),
+                        //             image: DecorationImage(
+                        //                 image: AssetImage(
+                        //                     "assets/images/trash2.jpg"),
+                        //                 fit: BoxFit.cover)),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+                        // sizedbox(context, 40),
                       ],
                     )),
                   ],
