@@ -24,6 +24,7 @@ void main() {
   Get.put(LifeStyleController());
   Get.put(HealthFitnessController());
   Get.put(FoodDrinkController());
+  Get.put(TravelController());
   Get.put(TodayController());
   runApp(const MyApp());
 }

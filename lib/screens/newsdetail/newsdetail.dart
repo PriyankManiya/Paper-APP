@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,6 +8,9 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/model/news_model.dart' as news_model;
+ import 'dart:io';
+
+ import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsDetails extends StatefulWidget {
   news_model.SubCard subCard;
@@ -17,9 +21,17 @@ class NewsDetails extends StatefulWidget {
 }
 
 class _NewsDetailsState extends State<NewsDetails> {
+    final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+  }
+  bool isLoading = true;
   @override
   Widget build(BuildContext context) {
-    print("widget.subCard.images :: ${widget.subCard.images}");
+    print("widget.subCard.images :: ${widget.subCard.url}");
     return Scaffold(
         bottomNavigationBar: SafeArea(
           child: Container(
@@ -176,202 +188,255 @@ class _NewsDetailsState extends State<NewsDetails> {
             ),
           ),
         ),
-        body: CustomScrollView(
-          physics: BouncingScrollPhysics(),
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: true,
-              child: Container(
-                color: ColorTheme.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        child: ListView(
-                      children: [
-                        Column(
-                          children: [
-                            sizedbox(context, 30),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Text(
-                                widget.subCard.title != null
-                                    ? widget.subCard.title
-                                    : "",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        MediaQuery.of(context).size.height /
-                                            35),
-                              ),
-                            ),
-                            sizedbox(context, 40),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                children: [
-                                  Image.asset(ImageProvide.minilocation,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              55),
-                                  sizedboxwidth(context, 50),
-                                  Text(
-                                    "New York",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize:
-                                            MediaQuery.of(context).size.height /
-                                                60),
-                                  ),
-                                  sizedboxwidth(context, 20),
-                                  CircleAvatar(
-                                    backgroundColor: ColorTheme.btnshade2,
-                                    radius: 3,
-                                  ),
-                                  sizedboxwidth(context, 50),
-                                  Text(
-                                    widget.subCard.publishedDateTime != null
-                                        ? timeago.format(widget.subCard.publishedDateTime)
-                                        : "",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize:
-                                            MediaQuery.of(context).size.height /
-                                                60),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            sizedbox(context, 50),
-                            Container(
-                              height: MediaQuery.of(context).size.height / 3.8,
-                              child: CachedNetworkImage(
-                                fadeInDuration: Duration(milliseconds: 500),
-                                fit: BoxFit.cover,
-                                imageUrl: widget.subCard.images[0].url,
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) => Center(
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        ColorTheme.btnshade2),
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              ),
-                            ),
-                            sizedbox(context, 40),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                children: [
-                                  // Text(
-                                  //   widget.subCard.images != null
-                                  //       ? widget.subCard.images[0].caption !=
-                                  //               null
-                                  //           ? widget.subCard.images[0].caption
-                                  //           : ""
-                                  //       : "",
-                                  //   style: TextStyle(
-                                  //     height: 1.5,
-                                  //     fontSize:
-                                  //         MediaQuery.of(context).size.height /
-                                  //             50,
-                                  //   ),
-                                  // ),
-                                  Html(
-                                    data :widget.subCard.images != null
-                                        ? widget.subCard.images[0].caption !=
-                                                null
-                                            ? widget.subCard.images[0].caption
-                                            : ""
-                                        : "",
-                                    // style: TextStyle(
-                                    //   height: 1.5,
-                                    //   fontSize:
-                                    //       MediaQuery.of(context).size.height /
-                                    //           50,
-                                    // ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        // sizedbox(context, 40),
-                        // Container(
-                        //   width: MediaQuery.of(context).size.width,
-                        //   height: 10,
-                        //   color: ColorTheme.lightgrey,
-                        // ),
-                        // sizedbox(context, 40),
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(horizontal: 10),
-                        //   child: Text(
-                        //     "You May also like",
-                        //     style: TextStyle(
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize:
-                        //             MediaQuery.of(context).size.height / 50,
-                        //         color: ColorTheme.black.withOpacity(0.2)),
-                        //   ),
-                        // ),
-                        // sizedbox(context, 40),
-                        // Container(
-                        //   padding: EdgeInsets.symmetric(horizontal: 10),
-                        //   child: Row(
-                        //     children: [
-                        //       Expanded(
-                        //         flex: 2,
-                        //         child: Column(
-                        //           crossAxisAlignment: CrossAxisAlignment.start,
-                        //           children: [
-                        //             Text(
-                        //               "14 Cuts in 25 Minutes: How Hong Kong Censors Movies ",
-                        //               style: TextStyle(
-                        //                   fontWeight: FontWeight.bold,
-                        //                   fontSize: MediaQuery.of(context)
-                        //                           .size
-                        //                           .height /
-                        //                       45),
-                        //             ),
-                        //             sizedbox(context, 40),
-                        //             Text(
-                        //               "Khaleej Times",
-                        //               style: TextStyle(
-                        //                   color:
-                        //                       ColorTheme.black.withOpacity(0.4),
-                        //                   fontSize: MediaQuery.of(context)
-                        //                           .size
-                        //                           .height /
-                        //                       60),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //       Container(
-                        //         height: 80,
-                        //         width: 80,
-                        //         decoration: BoxDecoration(
-                        //             borderRadius: BorderRadius.circular(15),
-                        //             image: DecorationImage(
-                        //                 image: AssetImage(
-                        //                     "assets/images/trash2.jpg"),
-                        //                 fit: BoxFit.cover)),
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
-                        // sizedbox(context, 40),
-                      ],
-                    )),
-                  ],
-                ),
-              ),
-            )
+        body: Stack(
+          children: [
+            WebView(
+              initialUrl: widget.subCard.url,
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController webViewController) {
+                _controller.complete(webViewController);
+              },
+              onProgress: (int progress) {
+                print("WebView is loading (progress : $progress%)");
+              },
+              javascriptChannels: <JavascriptChannel>{
+                // _toasterJavascriptChannel(context),
+              },
+              // navigationDelegate: (NavigationRequest request) {
+              //   if (request.url.startsWith('https://www.youtube.com/')) {
+              //     print('blocking navigation to $request}');
+              //     return NavigationDecision.prevent;
+              //   }
+              //   print('allowing navigation to $request');
+              //   return NavigationDecision.navigate;
+              // },
+              onPageStarted: (String url) {
+                setState(() {
+                  isLoading = true;
+                });
+                print('Page started loading: $url');
+              },
+              onPageFinished: (String url) {
+                setState(() {
+                  isLoading = false;
+                });
+                // print('Page finished loading: $q');
+              },
+              gestureNavigationEnabled: true,
+            ),
+            // isLoading
+            //     ? Container(
+            //         child: Center(
+            //             child: Column(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             CircularProgressIndicator(
+            //               valueColor: new AlwaysStoppedAnimation<Color>(
+            //                   ColorTheme.btnshade1),
+            //             ),
+            //           ],
+            //         )),
+            //       )
+            //     : SizedBox()
           ],
-        ));
+        )
+        //body: CustomScrollView(
+        //   physics: BouncingScrollPhysics(),
+        //   slivers: [
+        //     SliverFillRemaining(
+        //       hasScrollBody: true,
+        //       child: Container(
+        //         color: ColorTheme.white,
+        //         child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.start,
+        //           children: [
+        //             Expanded(
+        //                 child: ListView(
+        //               children: [
+        //                 Column(
+        //                   children: [
+        //                     sizedbox(context, 30),
+        //                     Container(
+        //                       padding: EdgeInsets.symmetric(horizontal: 20),
+        //                       child: Text(
+        //                         widget.subCard.title != null
+        //                             ? widget.subCard.title
+        //                             : "",
+        //                         maxLines: 2,
+        //                         overflow: TextOverflow.ellipsis,
+        //                         style: TextStyle(
+        //                             fontWeight: FontWeight.bold,
+        //                             fontSize:
+        //                                 MediaQuery.of(context).size.height /
+        //                                     35),
+        //                       ),
+        //                     ),
+        //                     sizedbox(context, 40),
+        //                     Container(
+        //                       padding: EdgeInsets.symmetric(horizontal: 20),
+        //                       child: Row(
+        //                         children: [
+        //                           Image.asset(ImageProvide.minilocation,
+        //                               height:
+        //                                   MediaQuery.of(context).size.height /
+        //                                       55),
+        //                           sizedboxwidth(context, 50),
+        //                           Text(
+        //                             "New York",
+        //                             style: TextStyle(
+        //                                 fontWeight: FontWeight.w400,
+        //                                 fontSize:
+        //                                     MediaQuery.of(context).size.height /
+        //                                         60),
+        //                           ),
+        //                           sizedboxwidth(context, 20),
+        //                           CircleAvatar(
+        //                             backgroundColor: ColorTheme.btnshade2,
+        //                             radius: 3,
+        //                           ),
+        //                           sizedboxwidth(context, 50),
+        //                           Text(
+        //                             widget.subCard.publishedDateTime != null
+        //                                 ? timeago.format(widget.subCard.publishedDateTime)
+        //                                 : "",
+        //                             style: TextStyle(
+        //                                 fontWeight: FontWeight.w400,
+        //                                 fontSize:
+        //                                     MediaQuery.of(context).size.height /
+        //                                         60),
+        //                           ),
+        //                         ],
+        //                       ),
+        //                     ),
+        //                     sizedbox(context, 50),
+        //                     Container(
+        //                       height: MediaQuery.of(context).size.height / 3.8,
+        //                       child: CachedNetworkImage(
+        //                         fadeInDuration: Duration(milliseconds: 500),
+        //                         fit: BoxFit.cover,
+        //                         imageUrl: widget.subCard.images[0].url,
+        //                         progressIndicatorBuilder:
+        //                             (context, url, downloadProgress) => Center(
+        //                           child: CircularProgressIndicator(
+        //                             valueColor: AlwaysStoppedAnimation<Color>(
+        //                                 ColorTheme.btnshade2),
+        //                           ),
+        //                         ),
+        //                         errorWidget: (context, url, error) =>
+        //                             Icon(Icons.error),
+        //                       ),
+        //                     ),
+        //                     sizedbox(context, 40),
+        //                     Container(
+        //                       padding: EdgeInsets.symmetric(horizontal: 20),
+        //                       child: Column(
+        //                         children: [
+        //                           // Text(
+        //                           //   widget.subCard.images != null
+        //                           //       ? widget.subCard.images[0].caption !=
+        //                           //               null
+        //                           //           ? widget.subCard.images[0].caption
+        //                           //           : ""
+        //                           //       : "",
+        //                           //   style: TextStyle(
+        //                           //     height: 1.5,
+        //                           //     fontSize:
+        //                           //         MediaQuery.of(context).size.height /
+        //                           //             50,
+        //                           //   ),
+        //                           // ),
+        //                           Html(
+        //                             data :widget.subCard.images != null
+        //                                 ? widget.subCard.images[0].caption !=
+        //                                         null
+        //                                     ? widget.subCard.images[0].caption
+        //                                     : ""
+        //                                 : "",
+        //                             // style: TextStyle(
+        //                             //   height: 1.5,
+        //                             //   fontSize:
+        //                             //       MediaQuery.of(context).size.height /
+        //                             //           50,
+        //                             // ),
+        //                           ),
+        //                         ],
+        //                       ),
+        //                     ),
+        //                   ],
+        //                 ),
+        //                 // sizedbox(context, 40),
+        //                 // Container(
+        //                 //   width: MediaQuery.of(context).size.width,
+        //                 //   height: 10,
+        //                 //   color: ColorTheme.lightgrey,
+        //                 // ),
+        //                 // sizedbox(context, 40),
+        //                 // Padding(
+        //                 //   padding: const EdgeInsets.symmetric(horizontal: 10),
+        //                 //   child: Text(
+        //                 //     "You May also like",
+        //                 //     style: TextStyle(
+        //                 //         fontWeight: FontWeight.bold,
+        //                 //         fontSize:
+        //                 //             MediaQuery.of(context).size.height / 50,
+        //                 //         color: ColorTheme.black.withOpacity(0.2)),
+        //                 //   ),
+        //                 // ),
+        //                 // sizedbox(context, 40),
+        //                 // Container(
+        //                 //   padding: EdgeInsets.symmetric(horizontal: 10),
+        //                 //   child: Row(
+        //                 //     children: [
+        //                 //       Expanded(
+        //                 //         flex: 2,
+        //                 //         child: Column(
+        //                 //           crossAxisAlignment: CrossAxisAlignment.start,
+        //                 //           children: [
+        //                 //             Text(
+        //                 //               "14 Cuts in 25 Minutes: How Hong Kong Censors Movies ",
+        //                 //               style: TextStyle(
+        //                 //                   fontWeight: FontWeight.bold,
+        //                 //                   fontSize: MediaQuery.of(context)
+        //                 //                           .size
+        //                 //                           .height /
+        //                 //                       45),
+        //                 //             ),
+        //                 //             sizedbox(context, 40),
+        //                 //             Text(
+        //                 //               "Khaleej Times",
+        //                 //               style: TextStyle(
+        //                 //                   color:
+        //                 //                       ColorTheme.black.withOpacity(0.4),
+        //                 //                   fontSize: MediaQuery.of(context)
+        //                 //                           .size
+        //                 //                           .height /
+        //                 //                       60),
+        //                 //             ),
+        //                 //           ],
+        //                 //         ),
+        //                 //       ),
+        //                 //       Container(
+        //                 //         height: 80,
+        //                 //         width: 80,
+        //                 //         decoration: BoxDecoration(
+        //                 //             borderRadius: BorderRadius.circular(15),
+        //                 //             image: DecorationImage(
+        //                 //                 image: AssetImage(
+        //                 //                     "assets/images/trash2.jpg"),
+        //                 //                 fit: BoxFit.cover)),
+        //                 //       )
+        //                 //     ],
+        //                 //   ),
+        //                 // ),
+        //                 // sizedbox(context, 40),
+        //               ],
+        //             )),
+        //           ],
+        //         ),
+        //       ),
+        //     )
+        //   ],
+        // )
+        );
   }
 }
