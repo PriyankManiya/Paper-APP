@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
         disabledColor: Colors.transparent,
       ),
       debugShowCheckedModeBanner: false,
-      // home: Home(),
       home: Bottombar(),
     );
   }
