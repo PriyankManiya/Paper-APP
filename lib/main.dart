@@ -9,9 +9,9 @@ import 'helper/controller/signincontroller.dart';
 import 'helper/controller/signupcontroller.dart';
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: ColorTheme.black,
-      statusBarIconBrightness: Brightness.light));
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //     statusBarColor: ColorTheme.black,
+  //     statusBarIconBrightness: Brightness.light));
   WidgetsFlutterBinding.ensureInitialized();
 
   Get.put(SignupController());

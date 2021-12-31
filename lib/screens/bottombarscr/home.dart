@@ -52,92 +52,102 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: ColorTheme.lightgrey,
       appBar: PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, 120),
+        preferredSize: Size(MediaQuery.of(context).size.width, 101),
         child: Container(
           color: ColorTheme.btnshade2,
           child: SafeArea(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 00, left: 22),
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      height: 60,
-                      child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          alignment: Alignment.center,
-                          child: TextFormField(
-                            cursorColor: ColorTheme.white,
-                            cursorHeight: 15,
-                            validator: (value) {
-                              return;
-                            },
-                            style: TextStyle(color: ColorTheme.white),
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorTheme.white.withOpacity(0.4)),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorTheme.white.withOpacity(0.4)),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              suffixIcon: Padding(
-                                padding: EdgeInsets.only(
-                                    right: 10, top: 10, bottom: 10),
-                                child: Image.asset(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 00, left: 22),
+
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        // height: 43,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            width: MediaQuery.of(context).size.width,
+                            height: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: ColorTheme.textboxgrey.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: TextField(
+                                      cursorColor: ColorTheme.white,
+                                      style: TextStyle(color: ColorTheme.white),
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        focusedBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        focusedErrorBorder: InputBorder.none,
+                                        hintText: "Search News",
+                                        hintStyle: TextStyle(
+                                            color: ColorTheme.white,
+                                            ),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            style: BorderStyle.solid,
+                                            color: ColorTheme.white,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Image.asset(
                                   ImageProvide.seach,
                                   height: 20,
+                                  width: 20,
+                                  // scale: 3.5,
                                   color: ColorTheme.white,
-                                ),
-                              ),
-                              hintText: "Search News",
-                              hintStyle: TextStyle(color: ColorTheme.white),
-                              fillColor:
-                                  ColorTheme.textboxgrey.withOpacity(0.3),
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  style: BorderStyle.solid,
-                                  color: ColorTheme.white,
-                                ),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          )),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image.asset(
-                      ImageProvide.setting,
-                      height: 25,
-                    ),
-                  ],
-                ),
-                AppBar(
-                  leading: SizedBox(),
-                  backgroundColor: ColorTheme.btnshade2,
-                  flexibleSpace: Column(
-                    children: [
-                      TabBar(
-                        isScrollable: true,
-                        indicatorPadding: EdgeInsets.all(0),
-                        indicatorSize: TabBarIndicatorSize.label,
-                        indicatorWeight: 3,
-                        indicatorColor: ColorTheme.white,
-                        automaticIndicatorColorAdjustment: true,
-                        tabs: myTabs,
-                        controller: _tabController,
+                                )
+                              ],
+                            )),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Image.asset(
+                        ImageProvide.setting,
+                        height: 25,
                       ),
                     ],
                   ),
-                )
-              ],
+                  AppBar(
+                    leading: SizedBox(),
+                    backgroundColor: ColorTheme.btnshade2,
+                    flexibleSpace: Column(
+                      children: [
+                        TabBar(
+                          isScrollable: true,
+                          indicatorPadding: EdgeInsets.all(0),
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicatorWeight: 3,
+                          indicatorColor: ColorTheme.white,
+                          automaticIndicatorColorAdjustment: true,
+                          tabs: myTabs,
+                          controller: _tabController,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -149,16 +159,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             child: TabBarView(
               controller: _tabController,
               children: [
-                ForYouScreen(topic:"NEWS"),
-                LocalScreen(topic:"local"),
-                SportScreen(topic:"SPORTS"),
-                WeatherScreen(topic:"WEATHER"),
-                MoneyScreen(topic: "MONEY",),
-                LifeStyleScreen(topic: "LIFESTYLE",),
-                HealthFitnessScreen(topic: "HEALTH & FITNESS",),
-                FoodDrinkScreen(topic: "FOOD & DRINK",),
-                TravelScreen(topic: "TRAVEL",),
-                
+                ForYouScreen(topic: "NEWS"),
+                LocalScreen(topic: "local"),
+                SportScreen(topic: "SPORTS"),
+                WeatherScreen(topic: "WEATHER"),
+                MoneyScreen(
+                  topic: "MONEY",
+                ),
+                LifeStyleScreen(
+                  topic: "LIFESTYLE",
+                ),
+                HealthFitnessScreen(
+                  topic: "HEALTH & FITNESS",
+                ),
+                FoodDrinkScreen(
+                  topic: "FOOD & DRINK",
+                ),
+                TravelScreen(
+                  topic: "TRAVEL",
+                ),
               ],
             ),
           ),
