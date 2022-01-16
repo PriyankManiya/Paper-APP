@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paper_app/constants/buttonstyle.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/helper/controller/update_profile_controller.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile({Key key}) : super(key: key);
+  String fullname;
+  EditProfile({Key key, this.fullname}) : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -17,12 +21,20 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController namecontroller;
   TextEditingController pwdcontroller;
   TextEditingController confirmcontroller;
+
+UpdateProfileController controller = Get.put(UpdateProfileController());
+
   @override
   void initState() {
     super.initState();
     pwdcontroller = new TextEditingController();
     confirmcontroller = new TextEditingController();
     namecontroller = new TextEditingController();
+
+setState(() {
+  namecontroller.text = widget.fullname;
+});
+    
   }
 
   @override
@@ -87,18 +99,21 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     Positioned(
                         bottom: -10,
-                        child: Container(
-                          height: 25,
-                          width: 25,
-                          decoration: BoxDecoration(
-                            color: ColorTheme.btnshade2,
-                            borderRadius: BorderRadius.circular(35),
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.add,
-                              color: ColorTheme.white,
-                              size: 20,
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                            height: 25,
+                            width: 25,
+                            decoration: BoxDecoration(
+                              color: ColorTheme.btnshade2,
+                              borderRadius: BorderRadius.circular(35),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: ColorTheme.white,
+                                size: 20,
+                              ),
                             ),
                           ),
                         ))
@@ -117,7 +132,7 @@ class _EditProfileState extends State<EditProfile> {
                           cursorColor: ColorTheme.black,
                           cursorHeight: 15,
                           validator: (value) {
-                            return;
+                            return value.isEmpty ? "Enter username" : null;
                           },
                           style: TextStyle(color: ColorTheme.black),
                           keyboardType: TextInputType.text,
@@ -144,7 +159,12 @@ class _EditProfileState extends State<EditProfile> {
                           cursorColor: ColorTheme.black,
                           cursorHeight: 15,
                           validator: (value) {
-                            return;
+                            if (value.isEmpty ||
+                                !RegExp(r"^(?=.*?[A-Za-z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$")
+                                    .hasMatch(value)) {
+                              return "Please Enter New password";
+                            }
+                            return null;
                           },
                           style: TextStyle(color: ColorTheme.black),
                           keyboardType: TextInputType.text,
@@ -171,7 +191,9 @@ class _EditProfileState extends State<EditProfile> {
                           cursorColor: ColorTheme.black,
                           cursorHeight: 15,
                           validator: (value) {
-                            return;
+                            return pwdcontroller.text == confirmcontroller.text
+                                ? null
+                                : "Confirm password not match";
                           },
                           style: TextStyle(color: ColorTheme.black),
                           keyboardType: TextInputType.text,
@@ -190,20 +212,29 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                       ),
                       sizedbox(context, 10),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          height: 55,
-                          decoration: boxDecoration,
-                          width: MediaQuery.of(context).size.width,
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Save",
-                            style: TextStyle(
-                                color: ColorTheme.white,
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 50,
-                                fontWeight: FontWeight.bold),
+                      Obx(
+                       () => controller.isLoading.value ? CupertinoActivityIndicator() : InkWell(
+                          onTap: () {
+                            final isValid = editkey.currentState.validate();
+                            if (!isValid) {
+                              return;
+                            }
+                            editkey.currentState.save();
+                            controller.updateProfile(fullname: namecontroller.text.trim(), password: pwdcontroller.text.trim());
+                          },
+                          child: Container(
+                            height: 55,
+                            decoration: boxDecoration,
+                            width: MediaQuery.of(context).size.width,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Save",
+                              style: TextStyle(
+                                  color: ColorTheme.white,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 50,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       )

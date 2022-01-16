@@ -7,10 +7,6 @@ import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/signincontroller.dart';
 import 'package:paper_app/screens/auth/forgetpwd/forgetpassword.dart';
-import 'package:paper_app/screens/auth/signup/signup.dart';
-import 'package:paper_app/widgets/bottombar.dart';
-
-
 
 class SignIn extends StatefulWidget {
   SignIn({Key key}) : super(key: key);
@@ -122,32 +118,38 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                   sizedbox(context, 15),
-                  InkWell(
-                    onTap: () {
-                     checkSignIn();
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 55,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: boxDecoration,
-                      child: Text(
-                        "LOGIN",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height / 55,
-                            color: ColorTheme.white),
-                      ),
-                    ),
+                  Obx(
+                    () => controller.isLoading.value
+                        ? CupertinoActivityIndicator()
+                        : InkWell(
+                            onTap: () {
+                              checkSignIn();
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 55,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: boxDecoration,
+                              child: Text(
+                                "LOGIN",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 55,
+                                    color: ColorTheme.white),
+                              ),
+                            ),
+                          ),
                   ),
                   sizedbox(context, 20),
                   InkWell(
                     onTap: () {
                       // Get.to(() => SignUp(),
-                          // transition: Transition.cupertino,
-                          // binding: SignUpBind());
-                      Navigator.push(context,
-                          CupertinoPageRoute(builder: (context) => SignUp()));
+                      // transition: Transition.cupertino,
+                      // binding: SignUpBind());
+
+                      // Navigator.push(context,
+                      //     CupertinoPageRoute(builder: (context) => SignUp()));
                     },
                     child: RichText(
                         text: TextSpan(
@@ -224,14 +226,15 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
-    void checkSignIn() {
+
+  void checkSignIn() {
     final isValid = signformkey.currentState.validate();
     if (!isValid) {
       return;
     }
     signformkey.currentState.save();
-
-    Get.off(() => Bottombar(), transition: Transition.cupertino);
+    controller.signIn();
+    // Get.off(() => Bottombar(), transition: Transition.cupertino);
     // _authcontroller.signIn(emailController.text, passwordController.text);
   }
 }
