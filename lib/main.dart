@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home:storage.read("token") != null ? Bottombar() : SignIn(),
+      // home: SignIn(),
     );
   }
 }

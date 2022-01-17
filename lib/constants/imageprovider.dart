@@ -30,4 +30,6 @@ class ImageProvide{
   static const String saved = "assets/images/save.png";
   static const String history = "assets/images/history.png";
   static const String minisearch = "assets/images/minisearch.png";
+  static const String temp = "assets/images/temp.png";
+  static const String edit = "assets/images/edit.png";
 }

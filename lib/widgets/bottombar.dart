@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/screens/bottombarscr/following.dart';
@@ -20,6 +21,21 @@ class _BottombarState extends State<Bottombar>
   var icons4 = ImageProvide.notification;
   var icons5 = ImageProvide.profile;
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // GetStorage getStorage = GetStorage();
+    // var lat = getStorage.read("clatitude");
+    // var lon = getStorage.read("clongitude");
+    // print("lat : $lat");
+    // if (lat == null) {
+      // getStorage.write("clatitude", 21.232010);
+      // getStorage.write("clongitude", 72.904808);
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -55,7 +71,8 @@ class _BottombarState extends State<Bottombar>
                               : Image.asset(
                                   icons1,
                                   color: Color(0xff4b423b).withOpacity(0.7),
-                                  height: MediaQuery.of(context).size.height / 38,
+                                  height:
+                                      MediaQuery.of(context).size.height / 38,
                                 ),
                         ),
                         SizedBox(
@@ -84,7 +101,8 @@ class _BottombarState extends State<Bottombar>
                               : Image.asset(
                                   icons2,
                                   color: Color(0xff4b423b).withOpacity(0.7),
-                                  height: MediaQuery.of(context).size.height / 38,
+                                  height:
+                                      MediaQuery.of(context).size.height / 38,
                                 ),
                         ),
                         SizedBox(
@@ -113,7 +131,8 @@ class _BottombarState extends State<Bottombar>
                               : Image.asset(
                                   icons3,
                                   color: Color(0xff4b423b).withOpacity(0.7),
-                                  height: MediaQuery.of(context).size.height / 38,
+                                  height:
+                                      MediaQuery.of(context).size.height / 38,
                                 ),
                         ),
                         SizedBox(
@@ -142,7 +161,8 @@ class _BottombarState extends State<Bottombar>
                               : Image.asset(
                                   icons4,
                                   color: Color(0xff4b423b).withOpacity(0.7),
-                                  height: MediaQuery.of(context).size.height / 38,
+                                  height:
+                                      MediaQuery.of(context).size.height / 38,
                                 ),
                         ),
                         SizedBox(
@@ -171,7 +191,8 @@ class _BottombarState extends State<Bottombar>
                               : Image.asset(
                                   icons5,
                                   color: Color(0xff4b423b).withOpacity(0.7),
-                                  height: MediaQuery.of(context).size.height / 38,
+                                  height:
+                                      MediaQuery.of(context).size.height / 38,
                                 ),
                         ),
                         SizedBox(
@@ -195,7 +216,9 @@ class _BottombarState extends State<Bottombar>
         ),
         body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
           new Home(),
-          new Today(topic: "TODAY",),
+          new Today(
+            topic: "TODAY",
+          ),
           new Following(),
           new Notifications(),
           new ProfileAsLogin()

@@ -44,6 +44,15 @@ dependencies:
   change_app_package_name: ^1.0.0
   get_storage: ^2.0.3
   image_picker: ^0.8.4+4
+  google_maps_flutter: any
+  # geolocator: ^8.0.0
+  geocoding: ^2.0.1
+  geocoder: any
+  google_sign_in: ^5.2.3
+  flutter_facebook_login: ^3.0.0
+  device_info: ^2.0.3
+  geolocator: ^7.7.0
+  # geolocator: 
 
 dev_dependencies:
   flutter_test:

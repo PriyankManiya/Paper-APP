@@ -1,38 +1,37 @@
 // To parse this JSON data, do
 //
-//     final signIn = signInFromJson(jsonString);
+//     final socialSignin = socialSigninFromJson(jsonString);
 
 import 'dart:convert';
 
+SocialSignin socialSigninFromJson(String str) => SocialSignin.fromJson(json.decode(str));
 
-SignIn signInFromJson(String str) => SignIn.fromJson(json.decode(str));
+String socialSigninToJson(SocialSignin data) => json.encode(data.toJson());
 
-String signInToJson(SignIn data) => json.encode(data.toJson());
-
-class SignIn {
-    SignIn({
+class SocialSignin {
+    SocialSignin({
         this.status,
-        this.data,
         this.token,
+        this.data,
         this.message,
     });
 
     int status;
-    Data data;
     String token;
+    Data data;
     String message;
 
-    factory SignIn.fromJson(Map<String, dynamic> json) => SignIn(
+    factory SocialSignin.fromJson(Map<String, dynamic> json) => SocialSignin(
         status: json["status"],
-        data: Data.fromJson(json["data"]),
         token: json["token"],
+        data: Data.fromJson(json["data"]),
         message: json["message"],
     );
 
     Map<String, dynamic> toJson() => {
         "status": status,
-        "data": data.toJson(),
         "token": token,
+        "data": data.toJson(),
         "message": message,
     };
 }
@@ -51,7 +50,6 @@ class Data {
         this.isDeleted,
         this.isActive,
         this.id,
-        this.role,
         this.createdAt,
         this.updatedAt,
     });
@@ -68,7 +66,6 @@ class Data {
     bool isDeleted;
     bool isActive;
     String id;
-    String role;
     DateTime createdAt;
     DateTime updatedAt;
 
@@ -85,7 +82,6 @@ class Data {
         isDeleted: json["isDeleted"],
         isActive: json["isActive"],
         id: json["_id"],
-        role: json["role"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
     );
@@ -103,7 +99,6 @@ class Data {
         "isDeleted": isDeleted,
         "isActive": isActive,
         "_id": id,
-        "role": role,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
     };

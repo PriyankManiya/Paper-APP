@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+// import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/controller/temp_controller.dart';
+import 'package:paper_app/screens/bottombarscr/edit_location.dart';
 import 'package:paper_app/screens/bottombarscr/home/Travel.dart';
+import 'package:shimmer/shimmer.dart';
 import 'home/FoodDrink.dart';
 import 'home/ForYou.dart';
 import 'home/HealthFitness.dart';
@@ -34,11 +38,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Tab(text: 'Travel'),
   ];
   TabController _tabController;
+  TempController weatherController = Get.put(TempController());
+  // Position position;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: myTabs.length);
+    getCurrentLatLong();
+   
+  }
+
+  getCurrentLatLong() async {
+// position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    //  print(position);
   }
 
   @override
@@ -95,8 +108,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         focusedErrorBorder: InputBorder.none,
                                         hintText: "Search News",
                                         hintStyle: TextStyle(
-                                            color: ColorTheme.white,
-                                            ),
+                                          color: ColorTheme.white,
+                                        ),
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             style: BorderStyle.solid,
@@ -155,6 +168,101 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       body: Container(
           child: Column(
         children: [
+          Obx(
+            () => Container(
+              padding: EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: (){
+                      Get.to(EditLocation());
+                    },
+                    child: Row(
+                      children: [
+                        weatherController.isLoading.value
+                            ? SizedBox(
+                                width: 70.0,
+                                height: 20.0,
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey,
+                                  highlightColor: Colors.grey.withOpacity(0.5),
+                                  child: Container(
+                                    width: 50.0,
+                                    height: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                  // child: Text(
+                                  //   '60.0',
+                                  //   textAlign: TextAlign.center,
+                                  //   style: TextStyle(
+                                  //     fontSize: 20.0,
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  // ),
+                                ),
+                              )
+                            : Text(
+                          "${weatherController.weather.value.name}",
+                          style: TextStyle(
+                              color: ColorTheme.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Image.asset(
+                          ImageProvide.edit,
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Image.asset(
+                        ImageProvide.temp,
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      weatherController.isLoading.value
+                          ? SizedBox(
+                              width: 50.0,
+                              height: 20.0,
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.grey,
+                                highlightColor: Colors.grey.withOpacity(0.5),
+                                child: Container(
+                                  width: 50.0,
+                                  height: 20.0,
+                                  color: Colors.white,
+                                ),
+                                // child: Text(
+                                //   '60.0',
+                                //   textAlign: TextAlign.center,
+                                //   style: TextStyle(
+                                //     fontSize: 20.0,
+                                //     fontWeight: FontWeight.bold,
+                                //   ),
+                                // ),
+                              ),
+                            )
+                          : Text(
+                              "${weatherController.weather.value.main.temp}°F",
+                              style: TextStyle(
+                                  color: ColorTheme.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
           Expanded(
             child: TabBarView(
               controller: _tabController,

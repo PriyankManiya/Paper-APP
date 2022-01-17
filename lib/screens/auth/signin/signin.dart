@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paper_app/constants/buttonstyle.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
@@ -171,53 +172,63 @@ class _SignInState extends State<SignIn> {
                         ])),
                   ),
                   sizedbox(context, 20),
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: ColorTheme.grey),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            ImageProvide.google,
-                            height: MediaQuery.of(context).size.height / 30,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Continue with Google",
-                            style: TextStyle(
-                                color: ColorTheme.grey,
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 55),
-                          ),
-                        ],
-                      )),
+                  InkWell(
+                    onTap: () {
+                      controller.googleSign();
+                    },
+                    child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: ColorTheme.grey),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              ImageProvide.google,
+                              height: MediaQuery.of(context).size.height / 30,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Continue with Google",
+                              style: TextStyle(
+                                  color: ColorTheme.grey,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 55),
+                            ),
+                          ],
+                        )),
+                  ),
                   sizedbox(context, 40),
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: ColorTheme.grey),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            ImageProvide.fb,
-                            height: MediaQuery.of(context).size.height / 30,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Continue with Facebook",
-                            style: TextStyle(
-                                color: ColorTheme.grey,
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 55),
-                          ),
-                        ],
-                      )),
+                  InkWell(
+                    onTap: (){
+                      controller.facebookSignin();
+                    },
+                    child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: ColorTheme.grey),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              ImageProvide.fb,
+                              height: MediaQuery.of(context).size.height / 30,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Continue with Facebook",
+                              style: TextStyle(
+                                  color: ColorTheme.grey,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 55),
+                            ),
+                          ],
+                        )),
+                  ),
                 ],
               ),
             ),
