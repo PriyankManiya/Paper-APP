@@ -1,14 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:paper_app/constants/colortheme.dart';
-import 'package:paper_app/constants/customespace.dart';
-import 'package:paper_app/constants/imageprovider.dart';
-import 'package:paper_app/screens/following/follow.dart';
-import 'package:paper_app/screens/newsdetail/newsdetail.dart';
-
-import 'package:timeago/timeago.dart' as timeago;
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +8,9 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
-import 'package:paper_app/screens/following/follow.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Today extends StatefulWidget {
   String topic;
@@ -253,38 +243,40 @@ class _TodayState extends State<Today> {
                                                 //         .url),
                                               ),
                                               sizedboxwidth(context, 30),
-                                              Container(
-                                                width: Get.width * 0.5,
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    // Get.to(() => FollowDisplay(),
-                                                    //     transition:
-                                                    //         Transition.cupertino);
-                                                  },
-                                                  child: Text(
-                                                      today_Controller
-                                                                  .localList
-                                                                  .value
-                                                                  .value[0]
-                                                                  .subCards[
-                                                                      index]
-                                                                  .provider
-                                                                  .name ==
-                                                              null
-                                                          ? "Paper-App"
-                                                          : today_Controller
-                                                              .localList
-                                                              .value
-                                                              .value[0]
-                                                              .subCards[index]
-                                                              .provider
-                                                              .name,
-                                                      style: TextStyle(
-                                                          fontSize: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height /
-                                                              60)),
+                                              Expanded(
+                                                child: Container(
+                                                  width: Get.width * 0.5,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      // Get.to(() => FollowDisplay(),
+                                                      //     transition:
+                                                      //         Transition.cupertino);
+                                                    },
+                                                    child: Text(
+                                                        today_Controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[
+                                                                        index]
+                                                                    .provider
+                                                                    .name ==
+                                                                null
+                                                            ? "Paper-App"
+                                                            : today_Controller
+                                                                .localList
+                                                                .value
+                                                                .value[0]
+                                                                .subCards[index]
+                                                                .provider
+                                                                .name,
+                                                        style: TextStyle(
+                                                            fontSize: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                60)),
+                                                  ),
                                                 ),
                                               ),
                                               Spacer(),

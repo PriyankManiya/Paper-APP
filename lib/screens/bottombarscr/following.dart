@@ -8,6 +8,7 @@ import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/get_channel_list_controller.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Following extends StatefulWidget {
   Following({Key key}) : super(key: key);
@@ -47,6 +48,33 @@ class _FollowingState extends State<Following> with TickerProviderStateMixin {
     _tabController.dispose();
     _tabController1.dispose();
     super.dispose();
+  }
+
+  RefreshController refershControllers =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // await newsController.fetchMarketnews(page: 1);
+    await Future.delayed(Duration(milliseconds: 1000));
+    refershControllers.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // _streamController = new StreamController();
+    // await today_Controller.fetchMarketnews(
+    //     page: pagination,
+    //     topic: widget.topic,
+    //     nextUrl: today_Controller.localList.value.value[0].nextPageUrl);
+    // await _streamController.add(today_Controller.localList.value);
+    // await Future.delayed(Duration(milliseconds: 1000));
+    // if (mounted)
+    //  setState(() {
+    //   pagination++;
+    // });
+    channelListController.getChannelList(nextURL: channelListController.nextUrl.value);
+    await Future.delayed(Duration(milliseconds: 1000));
+    
+    refershControllers.loadComplete();
   }
 
   @override
@@ -162,13 +190,17 @@ class _FollowingState extends State<Following> with TickerProviderStateMixin {
                                                     i++) {
                                                   if (followController
                                                           .followingList[index]
-                                                          .id ==
+                                                          .channelId ==
                                                       channelListController
                                                           .channelList[i]
-                                                          .followingId) {
+                                                          .provider
+                                                          .id) {
+                                                    print("same");
                                                     channelListController
                                                         .channelList[i]
                                                         .isFollow = false;
+                                                    channelListController
+                                                        .update();
                                                     break;
                                                   }
                                                 }
@@ -177,8 +209,6 @@ class _FollowingState extends State<Following> with TickerProviderStateMixin {
                                                 //     .forEach((element) {
 
                                                 // });
-
-                                                channelListController.update();
                                               },
                                               child: Container(
                                                 padding: EdgeInsets.symmetric(
@@ -422,128 +452,148 @@ class _FollowingState extends State<Following> with TickerProviderStateMixin {
                       children: [
                         Expanded(
                           child: Obx(
-                            () => ListView.separated(
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  height: 40,
-                                  thickness: 1.5,
-                                );
-                              },
-                              itemCount:
-                                  channelListController.channelList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Row(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: Colors.transparent,
-                                      backgroundImage: NetworkImage(
-                                          "${channelListController.channelList[index].provider.logo.url}"),
-                                    ),
-                                    sizedboxwidth(context, 30),
-                                    Expanded(
-                                      child: Text(
-                                        "${channelListController.channelList[index].provider.name}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                50),
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    GetBuilder(
-                                        init: channelListController,
-                                        builder: (_) {
-                                          return InkWell(
-                                            onTap: () {
-                                              // print("Follow Part");
-                                              if (channelListController
-                                                  .channelList[index]
-                                                  .isFollow) {
-                                                followController.unfollow(
-                                                    id: channelListController
-                                                        .channelList[index]
-                                                        .followingId);
-                                                channelListController
-                                                    .channelList[index]
-                                                    .isFollow = false;
-                                              } else {
-                                                followController.follow(
-                                                    title: channelListController
-                                                        .channelList[index]
-                                                        .provider
-                                                        .name,
-                                                    channelId:
-                                                        channelListController
+                            () => Scrollbar(
+                              child: SmartRefresher(
+                                enablePullDown: true,
+                                enablePullUp: true,
+                                controller: refershControllers,
+                                onRefresh: _onRefresh,
+                                onLoading: _onLoading,
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) {
+                                    return Divider(
+                                      height: 40,
+                                      thickness: 1.5,
+                                    );
+                                  },
+                                  itemCount:
+                                      channelListController.channelList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 25,
+                                          backgroundColor: Colors.transparent,
+                                          backgroundImage: NetworkImage(
+                                              "${channelListController.channelList[index].provider.logo.url}"),
+                                        ),
+                                        sizedboxwidth(context, 30),
+                                        Expanded(
+                                          child: Text(
+                                            "${channelListController.channelList[index].provider.name}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    50),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        GetBuilder(
+                                            init: channelListController,
+                                            builder: (_) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  // print("Follow Part");
+                                                  if (channelListController
+                                                      .channelList[index]
+                                                      .isFollow) {
+                                                    followController.unfollow(
+                                                        id: channelListController
                                                             .channelList[index]
-                                                            .provider
-                                                            .id,
-                                                    channel_details:
-                                                        channelListController
-                                                            .channelList[index]
-                                                            .provider
-                                                            .name,
-                                                    channel_url:
-                                                        channelListController
-                                                            .channelList[index]
-                                                            .provider
-                                                            .logo
-                                                            .url);
-
-                                                channelListController
-                                                    .channelList[index]
-                                                    .isFollow = true;
-                                              }
-
-                                              channelListController.update();
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 5),
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: ColorTheme.green),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                      channelListController
-                                                              .channelList[
-                                                                  index]
-                                                              .isFollow
-                                                          ? "FOLLOWING"
-                                                          : "FOLLOW",
-                                                      style: TextStyle(
-                                                          color:
-                                                              ColorTheme.green,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height /
-                                                              70)),
-                                                  Icon(
+                                                            .followingId);
                                                     channelListController
-                                                            .channelList[index]
-                                                            .isFollow
-                                                        ? Icons.check
-                                                        : Icons.add,
-                                                    color: ColorTheme.green,
-                                                    size: 15,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ],
-                                );
-                              },
+                                                        .channelList[index]
+                                                        .isFollow = false;
+                                                  } else {
+                                                    followController.follow(
+                                                        title:
+                                                            channelListController
+                                                                .channelList[
+                                                                    index]
+                                                                .provider
+                                                                .name,
+                                                        channelId:
+                                                            channelListController
+                                                                .channelList[
+                                                                    index]
+                                                                .provider
+                                                                .id,
+                                                        channel_details:
+                                                            channelListController
+                                                                .channelList[
+                                                                    index]
+                                                                .provider
+                                                                .name,
+                                                        channel_url:
+                                                            channelListController
+                                                                .channelList[
+                                                                    index]
+                                                                .provider
+                                                                .logo
+                                                                .url);
+
+                                                    channelListController
+                                                        .channelList[index]
+                                                        .isFollow = true;
+                                                  }
+
+                                                  channelListController
+                                                      .update();
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 5),
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color:
+                                                              ColorTheme.green),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                          channelListController
+                                                                  .channelList[
+                                                                      index]
+                                                                  .isFollow
+                                                              ? "FOLLOWING"
+                                                              : "FOLLOW",
+                                                          style: TextStyle(
+                                                              color: ColorTheme
+                                                                  .green,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  70)),
+                                                      Icon(
+                                                        channelListController
+                                                                .channelList[
+                                                                    index]
+                                                                .isFollow
+                                                            ? Icons.check
+                                                            : Icons.add,
+                                                        color: ColorTheme.green,
+                                                        size: 15,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         )

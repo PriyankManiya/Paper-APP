@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/screens/bottombarscr/following.dart';

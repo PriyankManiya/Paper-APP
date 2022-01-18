@@ -16,11 +16,11 @@ class Channel {
     List<Value> value;
 
     factory Channel.fromJson(Map<String, dynamic> json) => Channel(
-        value: List<Value>.from(json["value"].map((x) => Value.fromJson(x))),
+        value: json["value"] == null ? null :List<Value>.from(json["value"].map((x) => Value.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "value": List<dynamic>.from(value.map((x) => x.toJson())),
+        "value":value==null?null: List<dynamic>.from(value.map((x) => x.toJson())),
     };
 }
 
@@ -34,13 +34,13 @@ class Value {
     List<SubCard> subCards;
 
     factory Value.fromJson(Map<String, dynamic> json) => Value(
-        nextPageUrl: json["nextPageUrl"],
-        subCards: List<SubCard>.from(json["subCards"].map((x) => SubCard.fromJson(x))),
+        nextPageUrl:json["nextPageUrl"] == null ? null : json["nextPageUrl"],
+        subCards:json["subCards"] == null ? null : List<SubCard>.from(json["subCards"].map((x) => SubCard.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "nextPageUrl": nextPageUrl,
-        "subCards": List<dynamic>.from(subCards.map((x) => x.toJson())),
+        "subCards":subCards == null ? null : List<dynamic>.from(subCards.map((x) => x.toJson())),
     };
 }
 
@@ -56,11 +56,13 @@ class SubCard {
     String followingId;
 
     factory SubCard.fromJson(Map<String, dynamic> json) => SubCard(
-        provider: Provider.fromJson(json["provider"]),
+        provider: json["provider"]==null?null :Provider.fromJson(json["provider"]),
+        isFollow : json["isFollow"] == null ? false : json["isFollow"]
     );
 
     Map<String, dynamic> toJson() => {
-        "provider": provider.toJson(),
+        "provider":provider == null? null : provider.toJson(),
+        "isFollow":isFollow == null? false : isFollow
     };
 }
 
@@ -76,15 +78,15 @@ class Provider {
     Logo logo;
 
     factory Provider.fromJson(Map<String, dynamic> json) => Provider(
-        id: json["id"],
-        name: json["name"],
-        logo: Logo.fromJson(json["logo"]),
+        id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
+        logo: json["logo"] == null ? null : Logo.fromJson(json["logo"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "logo": logo.toJson(),
+        "id": id == null ? null :id,
+        "name":name==null ? null : name,
+        "logo": logo==null ? null : logo.toJson(),
     };
 }
 
@@ -96,10 +98,10 @@ class Logo {
     String url;
 
     factory Logo.fromJson(Map<String, dynamic> json) => Logo(
-        url: json["url"],
+        url: json["url"] ==null ? null: json["url"],
     );
 
     Map<String, dynamic> toJson() => {
-        "url": url,
+        "url": url==null ? null : url,
     };
 }

@@ -9,6 +9,7 @@ class GetChannelListController extends GetxController {
   var isLoading = true.obs;
   var channel = Channel().obs;
   var channelList = <SubCard>[].obs;
+  var nextUrl = "".obs;
 
   @override
   void onInit() {
@@ -19,7 +20,7 @@ class GetChannelListController extends GetxController {
   @override
   void onClose() {}
 
-  Future<void> getChannelList() async {
+  Future<void> getChannelList({String nextURL}) async {
     isLoading(true);
     try {
       try {
@@ -27,17 +28,18 @@ class GetChannelListController extends GetxController {
         String token = storage.read("token");
         print("TOken ::: ${storage.read("token")}");
         var getChannelListResponse =
-            await GetChannelListService.getChannelList();
+            await GetChannelListService.getChannelList(nextURL: nextURL);
 
         channel(Channel.fromJson(getChannelListResponse));
 // print("successsss");
+        nextUrl.value = channel.value.value[0].nextPageUrl;
         final Map<String, SubCard> profileMap = new Map();
 
         channel.value.value[0].subCards.forEach((element) {
           profileMap[element.provider.id] = element;
         });
 
-        channelList(profileMap.values.toList());
+        channelList.addAll(profileMap.values.toList());
 
         var followingListResponse = await FollowService.getFOllowingList(
           token: token,
@@ -62,7 +64,7 @@ class GetChannelListController extends GetxController {
           }
 
           // print("ISFOLLOW : ${channelList[0].isFollow}");
-          
+
         } else {
           Get.snackbar("Opps", followingListResponse["message"],
               snackStyle: SnackStyle.FLOATING);
