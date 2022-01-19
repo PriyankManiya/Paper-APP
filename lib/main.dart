@@ -7,6 +7,7 @@ import 'package:paper_app/screens/auth/signin/signin.dart';
 import 'package:paper_app/screens/auth/signup/signup.dart';
 import 'package:paper_app/widgets/bottombar.dart';
 
+import 'helper/controller/article_controller.dart';
 import 'helper/controller/fetchnews_controller.dart';
 import 'helper/controller/signincontroller.dart';
 import 'helper/controller/signupcontroller.dart';
@@ -30,6 +31,7 @@ void main() async {
   Get.put(FoodDrinkController());
   Get.put(TravelController());
   Get.put(TodayController());
+  Get.put(ArticleController());
   runApp( MyApp());
 }
 

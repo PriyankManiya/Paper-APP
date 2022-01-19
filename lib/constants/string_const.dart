@@ -9,5 +9,11 @@ static const String UPDATE_PROFILE = BASE_URL+"api/user/profile/update";
 static const String FOLLOWING_LIST = BASE_URL+"api/user/followchannel/list";
 static const String FOLLOW = BASE_URL+"api/user/addfollowchannel";
 static const String UNFOLLOW = BASE_URL+"api/user/removefollowchannel/";
+static const String SAVEARITCLE = BASE_URL+"api/user/addsavearticle";
+static const String GETARITCLE = BASE_URL+"api/user/savearticle/list";
+static const String REMOVEARITCLE = BASE_URL+"api/user/removesavearticle/";
+static const String HISTORYARITCLE = BASE_URL+"api/user/addhistoryarticle";
+static const String GETHISTORYARITCLE = BASE_URL+"api/user/historyarticle/list";
+static const String REMOVEHISTORYARITCLE = BASE_URL+"api/user/removehistoryarticle/";
 
 }

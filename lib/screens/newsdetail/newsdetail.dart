@@ -1,16 +1,18 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
-import 'package:timeago/timeago.dart' as timeago;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/helper/controller/article_controller.dart';
+import 'package:paper_app/helper/controller/history_article_controller.dart';
 import 'package:paper_app/helper/model/news_model.dart' as news_model;
- import 'dart:io';
-
- import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsDetails extends StatefulWidget {
   news_model.SubCard subCard;
@@ -21,14 +23,31 @@ class NewsDetails extends StatefulWidget {
 }
 
 class _NewsDetailsState extends State<NewsDetails> {
-    final Completer<WebViewController> _controller =
+  final Completer<WebViewController> _controller =
       Completer<WebViewController>();
+  ArticleController articleController = Get.find();
+  HistoryArticleController articleHistoryController =
+      Get.put(HistoryArticleController());
+
+  bool isSaved = false;
+
   @override
   void initState() {
     super.initState();
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
+    articleHistoryController.saveHistoryArticle(
+        articleId: widget.subCard.id,
+        article_url: widget.subCard.url,
+        articleDetails: "${jsonEncode(widget.subCard.toJson())}",
+        categoryId: widget.subCard.type);
+
+    articleController.checkSavedStatus(widget.subCard.id);
+
+    print("Status : ${articleController.isSaved.value}");
   }
+
   bool isLoading = true;
+
   @override
   Widget build(BuildContext context) {
     print("widget.subCard.images :: ${widget.subCard.url}");
@@ -96,76 +115,78 @@ class _NewsDetailsState extends State<NewsDetails> {
                       child:
                           Icon(Icons.arrow_back_ios, color: ColorTheme.black)),
                   sizedboxwidth(context, 50),
-                  Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50))),
-                              child: CachedNetworkImage(
-                                  useOldImageOnUrlChange: false,
-                                  fadeInDuration: Duration(milliseconds: 500),
-                                  fit: BoxFit.cover,
-                                  imageUrl:
-                                      widget.subCard.provider.logo.url + "1",
-                                  progressIndicatorBuilder:
-                                      (context, url, downloadProgress) =>
-                                          Center(
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      ColorTheme.btnshade2),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50))),
+                                child: CachedNetworkImage(
+                                    useOldImageOnUrlChange: false,
+                                    fadeInDuration: Duration(milliseconds: 500),
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                        widget.subCard.provider.logo.url + "1",
+                                    progressIndicatorBuilder:
+                                        (context, url, downloadProgress) =>
+                                            Center(
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<Color>(
+                                                        ColorTheme.btnshade2),
+                                              ),
                                             ),
-                                          ),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset("assets/images/logo.png")),
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset("assets/images/logo.png")),
+                              ),
                             ),
+                            //   // backgroundImage: NetworkImage(
+                            //   //     lifestyle_controller
+                            //   //         .localList
+                            //   //         .value
+                            //   //         .value[0]
+                            //   //         .subCards[index]
+                            //   //         .provider
+                            //   //         .logo
+                            //   //         .url),
                           ),
-                          //   // backgroundImage: NetworkImage(
-                          //   //     lifestyle_controller
-                          //   //         .localList
-                          //   //         .value
-                          //   //         .value[0]
-                          //   //         .subCards[index]
-                          //   //         .provider
-                          //   //         .logo
-                          //   //         .url),
-                        ),
-                        SizedBox(width: 5),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Text(
-                                  widget.subCard.provider.name != null
-                                      ? widget.subCard.provider.name
-                                      : "",
-                                  softWrap: true,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          SizedBox(width: 5),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Text(
+                                    widget.subCard.provider.name != null
+                                        ? widget.subCard.provider.name
+                                        : "",
+                                    softWrap: true,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                60)),
+                              ),
+                              Text("83.3 K Followers",
                                   style: TextStyle(
                                       fontSize:
                                           MediaQuery.of(context).size.height /
-                                              60)),
-                            ),
-                            Text("83.3 K Followers",
-                                style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.height /
-                                            65))
-                          ],
-                        )
-                      ],
+                                              65))
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   sizedboxwidth(context, 70),
@@ -180,7 +201,33 @@ class _NewsDetailsState extends State<NewsDetails> {
                             fontSize: MediaQuery.of(context).size.height / 60)),
                   ),
                   sizedboxwidth(context, 20),
-                  Icon(Icons.bookmark_border_outlined),
+                  GetBuilder(
+                    init: articleController,
+                    builder: (_)=>InkWell(
+                          onTap: () {
+                            if (articleController.isSaved.value) {
+                              articleController.removeArticle(articleController.removeid.value);
+                            } else {
+                              articleController.saveArticle(
+                                  articleId: widget.subCard.id,
+                                  article_url: widget.subCard.url,
+                                  articleDetails:
+                                      "${jsonEncode(widget.subCard.toJson())}",
+                                  categoryId: widget.subCard.type);
+                            }
+
+                            // setState(() {
+                              articleController.isSaved.value = !articleController.isSaved.value;
+                            // });
+                            articleController.update();
+                            // print("TEST ::::${jsonEncode(widget.subCard.toJson())}");
+                          },
+                          child: Icon(articleController.isSaved.value
+                              ? Icons.bookmark
+                              : Icons.bookmark_border_outlined),
+                        ),
+                  ),
+                   
                   sizedboxwidth(context, 20),
                   Icon(Icons.more_vert_rounded)
                 ],
