@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paper_app/helper/model/news_model.dart';
 import 'package:paper_app/helper/service/remote_service.dart';
 
@@ -10,18 +11,32 @@ class ForYouController extends GetxController {
   var headlineList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews(
+      {int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
+
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page,
+            topic: topic,
+            nextUrl: nextUrl,
+            countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && newsList.firstRebuild) {
         newsList.value = productss;
+        print("new");
+      } else if (change == "0") {
+        newsList.value = productss;
+        print("new");
       } else {
+        print("renew");
         newsList.value.value[0].subCards.addAll(productss.value[0].subCards);
         newsList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
       }
@@ -47,17 +62,24 @@ class LocalController extends GetxController {
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
+      } else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
       } else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
@@ -84,18 +106,25 @@ class SportsController extends GetxController {
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+         GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
-      } else {
+      } else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
+      }else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
       }
@@ -115,23 +144,31 @@ class SportsController extends GetxController {
     }
   }
 }
+
 class WeatherController extends GetxController {
   var isLoading = true.obs;
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
-      } else {
+      } else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
+      }else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
       }
@@ -151,23 +188,31 @@ class WeatherController extends GetxController {
     }
   }
 }
+
 class MoneyController extends GetxController {
   var isLoading = true.obs;
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
-      } else {
+      } else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
+      }else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
       }
@@ -187,23 +232,31 @@ class MoneyController extends GetxController {
     }
   }
 }
+
 class LifeStyleController extends GetxController {
   var isLoading = true.obs;
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
-      } else {
+      } else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
+      }else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
       }
@@ -223,22 +276,30 @@ class LifeStyleController extends GetxController {
     }
   }
 }
+
 class HealthFitnessController extends GetxController {
   var isLoading = true.obs;
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
+      }else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
       } else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
@@ -259,22 +320,30 @@ class HealthFitnessController extends GetxController {
     }
   }
 }
+
 class FoodDrinkController extends GetxController {
   var isLoading = true.obs;
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
+      }else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
       } else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
@@ -295,23 +364,31 @@ class FoodDrinkController extends GetxController {
     }
   }
 }
+
 class TravelController extends GetxController {
   var isLoading = true.obs;
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
-      } else {
+      } else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
+      }else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
       }
@@ -331,23 +408,31 @@ class TravelController extends GetxController {
     }
   }
 }
+
 class TodayController extends GetxController {
   var isLoading = true.obs;
   var localList = Newsdata().obs;
   Newsdata productss;
 
-  void fetchMarketnews({int page, String topic, String nextUrl}) async {
+  void fetchMarketnews({int page, String topic, String nextUrl, String change}) async {
     try {
       try {
+        GetStorage getStorage = GetStorage();
+        String countryCode = getStorage.read("countrycode");
         productss = await RemoteServices.fetchMarketNews(
-            page: page, topic: topic, nextUrl: nextUrl);
+            page: page, topic: topic, nextUrl: nextUrl, countryCode: countryCode == null || countryCode.isEmpty
+                ? "en-us"
+                : countryCode);
       } catch (e) {
         print("API ERROR" + e);
       }
       // if (topic.toLowerCase() == "latest") {
       if (productss != null && localList.firstRebuild) {
         localList.value = productss;
-      } else {
+      } else if (change == "0") {
+        localList.value = productss;
+        print(" local new");
+      }else {
         localList.value.value[0].subCards.addAll(productss.value[0].subCards);
         localList.value.value[0].nextPageUrl = productss.value[0].nextPageUrl;
       }

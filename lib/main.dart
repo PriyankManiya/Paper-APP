@@ -32,12 +32,12 @@ void main() async {
   Get.put(TravelController());
   Get.put(TodayController());
   Get.put(ArticleController());
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   MyApp({Key key}) : super(key: key);
-   GetStorage storage = GetStorage();
+  MyApp({Key key}) : super(key: key);
+  GetStorage storage = GetStorage();
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         disabledColor: Colors.transparent,
       ),
       debugShowCheckedModeBanner: false,
-      home:storage.read("token") != null ? Bottombar() : SignIn(),
+      home: storage.read("token") != null ? Bottombar() : SignIn(),
       // home: SignIn(),
     );
   }

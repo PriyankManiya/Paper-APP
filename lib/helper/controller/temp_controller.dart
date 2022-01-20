@@ -7,6 +7,7 @@ import 'package:paper_app/helper/service/temp_service.dart';
 class TempController extends GetxController {
   var isLoading = true.obs;
   var weather = Weather().obs;
+  var celsius = 0.0.obs;
 
   @override
   void onInit() {
@@ -37,6 +38,7 @@ class TempController extends GetxController {
         print("Lat : ${lat == null ? "${position.latitude}" : lat.toString()} Lon : ${lon == null ? "${position.longitude}" : lon.toString()}");
 
         weather(Weather.fromJson(getWeatherResponse));
+        celsius.value = (weather.value.main.temp - 32.0) * 5.0 / 9.0;
       
       } catch (e) {
         print("API ERROR" + e);

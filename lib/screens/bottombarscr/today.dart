@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
@@ -162,6 +163,8 @@ class _TodayState extends State<Today> {
                               itemCount: today_Controller
                                   .localList.value.value[0].subCards.length,
                               itemBuilder: (BuildContext context, int index) {
+                                 GetStorage getStorage = GetStorage();
+                                String countryname = getStorage.read("countryname");
                                 return InkWell(
                                   onTap: () {
                                     Get.to(
@@ -390,7 +393,7 @@ class _TodayState extends State<Today> {
                                                               55),
                                                   sizedboxwidth(context, 50),
                                                   Text(
-                                                    "New York",
+                                                   "$countryname",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,

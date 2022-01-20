@@ -14,12 +14,13 @@ class RemoteServices {
       "$domain/MSN/Feed?ocid=sm-simcast&market=en-us&query=entertainment&apikey=$apikey&\$top=10&\$skip=0&\$select=sourceid,type,url,provider,title,images,publishedDateTime";
 
   static Future<Newsdata> fetchMarketNews(
-      {int page, String topic, String nextUrl}) async {
+      {int page, String topic, String nextUrl, String countryCode}) async {
     try {
-      print("************ NEXTURL $topic *********** : $nextUrl");
+      print("************ NEXTURL $topic *********** : $nextUrl  *********** : $countryCode");
       var response = await client.get(Uri.parse(nextUrl != null
           ? nextUrl
-          : "$domain/MSN/Feed?ocid=sm-simcast&market=en-us&query=$topic&apikey=$apikey&\$top=10&\$skip=0&\$select=sourceid,type,url,provider,title,images,publishedDateTime"));
+          : "$domain/MSN/Feed?ocid=sm-simcast&market=$countryCode&query=$topic&apikey=$apikey&\$top=10&\$skip=0&\$select=sourceid,type,url,provider,title,images,publishedDateTime"));
+          print("response : ${response.body}");
       return Newsdata.fromJson(jsonDecode(response.body));
     } catch (e) {
       print("***** ERROR *****");

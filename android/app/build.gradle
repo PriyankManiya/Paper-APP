@@ -52,7 +52,7 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file('D:/Client Project/flutter/Paper-APP/key.jks')
+            storeFile file('../../key.jks')
             storePassword 'paperapp'
             keyAlias 'androiddebugkey'
             keyPassword 'paperapp'
