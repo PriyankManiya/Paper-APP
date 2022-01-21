@@ -11,6 +11,7 @@ import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/article_controller.dart';
 import 'package:paper_app/helper/controller/history_article_controller.dart';
+import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/helper/model/news_model.dart' as news_model;
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -28,7 +29,7 @@ class _NewsDetailsState extends State<NewsDetails> {
   ArticleController articleController = Get.find();
   HistoryArticleController articleHistoryController =
       Get.put(HistoryArticleController());
-
+  LikeUnlikeController likeUnlikeController = Get.put(LikeUnlikeController());
   bool isSaved = false;
 
   @override
@@ -88,8 +89,34 @@ class _NewsDetailsState extends State<NewsDetails> {
                 Image.asset(ImageProvide.cmt,
                     height: MediaQuery.of(context).size.height / 30),
                 Spacer(),
-                Image.asset(ImageProvide.like,
-                    height: MediaQuery.of(context).size.height / 30),
+                InkWell(
+                  onTap: () async {
+                    if (widget.subCard.like == true) {
+                      print("Dislike");
+                      likeUnlikeController.unlike(id: widget.subCard.likeid);
+                      setState(() {
+                        widget.subCard.like = false;
+                        widget.subCard.totallike--;
+                      });
+                    } else {
+                      String likeid = await likeUnlikeController.like(
+                          articleId: widget.subCard.id);
+                      setState(() {
+                        widget.subCard.like = true;
+
+                        widget.subCard.likeid = likeid;
+
+                        widget.subCard.totallike++;
+                      });
+                    }
+                  },
+                  child: widget.subCard.like
+                      ? Image.asset(ImageProvide.like,
+                          color: ColorTheme.btnshade2,
+                          height: MediaQuery.of(context).size.height / 30)
+                      : Image.asset(ImageProvide.like,
+                          height: MediaQuery.of(context).size.height / 30),
+                ),
                 Spacer(),
                 Image.asset(ImageProvide.share,
                     height: MediaQuery.of(context).size.height / 25),
@@ -137,15 +164,15 @@ class _NewsDetailsState extends State<NewsDetails> {
                                     fit: BoxFit.cover,
                                     imageUrl:
                                         widget.subCard.provider.logo.url + "1",
-                                    progressIndicatorBuilder:
-                                        (context, url, downloadProgress) =>
-                                            Center(
-                                              child: CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<Color>(
-                                                        ColorTheme.btnshade2),
-                                              ),
-                                            ),
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    ColorTheme.btnshade2),
+                                          ),
+                                        ),
                                     errorWidget: (context, url, error) =>
                                         Image.asset("assets/images/logo.png")),
                               ),
@@ -203,31 +230,32 @@ class _NewsDetailsState extends State<NewsDetails> {
                   sizedboxwidth(context, 20),
                   GetBuilder(
                     init: articleController,
-                    builder: (_)=>InkWell(
-                          onTap: () {
-                            if (articleController.isSaved.value) {
-                              articleController.removeArticle(articleController.removeid.value);
-                            } else {
-                              articleController.saveArticle(
-                                  articleId: widget.subCard.id,
-                                  article_url: widget.subCard.url,
-                                  articleDetails:
-                                      "${jsonEncode(widget.subCard.toJson())}",
-                                  categoryId: widget.subCard.type);
-                            }
+                    builder: (_) => InkWell(
+                      onTap: () {
+                        if (articleController.isSaved.value) {
+                          articleController
+                              .removeArticle(articleController.removeid.value);
+                        } else {
+                          articleController.saveArticle(
+                              articleId: widget.subCard.id,
+                              article_url: widget.subCard.url,
+                              articleDetails:
+                                  "${jsonEncode(widget.subCard.toJson())}",
+                              categoryId: widget.subCard.type);
+                        }
 
-                            // setState(() {
-                              articleController.isSaved.value = !articleController.isSaved.value;
-                            // });
-                            articleController.update();
-                            // print("TEST ::::${jsonEncode(widget.subCard.toJson())}");
-                          },
-                          child: Icon(articleController.isSaved.value
-                              ? Icons.bookmark
-                              : Icons.bookmark_border_outlined),
-                        ),
+                        // setState(() {
+                        articleController.isSaved.value =
+                            !articleController.isSaved.value;
+                        // });
+                        articleController.update();
+                        // print("TEST ::::${jsonEncode(widget.subCard.toJson())}");
+                      },
+                      child: Icon(articleController.isSaved.value
+                          ? Icons.bookmark
+                          : Icons.bookmark_border_outlined),
+                    ),
                   ),
-                   
                   sizedboxwidth(context, 20),
                   Icon(Icons.more_vert_rounded)
                 ],

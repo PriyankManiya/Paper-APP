@@ -15,5 +15,8 @@ static const String REMOVEARITCLE = BASE_URL+"api/user/removesavearticle/";
 static const String HISTORYARITCLE = BASE_URL+"api/user/addhistoryarticle";
 static const String GETHISTORYARITCLE = BASE_URL+"api/user/historyarticle/list";
 static const String REMOVEHISTORYARITCLE = BASE_URL+"api/user/removehistoryarticle/";
+static const String LIKE = BASE_URL+"api/like/add";
+static const String LIKELIST = BASE_URL+"api/like/list";
+static const String UNLIKELIST = BASE_URL+"api/like/remove/";
 
 }

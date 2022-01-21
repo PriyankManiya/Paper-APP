@@ -47,6 +47,7 @@ class SigninController extends GetxController {
           SignIn signIn = SignIn.fromJson(signInResponse);
           GetStorage storage = GetStorage();
           storage.write("token", signIn.token);
+          storage.write("id", signIn.data.id);
           Get.off(Bottombar());
         } else {
           Get.snackbar("Opps", signInResponse["message"],
@@ -109,6 +110,7 @@ class SigninController extends GetxController {
               SocialSignin socialSignin = SocialSignin.fromJson(signInResponse);
               GetStorage storage = GetStorage();
               storage.write("token", socialSignin.token);
+              storage.write("id", socialSignin.data.id);
               Get.off(Bottombar());
             } else {
               Get.snackbar("Opps", signInResponse["message"],
@@ -158,6 +160,7 @@ class SigninController extends GetxController {
               SocialSignin socialSignin = SocialSignin.fromJson(signInResponse);
               GetStorage storage = GetStorage();
               storage.write("token", socialSignin.token);
+              storage.write("id", socialSignin.data.id);
               Get.off(Bottombar());
             } else {
               Get.snackbar("Opps", signInResponse["message"],

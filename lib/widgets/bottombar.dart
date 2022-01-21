@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/bottombarscr/following.dart';
 import 'package:paper_app/screens/bottombarscr/home.dart';
 import 'package:paper_app/screens/bottombarscr/notification.dart';
@@ -21,6 +23,8 @@ class _BottombarState extends State<Bottombar>
   var icons5 = ImageProvide.profile;
   int _selectedIndex = 0;
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -30,8 +34,8 @@ class _BottombarState extends State<Bottombar>
     // var lon = getStorage.read("clongitude");
     // print("lat : $lat");
     // if (lat == null) {
-      // getStorage.write("clatitude", 21.232010);
-      // getStorage.write("clongitude", 72.904808);
+    // getStorage.write("clatitude", 21.232010);
+    // getStorage.write("clongitude", 72.904808);
     // }
   }
 

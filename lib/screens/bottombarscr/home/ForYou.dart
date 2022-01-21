@@ -9,6 +9,7 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -27,6 +28,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
   final ForYouController newsController = Get.find<ForYouController>();
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
+  LikeUnlikeController likeUnlikeController = Get.put(LikeUnlikeController());
   void _onRefresh() async {
     // await newsController.fetchMarketnews(page: 1);
     await Future.delayed(Duration(milliseconds: 1000));
@@ -41,10 +43,10 @@ class _ForYouScreenState extends State<ForYouScreen> {
         nextUrl: newsController.newsList.value.value[0].nextPageUrl);
     await _streamController.add(newsController.newsList.value);
     await Future.delayed(Duration(milliseconds: 1000));
-    if (mounted) 
-    setState(() {
-      pagination++;
-    });
+    if (mounted)
+      setState(() {
+        pagination++;
+      });
     refershControllers.loadComplete();
   }
 
@@ -142,7 +144,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
                           onRefresh: _onRefresh,
                           onLoading: _onLoading,
                           child: Obx(
-                            ()=> ListView.separated(
+                            () => ListView.separated(
                               separatorBuilder: (context, index) {
                                 return Container(
                                   child: sizedbox(context, 50),
@@ -152,13 +154,17 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                   .newsList.value.value[0].subCards.length,
                               itemBuilder: (BuildContext context, int index) {
                                 GetStorage getStorage = GetStorage();
-                                String countryname = getStorage.read("countryname");
+                                String countryname =
+                                    getStorage.read("countryname");
                                 return InkWell(
                                   onTap: () {
                                     Get.to(
                                         () => NewsDetails(
-                                            subCard: newsController.newsList.value
-                                                .value[0].subCards[index]),
+                                            subCard: newsController
+                                                .newsList
+                                                .value
+                                                .value[0]
+                                                .subCards[index]),
                                         transition: Transition.cupertino);
                                   },
                                   child: Container(
@@ -214,9 +220,9 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                                       .btnshade2),
                                                         ),
                                                       ),
-                                                      errorWidget:
-                                                          (context, url, error) =>
-                                                              Icon(Icons.error),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Icon(Icons.error),
                                                     ),
                                                   ),
                                                 ),
@@ -245,7 +251,8 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                                     .newsList
                                                                     .value
                                                                     .value[0]
-                                                                    .subCards[index]
+                                                                    .subCards[
+                                                                        index]
                                                                     .provider
                                                                     .name ==
                                                                 null
@@ -276,11 +283,11 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                         color: ColorTheme.green,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60)),
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            60)),
                                               ),
                                               sizedboxwidth(context, 20),
                                               Icon(Icons.more_vert_rounded)
@@ -290,9 +297,10 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                         sizedbox(context, 60),
                                         //body part
                                         Container(
-                                          height:
-                                              MediaQuery.of(context).size.height /
-                                                  3.8,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              3.8,
                                           child: CachedNetworkImage(
                                             fadeInDuration:
                                                 Duration(milliseconds: 500),
@@ -317,12 +325,14 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                 Center(
                                               child: CircularProgressIndicator(
                                                 valueColor:
-                                                    AlwaysStoppedAnimation<Color>(
+                                                    AlwaysStoppedAnimation<
+                                                            Color>(
                                                         ColorTheme.btnshade2),
                                               ),
                                             ),
-                                            errorWidget: (context, url, error) =>
-                                                Icon(Icons.error),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
                                         ),
 
@@ -378,11 +388,11 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60),
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            60),
                                                   ),
                                                   sizedboxwidth(context, 20),
                                                   CircleAvatar(
@@ -392,20 +402,21 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                   ),
                                                   sizedboxwidth(context, 50),
                                                   Text(
-                                                    timeago.format(newsController
-                                                        .newsList
-                                                        .value
-                                                        .value[0]
-                                                        .subCards[index]
-                                                        .publishedDateTime),
+                                                    timeago.format(
+                                                        newsController
+                                                            .newsList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .publishedDateTime),
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60),
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            60),
                                                   ),
                                                 ],
                                               )
@@ -418,68 +429,201 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                           alignment: Alignment.centerLeft,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              //like
-                                              Image.asset(ImageProvide.like,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "290",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                              Spacer(),
-                                              //comment
-                                              Image.asset(ImageProvide.cmt,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "38",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                              Spacer(),
-                                              //share
-                                              Image.asset(
-                                                  ImageProvide.outlineshare,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "22",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                            ],
-                                          ),
+                                          child: GetBuilder(
+                                              init: newsController,
+                                              builder: (_) {
+                                                return InkWell(
+                                                  onTap: () async {
+                                                    // print(
+                                                    //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
+
+                                                    if (newsController
+                                                            .newsList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .like ==
+                                                        true) {
+                                                      print("Dislike");
+                                                      likeUnlikeController
+                                                          .unlike(
+                                                              id: newsController
+                                                                  .newsList
+                                                                  .value
+                                                                  .value[0]
+                                                                  .subCards[
+                                                                      index]
+                                                                  .likeid);
+
+                                                      newsController
+                                                          .newsList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .like = false;
+                                                          newsController
+                                                              .newsList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .totallike--;
+                                                    } else {
+                                                      String likeid =
+                                                          await likeUnlikeController.like(
+                                                              articleId:
+                                                                  newsController
+                                                                      .newsList
+                                                                      .value
+                                                                      .value[0]
+                                                                      .subCards[
+                                                                          index]
+                                                                      .id);
+
+                                                      newsController
+                                                          .newsList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .like = true;
+
+                                                      newsController
+                                                          .newsList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .likeid = likeid;
+
+                                                          newsController
+                                                              .newsList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .totallike++;
+                                                    }
+
+                                                    newsController.update();
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      //like
+                                                      newsController
+                                                              .newsList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .like
+                                                          ? Image.asset(
+                                                              ImageProvide.like,
+                                                              color: ColorTheme
+                                                                  .btnshade2,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40)
+                                                          : Image.asset(
+                                                              ImageProvide.like,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40),
+                                                      sizedboxwidth(
+                                                          context, 25),
+                                                      newsController
+                                                              .newsList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .like
+                                                          ? Text("${newsController
+                                                              .newsList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .totallike}",
+                                                              style: TextStyle(
+                                                                  color: ColorTheme
+                                                                      .btnshade2,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      50))
+                                                          : Text(
+                                                              "${newsController
+                                                              .newsList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .totallike}",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      50),
+                                                            ),
+                                                      Spacer(),
+                                                      //comment
+                                                      Image.asset(
+                                                          ImageProvide.cmt,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              40),
+                                                      sizedboxwidth(
+                                                          context, 25),
+                                                      Text(
+                                                        "38",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                50),
+                                                      ),
+                                                      Spacer(),
+                                                      //share
+                                                      Image.asset(
+                                                          ImageProvide
+                                                              .outlineshare,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              40),
+                                                      sizedboxwidth(
+                                                          context, 25),
+                                                      Text(
+                                                        "22",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                50),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }),
                                         )
                                       ],
                                     ),

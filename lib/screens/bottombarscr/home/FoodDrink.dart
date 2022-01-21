@@ -9,6 +9,7 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -24,9 +25,11 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
   StreamController _streamController;
   int pagination = 2;
 
-  final FoodDrinkController food_drink_controller = Get.find<FoodDrinkController>();
+  final FoodDrinkController food_drink_controller =
+      Get.find<FoodDrinkController>();
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
+  LikeUnlikeController likeUnlikeController = Get.put(LikeUnlikeController());
   void _onRefresh() async {
     // await lifestyle_controller.fetchMarketnews(page: 1);
     await Future.delayed(Duration(milliseconds: 1000));
@@ -38,8 +41,7 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
     await food_drink_controller.fetchMarketnews(
         page: pagination,
         topic: widget.topic,
-        nextUrl: food_drink_controller.localList.value.value[0].nextPageUrl
-        );
+        nextUrl: food_drink_controller.localList.value.value[0].nextPageUrl);
     await _streamController.add(food_drink_controller.localList.value);
     await Future.delayed(Duration(milliseconds: 1000));
     if (mounted)
@@ -58,10 +60,7 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
 
   void getnewsdata() async {
     await food_drink_controller.fetchMarketnews(
-        page: 1,
-        topic: widget.topic,
-        nextUrl: null
-        );
+        page: 1, topic: widget.topic, nextUrl: null);
     _streamController.add(food_drink_controller.localList.value);
   }
 
@@ -145,7 +144,7 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                           onRefresh: _onRefresh,
                           onLoading: _onLoading,
                           child: Obx(
-                            ()=> ListView.separated(
+                            () => ListView.separated(
                               separatorBuilder: (context, index) {
                                 return Container(
                                   child: sizedbox(context, 50),
@@ -154,14 +153,18 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                               itemCount: food_drink_controller
                                   .localList.value.value[0].subCards.length,
                               itemBuilder: (BuildContext context, int index) {
-                                 GetStorage getStorage = GetStorage();
-                                String countryname = getStorage.read("countryname");
+                                GetStorage getStorage = GetStorage();
+                                String countryname =
+                                    getStorage.read("countryname");
                                 return InkWell(
                                   onTap: () {
                                     Get.to(
                                         () => NewsDetails(
-                                            subCard: food_drink_controller.localList.value
-                                                .value[0].subCards[index]),
+                                            subCard: food_drink_controller
+                                                .localList
+                                                .value
+                                                .value[0]
+                                                .subCards[index]),
                                         transition: Transition.cupertino);
                                   },
                                   child: Container(
@@ -177,7 +180,8 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                           child: Row(
                                             children: [
                                               CircleAvatar(
-                                                backgroundColor: Colors.transparent,
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(50),
@@ -185,21 +189,25 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                                     height: 50,
                                                     width: 50,
                                                     decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(50))),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    50))),
                                                     child: CachedNetworkImage(
-                                                      useOldImageOnUrlChange: false,
-                                                      fadeInDuration:
-                                                          Duration(milliseconds: 500),
+                                                      useOldImageOnUrlChange:
+                                                          false,
+                                                      fadeInDuration: Duration(
+                                                          milliseconds: 500),
                                                       fit: BoxFit.cover,
-                                                      imageUrl: food_drink_controller
-                                                          .localList
-                                                          .value
-                                                          .value[0]
-                                                          .subCards[index]
-                                                          .provider
-                                                          .logo
-                                                          .url,
+                                                      imageUrl:
+                                                          food_drink_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .provider
+                                                              .logo
+                                                              .url,
                                                       progressIndicatorBuilder:
                                                           (context, url,
                                                                   downloadProgress) =>
@@ -209,12 +217,13 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                                           valueColor:
                                                               AlwaysStoppedAnimation<
                                                                       Color>(
-                                                                  ColorTheme.btnshade2),
+                                                                  ColorTheme
+                                                                      .btnshade2),
                                                         ),
                                                       ),
-                                                      errorWidget:
-                                                          (context, url, error) =>
-                                                              Icon(Icons.error),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Icon(Icons.error),
                                                     ),
                                                   ),
                                                 ),
@@ -228,14 +237,13 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                                 //         .logo
                                                 //         .url),
                                               ),
-
                                               sizedboxwidth(context, 30),
                                               Expanded(
                                                 child: Container(
                                                   width: Get.width * 0.5,
                                                   child: InkWell(
                                                     onTap: () {
-                                                       // Get.to(() => FollowDisplay(),
+                                                      // Get.to(() => FollowDisplay(),
                                                       //     transition:
                                                       //         Transition.cupertino);
                                                     },
@@ -244,7 +252,8 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                                                     .localList
                                                                     .value
                                                                     .value[0]
-                                                                    .subCards[index]
+                                                                    .subCards[
+                                                                        index]
                                                                     .provider
                                                                     .name ==
                                                                 null
@@ -275,11 +284,11 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                                         color: ColorTheme.green,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60)),
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            60)),
                                               ),
                                               sizedboxwidth(context, 20),
                                               Icon(Icons.more_vert_rounded)
@@ -289,9 +298,10 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                         sizedbox(context, 60),
                                         //body part
                                         Container(
-                                          height:
-                                              MediaQuery.of(context).size.height /
-                                                  3.8,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              3.8,
                                           child: CachedNetworkImage(
                                             fadeInDuration:
                                                 Duration(milliseconds: 500),
@@ -316,12 +326,14 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                                 Center(
                                               child: CircularProgressIndicator(
                                                 valueColor:
-                                                    AlwaysStoppedAnimation<Color>(
+                                                    AlwaysStoppedAnimation<
+                                                            Color>(
                                                         ColorTheme.btnshade2),
                                               ),
                                             ),
-                                            errorWidget: (context, url, error) =>
-                                                Icon(Icons.error),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
                                         ),
 
@@ -373,15 +385,15 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                                               55),
                                                   sizedboxwidth(context, 50),
                                                   Text(
-                                                   "$countryname",
+                                                    "$countryname",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60),
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            60),
                                                   ),
                                                   sizedboxwidth(context, 20),
                                                   CircleAvatar(
@@ -390,21 +402,22 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                                     radius: 3,
                                                   ),
                                                   sizedboxwidth(context, 50),
-                                                 Text(
-                                                    timeago.format(food_drink_controller
-                                                        .localList
-                                                        .value
-                                                        .value[0]
-                                                        .subCards[index]
-                                                        .publishedDateTime),
+                                                  Text(
+                                                    timeago.format(
+                                                        food_drink_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .publishedDateTime),
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60),
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            60),
                                                   ),
                                                 ],
                                               )
@@ -417,68 +430,191 @@ class _FoodDrinkScreenState extends State<FoodDrinkScreen> {
                                           alignment: Alignment.centerLeft,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              //like
-                                              Image.asset(ImageProvide.like,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "290",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                              Spacer(),
-                                              //comment
-                                              Image.asset(ImageProvide.cmt,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "38",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                              Spacer(),
-                                              //share
-                                              Image.asset(
-                                                  ImageProvide.outlineshare,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "22",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                            ],
-                                          ),
+                                          child: GetBuilder(
+                                              init: food_drink_controller,
+                                              builder: (_) {
+                                                return InkWell(
+                                                  onTap: () async {
+                                                    // print(
+                                                    //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
+
+                                                    if (food_drink_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .like ==
+                                                        true) {
+                                                      print("Dislike");
+                                                      likeUnlikeController.unlike(
+                                                          id: food_drink_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .likeid);
+
+                                                      food_drink_controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .like = false;
+                                                      food_drink_controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .totallike--;
+                                                    } else {
+                                                      String likeid =
+                                                          await likeUnlikeController.like(
+                                                              articleId:
+                                                                  food_drink_controller
+                                                                      .localList
+                                                                      .value
+                                                                      .value[0]
+                                                                      .subCards[
+                                                                          index]
+                                                                      .id);
+
+                                                      food_drink_controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .like = true;
+
+                                                      food_drink_controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .likeid = likeid;
+
+                                                      food_drink_controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .totallike++;
+                                                    }
+
+                                                    food_drink_controller
+                                                        .update();
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      //like
+                                                      food_drink_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .like
+                                                          ? Image.asset(
+                                                              ImageProvide.like,
+                                                              color: ColorTheme
+                                                                  .btnshade2,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40)
+                                                          : Image.asset(
+                                                              ImageProvide.like,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40),
+                                                      sizedboxwidth(
+                                                          context, 25),
+                                                      food_drink_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .like
+                                                          ? Text(
+                                                              "${food_drink_controller.localList.value.value[0].subCards[index].totallike}",
+                                                              style: TextStyle(
+                                                                  color: ColorTheme
+                                                                      .btnshade2,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      50))
+                                                          : Text(
+                                                              "${food_drink_controller.localList.value.value[0].subCards[index].totallike}",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      50),
+                                                            ),
+                                                      Spacer(),
+                                                      //comment
+                                                      Image.asset(
+                                                          ImageProvide.cmt,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              40),
+                                                      sizedboxwidth(
+                                                          context, 25),
+                                                      Text(
+                                                        "38",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                50),
+                                                      ),
+                                                      Spacer(),
+                                                      //share
+                                                      Image.asset(
+                                                          ImageProvide
+                                                              .outlineshare,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              40),
+                                                      sizedboxwidth(
+                                                          context, 25),
+                                                      Text(
+                                                        "22",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                50),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }),
                                         )
                                       ],
                                     ),

@@ -9,6 +9,7 @@ import 'package:paper_app/widgets/bottombar.dart';
 
 import 'helper/controller/article_controller.dart';
 import 'helper/controller/fetchnews_controller.dart';
+import 'helper/controller/likeunlike_controller.dart';
 import 'helper/controller/signincontroller.dart';
 import 'helper/controller/signupcontroller.dart';
 
@@ -32,6 +33,7 @@ void main() async {
   Get.put(TravelController());
   Get.put(TodayController());
   Get.put(ArticleController());
+  // Get.put(LikeUnlikeController());
   runApp(MyApp());
 }
 

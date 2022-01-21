@@ -183,6 +183,9 @@ class SubCard {
         this.url,
         this.deleted,
         this.id,
+        this.like,
+        this.likeid,
+        this.totallike
     });
 
     String type;
@@ -196,6 +199,9 @@ class SubCard {
     String url;
     bool deleted;
     String id;
+    bool like;
+    String likeid;
+    int totallike;
 
     factory SubCard.fromJson(Map<String, dynamic> json) => SubCard(
         type: json["\$type"] == null ? null : json["\$type"],
@@ -209,6 +215,9 @@ class SubCard {
         url: json["url"] == null ? null : json["url"],
         deleted: json["deleted"] == null ? null : json["deleted"],
         id: json["id"] == null ? null : json["id"],
+        like: json["like"] == null ? false : json["like"],
+        likeid : json["likeid"] == null ? null : json["likeid"],
+        totallike : json["totallike"] == null ? 0 : json["totallike"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -223,6 +232,9 @@ class SubCard {
         "url": url == null ? null : url,
         "deleted": deleted == null ? null : deleted,
         "id": id == null ? null : id,
+        "like": like == null ? false : like,
+        "likeid": likeid == null ? null : likeid,
+        "totallike": totallike == null ? 0 : totallike,
     };
 }
 

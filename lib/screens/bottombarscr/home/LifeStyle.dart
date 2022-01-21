@@ -9,6 +9,7 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -27,6 +28,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
   final LifeStyleController lifestyle_controller = Get.find<LifeStyleController>();
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
+      LikeUnlikeController likeUnlikeController = Get.put(LikeUnlikeController());
   void _onRefresh() async {
     // await lifestyle_controller.fetchMarketnews(page: 1);
     await Future.delayed(Duration(milliseconds: 1000));
@@ -418,67 +420,183 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                           alignment: Alignment.centerLeft,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              //like
-                                              Image.asset(ImageProvide.like,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "290",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
+                                          child: GetBuilder(
+                                            init: lifestyle_controller,
+                                            builder: (_) {
+                                              return InkWell(
+                                                onTap: () async {
+                                                    // print(
+                                                    //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
+
+                                                    if (lifestyle_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .like ==
+                                                        true) {
+                                                      print("Dislike");
+                                                      likeUnlikeController
+                                                          .unlike(
+                                                              id: lifestyle_controller
+                                                                  .localList
+                                                                  .value
+                                                                  .value[0]
+                                                                  .subCards[
+                                                                      index]
+                                                                  .likeid);
+
+                                                      lifestyle_controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .like = false;
+                                                          lifestyle_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .totallike--;
+                                                    } else {
+                                                      String likeid =
+                                                          await likeUnlikeController.like(
+                                                              articleId:
+                                                                  lifestyle_controller
+                                                                      .localList
+                                                                      .value
+                                                                      .value[0]
+                                                                      .subCards[
+                                                                          index]
+                                                                      .id);
+
+                                                      lifestyle_controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .like = true;
+
+                                                      lifestyle_controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .likeid = likeid;
+
+                                                          lifestyle_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .totallike++;
+                                                    }
+
+                                                    lifestyle_controller.update();
+                                                  },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    //like
+                                                    lifestyle_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .like
+                                                          ? Image.asset(
+                                                              ImageProvide.like,
+                                                              color: ColorTheme
+                                                                  .btnshade2,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40)
+                                                          : Image.asset(
+                                                              ImageProvide.like,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40),
+                                                      sizedboxwidth(
+                                                          context, 25),
+                                                      lifestyle_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .like
+                                                          ? Text(
+                                                              "${lifestyle_controller.localList.value.value[0].subCards[index].totallike}",
+                                                              style: TextStyle(
+                                                                  color: ColorTheme
+                                                                      .btnshade2,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      50))
+                                                          : Text(
+                                                              "${lifestyle_controller.localList.value.value[0].subCards[index].totallike}",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      50),
+                                                            ),
+                                                    Spacer(),
+                                                    //comment
+                                                    Image.asset(ImageProvide.cmt,
+                                                        height: MediaQuery.of(context)
                                                                 .size
                                                                 .height /
-                                                            50),
-                                              ),
-                                              Spacer(),
-                                              //comment
-                                              Image.asset(ImageProvide.cmt,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "38",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
+                                                            40),
+                                                    sizedboxwidth(context, 25),
+                                                    Text(
+                                                      "38",
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w600,
+                                                          fontSize:
+                                                              MediaQuery.of(context)
+                                                                      .size
+                                                                      .height /
+                                                                  50),
+                                                    ),
+                                                    Spacer(),
+                                                    //share
+                                                    Image.asset(
+                                                        ImageProvide.outlineshare,
+                                                        height: MediaQuery.of(context)
                                                                 .size
                                                                 .height /
-                                                            50),
-                                              ),
-                                              Spacer(),
-                                              //share
-                                              Image.asset(
-                                                  ImageProvide.outlineshare,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      40),
-                                              sizedboxwidth(context, 25),
-                                              Text(
-                                                "22",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                            ],
+                                                            40),
+                                                    sizedboxwidth(context, 25),
+                                                    Text(
+                                                      "22",
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w600,
+                                                          fontSize:
+                                                              MediaQuery.of(context)
+                                                                      .size
+                                                                      .height /
+                                                                  50),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            }
                                           ),
                                         )
                                       ],

@@ -458,7 +458,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               ),
                             )
                           : Text(
-                              "${weatherController.weather.value.main.temp} °F / ${weatherController.celsius} °C",
+                              "${weatherController.weather.value.main.temp} °F / ${weatherController.celsius.value.toStringAsFixed(2)} °C",
                               style: TextStyle(
                                   color: ColorTheme.black,
                                   fontSize: 14,
