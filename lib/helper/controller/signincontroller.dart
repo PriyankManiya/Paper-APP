@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paper_app/helper/model/SignIn.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paper_app/helper/model/SocialSignin.dart';
@@ -84,10 +84,10 @@ class SigninController extends GetxController {
   }
 
   googleSign() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn();
+    // GoogleSignIn _googleSignIn = GoogleSignIn();
 
     try {
-      GoogleSignInAccount account = await _googleSignIn.signIn();
+      // GoogleSignInAccount account = await _googleSignIn.signIn();
 
       // print("Details ${account.id}");
 
@@ -96,27 +96,27 @@ class SigninController extends GetxController {
            
             // final profile = jsonDecode(graphResponse.body);
             // print("Profile Details : $profile");
-            var signInResponse = await SigninService.socialSignIn(
-                email: account.email,
-                full_name: account.displayName,
-                social_id: account.id,
-                register_type: 'google',
-                deviceToken: 'fdasfds',
-                deviceType: Platform.isAndroid ? 'android' : 'ios');
+            // var signInResponse = await SigninService.socialSignIn(
+            //     email: account.email,
+            //     full_name: account.displayName,
+            //     social_id: account.id,
+            //     register_type: 'google',
+            //     deviceToken: 'fdasfds',
+            //     deviceType: Platform.isAndroid ? 'android' : 'ios');
 
 // print("Profile Details : ${await getDeviceDetails()}");
 // print("email : ${profile['email']}");
-            if (signInResponse["status"] == 200) {
-              SocialSignin socialSignin = SocialSignin.fromJson(signInResponse);
-              GetStorage storage = GetStorage();
-              storage.write("token", socialSignin.token);
-              storage.write("id", socialSignin.data.id);
-              Get.off(Bottombar());
-            } else {
-              Get.snackbar("Opps", signInResponse["message"],
-                  snackStyle: SnackStyle.FLOATING);
-              print("${signInResponse["message"]}");
-            }
+            // if (signInResponse["status"] == 200) {
+            //   SocialSignin socialSignin = SocialSignin.fromJson(signInResponse);
+            //   GetStorage storage = GetStorage();
+            //   storage.write("token", socialSignin.token);
+            //   storage.write("id", socialSignin.data.id);
+            //   Get.off(Bottombar());
+            // } else {
+            //   Get.snackbar("Opps", signInResponse["message"],
+            //       snackStyle: SnackStyle.FLOATING);
+            //   print("${signInResponse["message"]}");
+            // }
             // print("Sing in success : ${signIn.token}");
           } catch (e) {
             print("API ERROR" + e);
