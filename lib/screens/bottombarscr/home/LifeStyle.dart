@@ -9,6 +9,7 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -24,11 +25,12 @@ class LifeStyleScreen extends StatefulWidget {
 class _LifeStyleScreenState extends State<LifeStyleScreen> {
   StreamController _streamController;
   int pagination = 2;
-
-  final LifeStyleController lifestyle_controller = Get.find<LifeStyleController>();
+  FollowController followController = Get.put(FollowController());
+  final LifeStyleController lifestyle_controller =
+      Get.find<LifeStyleController>();
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
-      LikeUnlikeController likeUnlikeController = Get.put(LikeUnlikeController());
+  LikeUnlikeController likeUnlikeController = Get.put(LikeUnlikeController());
   void _onRefresh() async {
     // await lifestyle_controller.fetchMarketnews(page: 1);
     await Future.delayed(Duration(milliseconds: 1000));
@@ -40,8 +42,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
     await lifestyle_controller.fetchMarketnews(
         page: pagination,
         topic: widget.topic,
-        nextUrl: lifestyle_controller.localList.value.value[0].nextPageUrl
-        );
+        nextUrl: lifestyle_controller.localList.value.value[0].nextPageUrl);
     await _streamController.add(lifestyle_controller.localList.value);
     await Future.delayed(Duration(milliseconds: 1000));
     if (mounted)
@@ -60,10 +61,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
 
   void getnewsdata() async {
     await lifestyle_controller.fetchMarketnews(
-        page: 1,
-        topic: widget.topic,
-        nextUrl: null
-        );
+        page: 1, topic: widget.topic, nextUrl: null);
     _streamController.add(lifestyle_controller.localList.value);
   }
 
@@ -139,473 +137,653 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                     child: StreamBuilder(
                   stream: _streamController.stream,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    return Scrollbar(
-                      child: SmartRefresher(
-                          enablePullDown: true,
-                          enablePullUp: true,
-                          controller: refershControllers,
-                          onRefresh: _onRefresh,
-                          onLoading: _onLoading,
-                          child: Obx(
-                            ()=>ListView.separated(
-                              separatorBuilder: (context, index) {
-                               
-                                return Container(
-                                  child: sizedbox(context, 50),
-                                );
-                              },
-                              itemCount: lifestyle_controller
-                                  .localList.value.value[0].subCards.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                 GetStorage getStorage = GetStorage();
-                                String countryname = getStorage.read("countryname");
-                                return InkWell(
-                                  onTap: () {
-                                    Get.to(
-                                        () => NewsDetails(
-                                            subCard: lifestyle_controller.localList.value
-                                                .value[0].subCards[index]),
-                                        transition: Transition.cupertino);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 15),
-                                    width: MediaQuery.of(context).size.width,
-                                    color: ColorTheme.white,
-                                    child: Column(
-                                      children: [
-                                        //top part
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: Row(
-                                            children: [
-                                             CircleAvatar(
-                                                backgroundColor: Colors.transparent,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  child: Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(50))),
-                                                    child: CachedNetworkImage(
-                                                      useOldImageOnUrlChange: false,
-                                                      fadeInDuration:
-                                                          Duration(milliseconds: 500),
-                                                      fit: BoxFit.cover,
-                                                      imageUrl: lifestyle_controller
-                                                          .localList
-                                                          .value
-                                                          .value[0]
-                                                          .subCards[index]
-                                                          .provider
-                                                          .logo
-                                                          .url,
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                                  downloadProgress) =>
-                                                              Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          valueColor:
-                                                              AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                  ColorTheme.btnshade2),
-                                                        ),
-                                                      ),
-                                                      errorWidget:
-                                                          (context, url, error) =>
-                                                              Icon(Icons.error),
-                                                    ),
-                                                  ),
-                                                ),
-                                                // backgroundImage: NetworkImage(
-                                                //     lifestyle_controller
-                                                //         .localList
-                                                //         .value
-                                                //         .value[0]
-                                                //         .subCards[index]
-                                                //         .provider
-                                                //         .logo
-                                                //         .url),
-                                              ),
-
-                                              sizedboxwidth(context, 30),
-                                              Expanded(
-                                                child: Container(
-                                                  width: Get.width * 0.5,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                       // Get.to(() => FollowDisplay(),
-                                                      //     transition:
-                                                      //         Transition.cupertino);
-                                                    },
-                                                    child: Text(
-                                                        lifestyle_controller
-                                                                    .localList
-                                                                    .value
-                                                                    .value[0]
-                                                                    .subCards[index]
-                                                                    .provider
-                                                                    .name ==
-                                                                null
-                                                            ? "Paper-App"
-                                                            : lifestyle_controller
+                    return Obx(
+                     ()=> Scrollbar(
+                        child: SmartRefresher(
+                            enablePullDown: true,
+                            enablePullUp: true,
+                            controller: refershControllers,
+                            onRefresh: _onRefresh,
+                            onLoading: _onLoading,
+                            child: ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return Container(
+                                    child: sizedbox(context, 50),
+                                  );
+                                },
+                                itemCount: lifestyle_controller
+                                    .localList.value.value[0].subCards.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  GetStorage getStorage = GetStorage();
+                                  String countryname =
+                                      getStorage.read("countryname");
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(
+                                          () => NewsDetails(
+                                              subCard: lifestyle_controller
+                                                  .localList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index]),
+                                          transition: Transition.cupertino);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(vertical: 15),
+                                      width: MediaQuery.of(context).size.width,
+                                      color: ColorTheme.white,
+                                      child: Column(
+                                        children: [
+                                          //top part
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(50),
+                                                    child: Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      50))),
+                                                      child: CachedNetworkImage(
+                                                        useOldImageOnUrlChange:
+                                                            false,
+                                                        fadeInDuration: Duration(
+                                                            milliseconds: 500),
+                                                        fit: BoxFit.cover,
+                                                        imageUrl:
+                                                            lifestyle_controller
                                                                 .localList
                                                                 .value
                                                                 .value[0]
                                                                 .subCards[index]
                                                                 .provider
-                                                                .name,
-                                                        style: TextStyle(
-                                                            fontSize: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                60)),
+                                                                .logo
+                                                                .url,
+                                                        progressIndicatorBuilder:
+                                                            (context, url,
+                                                                    downloadProgress) =>
+                                                                Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                        Color>(
+                                                                    ColorTheme
+                                                                        .btnshade2),
+                                                          ),
+                                                        ),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Icon(Icons.error),
+                                                      ),
+                                                    ),
                                                   ),
+                                                  // backgroundImage: NetworkImage(
+                                                  //     lifestyle_controller
+                                                  //         .localList
+                                                  //         .value
+                                                  //         .value[0]
+                                                  //         .subCards[index]
+                                                  //         .provider
+                                                  //         .logo
+                                                  //         .url),
                                                 ),
-                                              ),
-                                              Spacer(),
-                                              InkWell(
-                                                onTap: () {
-                                                  print("Follow Part");
-                                                },
-                                                child: Text("FOLLOW",
-                                                    style: TextStyle(
-                                                        color: ColorTheme.green,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60)),
-                                              ),
-                                              sizedboxwidth(context, 20),
-                                              Icon(Icons.more_vert_rounded)
-                                            ],
-                                          ),
-                                        ),
-                                        sizedbox(context, 60),
-                                        //body part
-                                        Container(
-                                          height:
-                                              MediaQuery.of(context).size.height /
-                                                  3.8,
-                                          child: CachedNetworkImage(
-                                            fadeInDuration:
-                                                Duration(milliseconds: 500),
-                                            fit: BoxFit.cover,
-                                            imageUrl: lifestyle_controller
-                                                        .localList
-                                                        .value
-                                                        .value[0]
-                                                        .subCards[index]
-                                                        .images !=
-                                                    null
-                                                ? lifestyle_controller
-                                                    .localList
-                                                    .value
-                                                    .value[0]
-                                                    .subCards[index]
-                                                    .images[0]
-                                                    .url
-                                                : "https://cdn.pixabay.com/photo/2021/12/04/10/58/nature-6844982__340.jpg",
-                                            progressIndicatorBuilder: (context,
-                                                    url, downloadProgress) =>
-                                                Center(
-                                              child: CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<Color>(
-                                                        ColorTheme.btnshade2),
-                                              ),
-                                            ),
-                                            errorWidget: (context, url, error) =>
-                                                Icon(Icons.error),
-                                          ),
-                                        ),
-
-                                        sizedbox(context, 50),
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                lifestyle_controller
-                                                            .localList
-                                                            .value
-                                                            .value[0]
-                                                            .subCards[index]
-                                                            .images !=
-                                                        null
-                                                    ? lifestyle_controller
-                                                        .localList
-                                                        .value
-                                                        .value[0]
-                                                        .subCards[index]
-                                                        .images[0]
-                                                        .title
-                                                    : "NO IMAGE",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                              sizedbox(context, 60),
-                                              Row(
-                                                children: [
-                                                  Image.asset(
-                                                      ImageProvide.minilocation,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              55),
-                                                  sizedboxwidth(context, 50),
-                                                  Text(
-                                                   "$countryname",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60),
-                                                  ),
-                                                  sizedboxwidth(context, 20),
-                                                  CircleAvatar(
-                                                    backgroundColor:
-                                                        ColorTheme.btnshade2,
-                                                    radius: 3,
-                                                  ),
-                                                  sizedboxwidth(context, 50),
-                                                  Text(
-                                                    timeago.format(lifestyle_controller
-                                                        .localList
-                                                        .value
-                                                        .value[0]
-                                                        .subCards[index]
-                                                        .publishedDateTime),
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .height /
-                                                                60),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        sizedbox(context, 30),
-                                        //bottom part
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: GetBuilder(
-                                            init: lifestyle_controller,
-                                            builder: (_) {
-                                              return InkWell(
-                                                onTap: () async {
-                                                    // print(
-                                                    //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
-
-                                                    if (lifestyle_controller
-                                                            .localList
-                                                            .value
-                                                            .value[0]
-                                                            .subCards[index]
-                                                            .like ==
-                                                        true) {
-                                                      print("Dislike");
-                                                      likeUnlikeController
-                                                          .unlike(
-                                                              id: lifestyle_controller
-                                                                  .localList
-                                                                  .value
-                                                                  .value[0]
-                                                                  .subCards[
-                                                                      index]
-                                                                  .likeid);
-
-                                                      lifestyle_controller
-                                                          .localList
-                                                          .value
-                                                          .value[0]
-                                                          .subCards[index]
-                                                          .like = false;
+                                                sizedboxwidth(context, 30),
+                                                Expanded(
+                                                  child: Container(
+                                                    width: Get.width * 0.5,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        // Get.to(() => FollowDisplay(),
+                                                        //     transition:
+                                                        //         Transition.cupertino);
+                                                      },
+                                                      child: Text(
                                                           lifestyle_controller
-                                                              .localList
-                                                              .value
-                                                              .value[0]
-                                                              .subCards[index]
-                                                              .totallike--;
-                                                    } else {
-                                                      String likeid =
-                                                          await likeUnlikeController.like(
-                                                              articleId:
-                                                                  lifestyle_controller
                                                                       .localList
                                                                       .value
                                                                       .value[0]
                                                                       .subCards[
                                                                           index]
-                                                                      .id);
+                                                                      .provider
+                                                                      .name ==
+                                                                  null
+                                                              ? "Paper-App"
+                                                              : lifestyle_controller
+                                                                  .localList
+                                                                  .value
+                                                                  .value[0]
+                                                                  .subCards[index]
+                                                                  .provider
+                                                                  .name,
+                                                          style: TextStyle(
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  60)),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                GetBuilder(
+                                                  init: lifestyle_controller,
+                                                  builder: (_) {
+                                                    return InkWell(
+                                                      onTap: () async {
+                                                        // print("Follow Part");
+                                                        if (lifestyle_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .provider
+                                                            .follow) {
+                                                          followController.unfollow(
+                                                              id: lifestyle_controller
+                                                                  .localList
+                                                                  .value
+                                                                  .value[0]
+                                                                  .subCards[index]
+                                                                  .provider
+                                                                  .followid);
 
-                                                      lifestyle_controller
+                                                          for (int i = 0;
+                                                              i <
+                                                                  lifestyle_controller
+                                                                      .localList
+                                                                      .value
+                                                                      .value[0]
+                                                                      .subCards
+                                                                      .length;
+                                                              i++) {
+                                                            if (lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[i]
+                                                                    .provider
+                                                                    .id ==
+                                                                lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .provider
+                                                                    .id) {
+                                                              lifestyle_controller
+                                                                  .localList
+                                                                  .value
+                                                                  .value[0]
+                                                                  .subCards[i]
+                                                                  .provider
+                                                                  .follow = false;
+                                                            }
+                                                          }
+                                                          // newsController
+                                                          //     .newsList
+                                                          //     .value
+                                                          //     .value[0]
+                                                          //     .subCards[index]
+                                                          //     .provider
+                                                          //     .follow = false;
+                                                        } else {
+                                                          String id =
+                                                              await followController
+                                                                  .follow(
+                                                            channelId:
+                                                                lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .provider
+                                                                    .id,
+                                                            channel_details:
+                                                                lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .provider
+                                                                    .name,
+                                                            channel_url:
+                                                                lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .provider
+                                                                    .logo
+                                                                    .url,
+                                                            title:
+                                                                lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .provider
+                                                                    .name,
+                                                          );
+
+                                                          for (int i = 0;
+                                                              i <
+                                                                  lifestyle_controller
+                                                                      .localList
+                                                                      .value
+                                                                      .value[0]
+                                                                      .subCards
+                                                                      .length;
+                                                              i++) {
+                                                            if (lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[i]
+                                                                    .provider
+                                                                    .id ==
+                                                                lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .provider
+                                                                    .id) {
+                                                              lifestyle_controller
+                                                                  .localList
+                                                                  .value
+                                                                  .value[0]
+                                                                  .subCards[i]
+                                                                  .provider
+                                                                  .follow = true;
+
+                                                              lifestyle_controller
+                                                                  .localList
+                                                                  .value
+                                                                  .value[0]
+                                                                  .subCards[i]
+                                                                  .provider
+                                                                  .followid = id;
+                                                            }
+                                                          }
+                                                        }
+
+                                                        lifestyle_controller.update();
+                                                      },
+                                                      child: lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .provider
+                                                                    .follow
+                                                                ? Text("FOLLOWED",
+                                                                    style: TextStyle(
+                                                                        color: ColorTheme
+                                                                            .green,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize: MediaQuery.of(context)
+                                                                                .size
+                                                                                .height /
+                                                                            60))
+                                                                : Text("FOLLOW",
+                                                                    style: TextStyle(
+                                                                        color: ColorTheme
+                                                                            .green,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize:
+                                                                            MediaQuery.of(context).size.height / 60)),
+                                                    );
+                                                  }
+                                                ),
+                                                sizedboxwidth(context, 20),
+                                                Icon(Icons.more_vert_rounded)
+                                              ],
+                                            ),
+                                          ),
+                                          sizedbox(context, 60),
+                                          //body part
+                                          Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                3.8,
+                                            child: CachedNetworkImage(
+                                              fadeInDuration:
+                                                  Duration(milliseconds: 500),
+                                              fit: BoxFit.cover,
+                                              imageUrl: lifestyle_controller
                                                           .localList
                                                           .value
                                                           .value[0]
                                                           .subCards[index]
-                                                          .like = true;
+                                                          .images !=
+                                                      null
+                                                  ? lifestyle_controller
+                                                      .localList
+                                                      .value
+                                                      .value[0]
+                                                      .subCards[index]
+                                                      .images[0]
+                                                      .url
+                                                  : "https://cdn.pixabay.com/photo/2021/12/04/10/58/nature-6844982__340.jpg",
+                                              progressIndicatorBuilder: (context,
+                                                      url, downloadProgress) =>
+                                                  Center(
+                                                child: CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                              Color>(
+                                                          ColorTheme.btnshade2),
+                                                ),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
+                                            ),
+                                          ),
 
-                                                      lifestyle_controller
+                                          sizedbox(context, 50),
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  lifestyle_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .images !=
+                                                          null
+                                                      ? lifestyle_controller
                                                           .localList
                                                           .value
                                                           .value[0]
                                                           .subCards[index]
-                                                          .likeid = likeid;
-
+                                                          .images[0]
+                                                          .title
+                                                      : "NO IMAGE",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height /
+                                                              50),
+                                                ),
+                                                sizedbox(context, 60),
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                        ImageProvide.minilocation,
+                                                        height:
+                                                            MediaQuery.of(context)
+                                                                    .size
+                                                                    .height /
+                                                                55),
+                                                    sizedboxwidth(context, 50),
+                                                    Text(
+                                                      "$countryname",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              60),
+                                                    ),
+                                                    sizedboxwidth(context, 20),
+                                                    CircleAvatar(
+                                                      backgroundColor:
+                                                          ColorTheme.btnshade2,
+                                                      radius: 3,
+                                                    ),
+                                                    sizedboxwidth(context, 50),
+                                                    Text(
+                                                      timeago.format(
                                                           lifestyle_controller
                                                               .localList
                                                               .value
                                                               .value[0]
                                                               .subCards[index]
-                                                              .totallike++;
-                                                    }
-
-                                                    lifestyle_controller.update();
-                                                  },
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    //like
-                                                    lifestyle_controller
-                                                              .localList
-                                                              .value
-                                                              .value[0]
-                                                              .subCards[index]
-                                                              .like
-                                                          ? Image.asset(
-                                                              ImageProvide.like,
-                                                              color: ColorTheme
-                                                                  .btnshade2,
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height /
-                                                                  40)
-                                                          : Image.asset(
-                                                              ImageProvide.like,
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height /
-                                                                  40),
-                                                      sizedboxwidth(
-                                                          context, 25),
-                                                      lifestyle_controller
-                                                              .localList
-                                                              .value
-                                                              .value[0]
-                                                              .subCards[index]
-                                                              .like
-                                                          ? Text(
-                                                              "${lifestyle_controller.localList.value.value[0].subCards[index].totallike}",
-                                                              style: TextStyle(
-                                                                  color: ColorTheme
-                                                                      .btnshade2,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height /
-                                                                      50))
-                                                          : Text(
-                                                              "${lifestyle_controller.localList.value.value[0].subCards[index].totallike}",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height /
-                                                                      50),
-                                                            ),
-                                                    Spacer(),
-                                                    //comment
-                                                    Image.asset(ImageProvide.cmt,
-                                                        height: MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            40),
-                                                    sizedboxwidth(context, 25),
-                                                    Text(
-                                                      "38",
+                                                              .publishedDateTime),
                                                       style: TextStyle(
-                                                          fontWeight: FontWeight.w600,
-                                                          fontSize:
-                                                              MediaQuery.of(context)
-                                                                      .size
-                                                                      .height /
-                                                                  50),
-                                                    ),
-                                                    Spacer(),
-                                                    //share
-                                                    Image.asset(
-                                                        ImageProvide.outlineshare,
-                                                        height: MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            40),
-                                                    sizedboxwidth(context, 25),
-                                                    Text(
-                                                      "22",
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w600,
-                                                          fontSize:
-                                                              MediaQuery.of(context)
-                                                                      .size
-                                                                      .height /
-                                                                  50),
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              60),
                                                     ),
                                                   ],
-                                                ),
-                                              );
-                                            }
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        )
-                                      ],
+                                          sizedbox(context, 30),
+                                          //bottom part
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: GetBuilder(
+                                                init: lifestyle_controller,
+                                                builder: (_) {
+                                                  return InkWell(
+                                                    onTap: () async {
+                                                      // print(
+                                                      //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
+
+                                                      if (lifestyle_controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .like ==
+                                                          true) {
+                                                        print("Dislike");
+                                                        likeUnlikeController.unlike(
+                                                            id: lifestyle_controller
+                                                                .localList
+                                                                .value
+                                                                .value[0]
+                                                                .subCards[index]
+                                                                .likeid);
+
+                                                        lifestyle_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .like = false;
+                                                        lifestyle_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .totallike--;
+                                                      } else {
+                                                        String likeid =
+                                                            await likeUnlikeController.like(
+                                                                articleId:
+                                                                    lifestyle_controller
+                                                                        .localList
+                                                                        .value
+                                                                        .value[0]
+                                                                        .subCards[
+                                                                            index]
+                                                                        .id);
+
+                                                        lifestyle_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .like = true;
+
+                                                        lifestyle_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .likeid = likeid;
+
+                                                        lifestyle_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .totallike++;
+                                                      }
+
+                                                      lifestyle_controller
+                                                          .update();
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        //like
+                                                        lifestyle_controller
+                                                                .localList
+                                                                .value
+                                                                .value[0]
+                                                                .subCards[index]
+                                                                .like
+                                                            ? Image.asset(
+                                                                ImageProvide.like,
+                                                                color: ColorTheme
+                                                                    .btnshade2,
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height /
+                                                                    40)
+                                                            : Image.asset(
+                                                                ImageProvide.like,
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height /
+                                                                    40),
+                                                        sizedboxwidth(
+                                                            context, 25),
+                                                        lifestyle_controller
+                                                                .localList
+                                                                .value
+                                                                .value[0]
+                                                                .subCards[index]
+                                                                .like
+                                                            ? Text(
+                                                                "${lifestyle_controller.localList.value.value[0].subCards[index].totallike}",
+                                                                style: TextStyle(
+                                                                    color: ColorTheme
+                                                                        .btnshade2,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        50))
+                                                            : Text(
+                                                                "${lifestyle_controller.localList.value.value[0].subCards[index].totallike}",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        50),
+                                                              ),
+                                                        Spacer(),
+                                                        //comment
+                                                        Image.asset(
+                                                            ImageProvide.cmt,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                40),
+                                                        sizedboxwidth(
+                                                            context, 25),
+                                                        Text(
+                                                          "38",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  50),
+                                                        ),
+                                                        Spacer(),
+                                                        //share
+                                                        Image.asset(
+                                                            ImageProvide
+                                                                .outlineshare,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                40),
+                                                        sizedboxwidth(
+                                                            context, 25),
+                                                        Text(
+                                                          "22",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  50),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                }),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          )),
+                                  );
+                                },
+                              ),
+                            )),
+                      
                     );
                   },
                 )),

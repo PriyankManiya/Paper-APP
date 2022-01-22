@@ -364,18 +364,24 @@ class Provider {
         this.name,
         this.adNetworkId,
         this.logo,
+        this.follow,
+        this.followid,
     });
 
     String id;
     String name;
     String adNetworkId;
     Logo logo;
+    bool follow;
+    String followid;
 
     factory Provider.fromJson(Map<String, dynamic> json) => Provider(
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
         adNetworkId: json["adNetworkId"] == null ? null : json["adNetworkId"],
         logo: json["logo"] == null ? null : Logo.fromJson(json["logo"]),
+        follow: json["follow"] == null ? false : json["follow"],
+        followid: json["followid"] == null ? null : json["followid"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -383,6 +389,8 @@ class Provider {
         "name": name == null ? null : name,
         "adNetworkId": adNetworkId == null ? null : adNetworkId,
         "logo": logo == null ? null : logo.toJson(),
+        "follow": follow == null ? false : follow,
+        "followid": followid == null ? null : followid,
     };
 }
 

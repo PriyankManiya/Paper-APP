@@ -22,7 +22,7 @@ class SigninService {
         "social_id":social_id,
         "register_type":register_type
         });
-        print("Response : ${response.body}");
+        // print("Response : ${response.body}");
       return jsonDecode(response.body);
   }
 }

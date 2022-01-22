@@ -25,7 +25,7 @@ class HistoryArticleController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("Token : $token");
+        
         var saveArticleResponse = await HistoryArticleService.saveHistoryArticle(
           token: token,
           articleDetails: articleDetails,
@@ -59,7 +59,7 @@ class HistoryArticleController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("Token : $token");
+        
         var getArticleResponse = await HistoryArticleService.getHistoryArticle(
           token: token,
         );
@@ -91,7 +91,7 @@ class HistoryArticleController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("Token : $token");
+        
         var removeArticleResponse = await HistoryArticleService.removeHistoryArticle(
           token: token,
           id: id,
@@ -100,7 +100,9 @@ class HistoryArticleController extends GetxController {
         if (removeArticleResponse["status"] == 200) {
           RemoveArticle removeArticle = RemoveArticle.fromJson(removeArticleResponse);
           // savedList(saveArticle.data);
-          print("Article Remove Successfully");
+          Get.snackbar("", "removed successfully",
+              snackStyle: SnackStyle.FLOATING);
+          // print("Article Remove Successfully");
           getHistoryArticle();
         } else {
           Get.snackbar("Opps", removeArticleResponse["message"],

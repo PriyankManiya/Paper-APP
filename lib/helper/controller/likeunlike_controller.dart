@@ -25,7 +25,7 @@ class LikeUnlikeController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("TOken ::: ${storage.read("token")}");
+        
         var likeResponse = await LikeUnlikeService.like(
           token: token,
           articleId: articleId 
@@ -62,7 +62,7 @@ class LikeUnlikeController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("TOken ::: ${storage.read("token")}");
+        
         var likeResponse = await LikeUnlikeService.unLikeList(
           token: token,
           id: id 
@@ -100,7 +100,7 @@ class LikeUnlikeController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("TOken ::: ${storage.read("token")}");
+        
         var getlikeResponse = await LikeUnlikeService.getLikeList(
           token: token,
         );
@@ -108,7 +108,7 @@ class LikeUnlikeController extends GetxController {
         if (getlikeResponse["status"] == 200) {
           LikeList like = LikeList.fromJson(getlikeResponse);
           likeList(like.data);
-          print("Like get successfully.");
+          // print("Like get successfully.");
         } else {
           Get.snackbar("Opps", getlikeResponse["message"],
               snackStyle: SnackStyle.FLOATING);

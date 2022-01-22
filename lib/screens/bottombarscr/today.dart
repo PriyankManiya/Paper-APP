@@ -9,6 +9,7 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -26,6 +27,7 @@ class _TodayState extends State<Today> {
   int pagination = 2;
   bool isLoading = true;
   final TodayController today_Controller = Get.find<TodayController>();
+  FollowController followController = Get.put(FollowController());
   LikeUnlikeController likeUnlikeController = Get.put(LikeUnlikeController());
   RefreshController refershControllers =
       RefreshController(initialRefresh: false);
@@ -43,10 +45,10 @@ class _TodayState extends State<Today> {
         nextUrl: today_Controller.localList.value.value[0].nextPageUrl);
     await _streamController.add(today_Controller.localList.value);
     await Future.delayed(Duration(milliseconds: 1000));
-    if (mounted) 
-     setState(() {
-      pagination++;
-    });
+    if (mounted)
+      setState(() {
+        pagination++;
+      });
     refershControllers.loadComplete();
   }
 
@@ -72,412 +74,576 @@ class _TodayState extends State<Today> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return today_Controller.isLoading.value
-          ? Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                      child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              ColorTheme.btnshade2))),
-                ],
-              ),
-            )
-          : Scaffold(
-              backgroundColor: Color(0xffF5F5F5),
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: ColorTheme.white,
-                title: Text(
-                  "Today News",
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.height / 35,
-                      color: ColorTheme.btnshade2,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              body: Column(
-                children: [
-                  // Container(
-                  //   padding: EdgeInsets.symmetric(horizontal: 10),
-                  //   width: Get.width,
-                  //   height: 50,
-                  //   child: Row(
-                  //     children: [
-                  //       Text(
-                  //         "New York City",
-                  //         style: TextStyle(
-                  //             fontSize: Get.height * 0.020,
-                  //             fontWeight: FontWeight.bold,
-                  //             color: ColorTheme.black),
-                  //       ),
-                  //       GestureDetector(
-                  //         // onTap: () {
-                  //         //   Get.to(Follow());
-                  //         // },
-                  //         child: Container(
-                  //           padding: EdgeInsets.symmetric(horizontal: 10),
-                  //           child: Image.asset(
-                  //             ImageProvide.pencil,
-                  //             height: 20,
-                  //             width: 20,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       Spacer(),
-                  //       Container(
-                  //         padding: EdgeInsets.symmetric(horizontal: 10),
-                  //         child: Image.asset(
-                  //           ImageProvide.meter,
-                  //           height: 20,
-                  //           width: 20,
-                  //         ),
-                  //       ),
-                  //       Text(
-                  //         "69. F",
-                  //         style: TextStyle(
-                  //             fontSize: Get.height * 0.020,
-                  //             fontWeight: FontWeight.bold,
-                  //             color: ColorTheme.black),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  Expanded(
-                      child: StreamBuilder(
-                    stream: _streamController.stream,
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      return Scrollbar(
-                        child: SmartRefresher(
-                            enablePullDown: true,
-                            enablePullUp: true,
-                            controller: refershControllers,
-                            onRefresh: _onRefresh,
-                            onLoading: _onLoading,
-                            child: ListView.separated(
-                              separatorBuilder: (context, index) {
-                                return Container(
-                                  child: sizedbox(context, 50),
-                                );
-                              },
-                              itemCount: today_Controller
-                                  .localList.value.value[0].subCards.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                 GetStorage getStorage = GetStorage();
-                                String countryname = getStorage.read("countryname");
-                                return InkWell(
-                                  onTap: () {
-                                    Get.to(
-                                        () => NewsDetails(
-                                            subCard: today_Controller
-                                                .localList
-                                                .value
-                                                .value[0]
-                                                .subCards[index]),
-                                        transition: Transition.cupertino);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 15),
-                                    width: MediaQuery.of(context).size.width,
-                                    color: ColorTheme.white,
-                                    child: Column(
-                                      children: [
-                                        //top part
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: Row(
-                                            children: [
-                                              CircleAvatar(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  child: Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    50))),
-                                                    child: CachedNetworkImage(
-                                                      useOldImageOnUrlChange:
-                                                          false,
-                                                      fadeInDuration: Duration(
-                                                          milliseconds: 500),
-                                                      fit: BoxFit.cover,
-                                                      imageUrl: today_Controller
-                                                          .localList
-                                                          .value
-                                                          .value[0]
-                                                          .subCards[index]
-                                                          .provider
-                                                          .logo
-                                                          .url,
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                                  downloadProgress) =>
-                                                              Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          valueColor:
-                                                              AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                  ColorTheme
-                                                                      .btnshade2),
-                                                        ),
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Icon(Icons.error),
-                                                    ),
-                                                  ),
-                                                ),
-                                                // backgroundImage: NetworkImage(
-                                                //     newsController
-                                                //         .localList
-                                                //         .value
-                                                //         .value[0]
-                                                //         .subCards[index]
-                                                //         .provider
-                                                //         .logo
-                                                //         .url),
-                                              ),
-                                              sizedboxwidth(context, 30),
-                                              Expanded(
-                                                child: Container(
-                                                  width: Get.width * 0.5,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      // Get.to(() => FollowDisplay(),
-                                                      //     transition:
-                                                      //         Transition.cupertino);
-                                                    },
-                                                    child: Text(
-                                                        today_Controller
-                                                                    .localList
-                                                                    .value
-                                                                    .value[0]
-                                                                    .subCards[
-                                                                        index]
-                                                                    .provider
-                                                                    .name ==
-                                                                null
-                                                            ? "Paper-App"
-                                                            : today_Controller
+    return Scaffold(
+        backgroundColor: Color(0xffF5F5F5),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: ColorTheme.white,
+          title: Text(
+            "Today News",
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.height / 35,
+                color: ColorTheme.btnshade2,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: Obx(() {
+          return today_Controller.isLoading.value
+              ? Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                          child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  ColorTheme.btnshade2))),
+                    ],
+                  ),
+                )
+              : Column(
+                  children: [
+                    // Container(
+                    //   padding: EdgeInsets.symmetric(horizontal: 10),
+                    //   width: Get.width,
+                    //   height: 50,
+                    //   child: Row(
+                    //     children: [
+                    //       Text(
+                    //         "New York City",
+                    //         style: TextStyle(
+                    //             fontSize: Get.height * 0.020,
+                    //             fontWeight: FontWeight.bold,
+                    //             color: ColorTheme.black),
+                    //       ),
+                    //       GestureDetector(
+                    //         // onTap: () {
+                    //         //   Get.to(Follow());
+                    //         // },
+                    //         child: Container(
+                    //           padding: EdgeInsets.symmetric(horizontal: 10),
+                    //           child: Image.asset(
+                    //             ImageProvide.pencil,
+                    //             height: 20,
+                    //             width: 20,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Spacer(),
+                    //       Container(
+                    //         padding: EdgeInsets.symmetric(horizontal: 10),
+                    //         child: Image.asset(
+                    //           ImageProvide.meter,
+                    //           height: 20,
+                    //           width: 20,
+                    //         ),
+                    //       ),
+                    //       Text(
+                    //         "69. F",
+                    //         style: TextStyle(
+                    //             fontSize: Get.height * 0.020,
+                    //             fontWeight: FontWeight.bold,
+                    //             color: ColorTheme.black),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    Expanded(
+                        child: StreamBuilder(
+                      stream: _streamController.stream,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return Scrollbar(
+                          child: SmartRefresher(
+                              enablePullDown: true,
+                              enablePullUp: true,
+                              controller: refershControllers,
+                              onRefresh: _onRefresh,
+                              onLoading: _onLoading,
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return Container(
+                                    child: sizedbox(context, 50),
+                                  );
+                                },
+                                itemCount: today_Controller
+                                    .localList.value.value[0].subCards.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  GetStorage getStorage = GetStorage();
+                                  String countryname =
+                                      getStorage.read("countryname");
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(
+                                          () => NewsDetails(
+                                              subCard: today_Controller
+                                                  .localList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index]),
+                                          transition: Transition.cupertino);
+                                    },
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      width: MediaQuery.of(context).size.width,
+                                      color: ColorTheme.white,
+                                      child: Column(
+                                        children: [
+                                          //top part
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    child: Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          50))),
+                                                      child: CachedNetworkImage(
+                                                        useOldImageOnUrlChange:
+                                                            false,
+                                                        fadeInDuration:
+                                                            Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                        fit: BoxFit.cover,
+                                                        imageUrl:
+                                                            today_Controller
                                                                 .localList
                                                                 .value
                                                                 .value[0]
                                                                 .subCards[index]
                                                                 .provider
-                                                                .name,
-                                                        style: TextStyle(
-                                                            fontSize: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                60)),
+                                                                .logo
+                                                                .url,
+                                                        progressIndicatorBuilder:
+                                                            (context, url,
+                                                                    downloadProgress) =>
+                                                                Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                        Color>(
+                                                                    ColorTheme
+                                                                        .btnshade2),
+                                                          ),
+                                                        ),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Icon(Icons.error),
+                                                      ),
+                                                    ),
                                                   ),
+                                                  // backgroundImage: NetworkImage(
+                                                  //     newsController
+                                                  //         .localList
+                                                  //         .value
+                                                  //         .value[0]
+                                                  //         .subCards[index]
+                                                  //         .provider
+                                                  //         .logo
+                                                  //         .url),
                                                 ),
-                                              ),
-                                              Spacer(),
-                                              InkWell(
-                                                onTap: () {
-                                                  print("Follow Part");
-                                                },
-                                                child: Text("FOLLOW",
-                                                    style: TextStyle(
-                                                        color: ColorTheme.green,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            60)),
-                                              ),
-                                              sizedboxwidth(context, 20),
-                                              Icon(Icons.more_vert_rounded)
-                                            ],
-                                          ),
-                                        ),
-                                        sizedbox(context, 60),
-                                        //body part
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              3.8,
-                                          child: CachedNetworkImage(
-                                            fadeInDuration:
-                                                Duration(milliseconds: 500),
-                                            fit: BoxFit.cover,
-                                            imageUrl: today_Controller
-                                                        .localList
-                                                        .value
-                                                        .value[0]
-                                                        .subCards[index]
-                                                        .images !=
-                                                    null
-                                                ? today_Controller
-                                                    .localList
-                                                    .value
-                                                    .value[0]
-                                                    .subCards[index]
-                                                    .images[0]
-                                                    .url
-                                                : "https://cdn.pixabay.com/photo/2021/12/04/10/58/nature-6844982__340.jpg",
-                                            progressIndicatorBuilder: (context,
-                                                    url, downloadProgress) =>
-                                                Center(
-                                              child: CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                            Color>(
-                                                        ColorTheme.btnshade2),
-                                              ),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
-                                          ),
-                                        ),
-
-                                        sizedbox(context, 50),
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                today_Controller
-                                                            .localList
-                                                            .value
-                                                            .value[0]
-                                                            .subCards[index]
-                                                            .images !=
-                                                        null
-                                                    ? today_Controller
-                                                        .localList
-                                                        .value
-                                                        .value[0]
-                                                        .subCards[index]
-                                                        .images[0]
-                                                        .title
-                                                    : "NO IMAGE",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            50),
-                                              ),
-                                              sizedbox(context, 60),
-                                              Row(
-                                                children: [
-                                                  Image.asset(
-                                                      ImageProvide.minilocation,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              55),
-                                                  sizedboxwidth(context, 50),
-                                                  Text(
-                                                   "$countryname",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            60),
-                                                  ),
-                                                  sizedboxwidth(context, 20),
-                                                  CircleAvatar(
-                                                    backgroundColor:
-                                                        ColorTheme.btnshade2,
-                                                    radius: 3,
-                                                  ),
-                                                  sizedboxwidth(context, 50),
-                                                  Text(
-                                                    timeago.format(
-                                                        today_Controller
-                                                            .localList
-                                                            .value
-                                                            .value[0]
-                                                            .subCards[index]
-                                                            .publishedDateTime),
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            60),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        sizedbox(context, 30),
-                                        //bottom part
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: InkWell(
-                                             onTap: () async {
-                                                    // print(
-                                                    //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
-
-                                                    if (today_Controller
-                                                            .localList
-                                                            .value
-                                                            .value[0]
-                                                            .subCards[index]
-                                                            .like ==
-                                                        true) {
-                                                      print("Dislike");
-                                                      likeUnlikeController
-                                                          .unlike(
-                                                              id: today_Controller
+                                                sizedboxwidth(context, 30),
+                                                Expanded(
+                                                  child: Container(
+                                                    width: Get.width * 0.5,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        // Get.to(() => FollowDisplay(),
+                                                        //     transition:
+                                                        //         Transition.cupertino);
+                                                      },
+                                                      child: Text(
+                                                          today_Controller
+                                                                      .localList
+                                                                      .value
+                                                                      .value[0]
+                                                                      .subCards[
+                                                                          index]
+                                                                      .provider
+                                                                      .name ==
+                                                                  null
+                                                              ? "Paper-App"
+                                                              : today_Controller
                                                                   .localList
                                                                   .value
                                                                   .value[0]
                                                                   .subCards[
                                                                       index]
-                                                                  .likeid);
+                                                                  .provider
+                                                                  .name,
+                                                          style: TextStyle(
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  60)),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                GetBuilder(
+                                                  init: today_Controller,
+                                                  builder: (_) {
+                                                    return InkWell(
+                                                      onTap: () async {
+                                                        // print("Follow Part");
+                                                        if (today_Controller
+                                                                        .localList
+                                                                        .value
+                                                                        .value[0]
+                                                                        .subCards[index]
+                                                                        .provider
+                                                                        .follow) {
+                                                                      followController.unfollow(
+                                                                          id: today_Controller.localList
+                                                                              .value
+                                                                              .value[0]
+                                                                              .subCards[
+                                                                                  index]
+                                                                              .provider
+                                                                              .followid);
 
-                                                      today_Controller
+                                                                      for (int i = 0;
+                                                                          i <
+                                                                              today_Controller.localList
+                                                                                  .value
+                                                                                  .value[0]
+                                                                                  .subCards
+                                                                                  .length;
+                                                                          i++) {
+                                                                        if (today_Controller.localList
+                                                                                .value
+                                                                                .value[0]
+                                                                                .subCards[i]
+                                                                                .provider
+                                                                                .id ==
+                                                                            today_Controller.localList
+                                                                                .value
+                                                                                .value[0]
+                                                                                .subCards[
+                                                                                    index]
+                                                                                .provider
+                                                                                .id) {
+                                                                          today_Controller.localList
+                                                                              .value
+                                                                              .value[0]
+                                                                              .subCards[i]
+                                                                              .provider
+                                                                              .follow = false;
+                                                                        }
+                                                                      }
+                                                                      // newsController
+                                                                      //     .newsList
+                                                                      //     .value
+                                                                      //     .value[0]
+                                                                      //     .subCards[index]
+                                                                      //     .provider
+                                                                      //     .follow = false;
+                                                                    } else {
+                                                                      String id =
+                                                                          await followController
+                                                                              .follow(
+                                                                        channelId:
+                                                                            today_Controller
+                                                                                .localList
+                                                                                .value
+                                                                                .value[0]
+                                                                                .subCards[
+                                                                                    index]
+                                                                                .provider
+                                                                                .id,
+                                                                        channel_details:
+                                                                            today_Controller.localList
+                                                                                .value
+                                                                                .value[0]
+                                                                                .subCards[
+                                                                                    index]
+                                                                                .provider
+                                                                                .name,
+                                                                        channel_url:
+                                                                            today_Controller.localList
+                                                                                .value
+                                                                                .value[0]
+                                                                                .subCards[
+                                                                                    index]
+                                                                                .provider
+                                                                                .logo
+                                                                                .url,
+                                                                        title:
+                                                                            today_Controller.localList
+                                                                                .value
+                                                                                .value[0]
+                                                                                .subCards[
+                                                                                    index]
+                                                                                .provider
+                                                                                .name,
+                                                                      );
+
+                                                                      for (int i = 0;
+                                                                          i <
+                                                                              today_Controller.localList
+                                                                                  .value
+                                                                                  .value[0]
+                                                                                  .subCards
+                                                                                  .length;
+                                                                          i++) {
+                                                                        if (today_Controller.localList
+                                                                                .value
+                                                                                .value[0]
+                                                                                .subCards[i]
+                                                                                .provider
+                                                                                .id ==
+                                                                            today_Controller.localList
+                                                                                .value
+                                                                                .value[0]
+                                                                                .subCards[
+                                                                                    index]
+                                                                                .provider
+                                                                                .id) {
+                                                                          today_Controller.localList
+                                                                              .value
+                                                                              .value[0]
+                                                                              .subCards[i]
+                                                                              .provider
+                                                                              .follow = true;
+
+                                                                          today_Controller.localList
+                                                                              .value
+                                                                              .value[0]
+                                                                              .subCards[i]
+                                                                              .provider
+                                                                              .followid = id;
+                                                                        }
+                                                                      }
+                                                                    }
+
+                                                                    today_Controller.update();
+                                                      },
+                                                      child: today_Controller
+                                                                          .localList
+                                                                          .value
+                                                                          .value[0]
+                                                                          .subCards[index]
+                                                                          .provider
+                                                                          .follow
+                                                                      ? Text("FOLLOWED",
+                                                                          style: TextStyle(
+                                                                              color: ColorTheme
+                                                                                  .green,
+                                                                              fontWeight:
+                                                                                  FontWeight
+                                                                                      .bold,
+                                                                              fontSize: MediaQuery.of(context)
+                                                                                      .size
+                                                                                      .height /
+                                                                                  60))
+                                                                      : Text("FOLLOW",
+                                                                          style: TextStyle(
+                                                                              color: ColorTheme
+                                                                                  .green,
+                                                                              fontWeight:
+                                                                                  FontWeight
+                                                                                      .bold,
+                                                                              fontSize:
+                                                                                  MediaQuery.of(context).size.height / 60)),
+                                                    );
+                                                  }
+                                                ),
+                                                sizedboxwidth(context, 20),
+                                                Icon(Icons.more_vert_rounded)
+                                              ],
+                                            ),
+                                          ),
+                                          sizedbox(context, 60),
+                                          //body part
+                                          Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                3.8,
+                                            child: CachedNetworkImage(
+                                              fadeInDuration:
+                                                  Duration(milliseconds: 500),
+                                              fit: BoxFit.cover,
+                                              imageUrl: today_Controller
                                                           .localList
                                                           .value
                                                           .value[0]
                                                           .subCards[index]
-                                                          .like = false;
+                                                          .images !=
+                                                      null
+                                                  ? today_Controller
+                                                      .localList
+                                                      .value
+                                                      .value[0]
+                                                      .subCards[index]
+                                                      .images[0]
+                                                      .url
+                                                  : "https://cdn.pixabay.com/photo/2021/12/04/10/58/nature-6844982__340.jpg",
+                                              progressIndicatorBuilder:
+                                                  (context, url,
+                                                          downloadProgress) =>
+                                                      Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                              Color>(
+                                                          ColorTheme.btnshade2),
+                                                ),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
+                                            ),
+                                          ),
+
+                                          sizedbox(context, 50),
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  today_Controller
+                                                              .localList
+                                                              .value
+                                                              .value[0]
+                                                              .subCards[index]
+                                                              .images !=
+                                                          null
+                                                      ? today_Controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .images[0]
+                                                          .title
+                                                      : "NO IMAGE",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height /
+                                                              50),
+                                                ),
+                                                sizedbox(context, 60),
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                        ImageProvide
+                                                            .minilocation,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            55),
+                                                    sizedboxwidth(context, 50),
+                                                    Text(
+                                                      "$countryname",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              60),
+                                                    ),
+                                                    sizedboxwidth(context, 20),
+                                                    CircleAvatar(
+                                                      backgroundColor:
+                                                          ColorTheme.btnshade2,
+                                                      radius: 3,
+                                                    ),
+                                                    sizedboxwidth(context, 50),
+                                                    Text(
+                                                      timeago.format(
                                                           today_Controller
                                                               .localList
                                                               .value
                                                               .value[0]
                                                               .subCards[index]
-                                                              .totallike--;
-                                                    } else {
-                                                      String likeid =
-                                                          await likeUnlikeController.like(
+                                                              .publishedDateTime),
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              60),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          sizedbox(context, 30),
+                                          //bottom part
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                // print(
+                                                //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
+
+                                                if (today_Controller
+                                                        .localList
+                                                        .value
+                                                        .value[0]
+                                                        .subCards[index]
+                                                        .like ==
+                                                    true) {
+                                                  print("Dislike");
+                                                  likeUnlikeController.unlike(
+                                                      id: today_Controller
+                                                          .localList
+                                                          .value
+                                                          .value[0]
+                                                          .subCards[index]
+                                                          .likeid);
+
+                                                  today_Controller
+                                                      .localList
+                                                      .value
+                                                      .value[0]
+                                                      .subCards[index]
+                                                      .like = false;
+                                                  today_Controller
+                                                      .localList
+                                                      .value
+                                                      .value[0]
+                                                      .subCards[index]
+                                                      .totallike--;
+                                                } else {
+                                                  String likeid =
+                                                      await likeUnlikeController
+                                                          .like(
                                                               articleId:
                                                                   today_Controller
                                                                       .localList
@@ -487,145 +653,148 @@ class _TodayState extends State<Today> {
                                                                           index]
                                                                       .id);
 
-                                                      today_Controller
+                                                  today_Controller
+                                                      .localList
+                                                      .value
+                                                      .value[0]
+                                                      .subCards[index]
+                                                      .like = true;
+
+                                                  today_Controller
+                                                      .localList
+                                                      .value
+                                                      .value[0]
+                                                      .subCards[index]
+                                                      .likeid = likeid;
+
+                                                  today_Controller
+                                                      .localList
+                                                      .value
+                                                      .value[0]
+                                                      .subCards[index]
+                                                      .totallike++;
+                                                }
+
+                                                today_Controller.update();
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  //like
+                                                  today_Controller
                                                           .localList
                                                           .value
                                                           .value[0]
                                                           .subCards[index]
-                                                          .like = true;
-
-                                                      today_Controller
+                                                          .like
+                                                      ? Image.asset(
+                                                          ImageProvide.like,
+                                                          color: ColorTheme
+                                                              .btnshade2,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              40)
+                                                      : Image.asset(
+                                                          ImageProvide.like,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              40),
+                                                  sizedboxwidth(context, 25),
+                                                  today_Controller
                                                           .localList
                                                           .value
                                                           .value[0]
                                                           .subCards[index]
-                                                          .likeid = likeid;
-
-                                                          today_Controller
-                                                              .localList
-                                                              .value
-                                                              .value[0]
-                                                              .subCards[index]
-                                                              .totallike++;
-                                                    }
-
-                                                    today_Controller.update();
-                                                  },
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                //like
-                                              today_Controller
-                                                              .localList
-                                                              .value
-                                                              .value[0]
-                                                              .subCards[index]
-                                                              .like
-                                                          ? Image.asset(
-                                                              ImageProvide.like,
+                                                          .like
+                                                      ? Text(
+                                                          "${today_Controller.localList.value.value[0].subCards[index].totallike}",
+                                                          style: TextStyle(
                                                               color: ColorTheme
                                                                   .btnshade2,
-                                                              height: MediaQuery.of(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: MediaQuery.of(
                                                                           context)
                                                                       .size
                                                                       .height /
-                                                                  40)
-                                                          : Image.asset(
-                                                              ImageProvide.like,
-                                                              height: MediaQuery.of(
+                                                                  50))
+                                                      : Text(
+                                                          "${today_Controller.localList.value.value[0].subCards[index].totallike}",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: MediaQuery.of(
                                                                           context)
                                                                       .size
                                                                       .height /
-                                                                  40),
-                                                      sizedboxwidth(
-                                                          context, 25),
-                                                      today_Controller
-                                                              .localList
-                                                              .value
-                                                              .value[0]
-                                                              .subCards[index]
-                                                              .like
-                                                          ? Text(
-                                                              "${today_Controller.localList.value.value[0].subCards[index].totallike}",
-                                                              style: TextStyle(
-                                                                  color: ColorTheme
-                                                                      .btnshade2,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height /
-                                                                      50))
-                                                          : Text(
-                                                              "${today_Controller.localList.value.value[0].subCards[index].totallike}",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height /
-                                                                      50),
-                                                            ),
-                                                Spacer(),
-                                                //comment
-                                                Image.asset(ImageProvide.cmt,
-                                                    height: MediaQuery.of(context)
-                                                            .size
-                                                            .height /
-                                                        40),
-                                                sizedboxwidth(context, 25),
-                                                Text(
-                                                  "38",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize:
+                                                                  50),
+                                                        ),
+                                                  Spacer(),
+                                                  //comment
+                                                  Image.asset(ImageProvide.cmt,
+                                                      height:
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .height /
-                                                              50),
-                                                ),
-                                                Spacer(),
-                                                //share
-                                                Image.asset(
-                                                    ImageProvide.outlineshare,
-                                                    height: MediaQuery.of(context)
-                                                            .size
-                                                            .height /
-                                                        40),
-                                                sizedboxwidth(context, 25),
-                                                Text(
-                                                  "22",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize:
+                                                              40),
+                                                  sizedboxwidth(context, 25),
+                                                  Text(
+                                                    "38",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            50),
+                                                  ),
+                                                  Spacer(),
+                                                  //share
+                                                  Image.asset(
+                                                      ImageProvide.outlineshare,
+                                                      height:
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .height /
-                                                              50),
-                                                ),
-                                              ],
+                                                              40),
+                                                  sizedboxwidth(context, 25),
+                                                  Text(
+                                                    "22",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            50),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      ],
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            )),
-                      );
-                    },
-                  )),
-                ],
-              ),
-            );
-    });
+                                  );
+                                },
+                              )),
+                        );
+                      },
+                    )),
+                  ],
+                );
+        }));
+    // });
   }
 }

@@ -21,14 +21,14 @@ class ArticleService {
   static Future<dynamic> getArticle({String token}) async {
     var response = await client.get(Uri.parse(StringConst.GETARITCLE),
         headers: {"x-access-token": token});
-    print("Article : ${response.body}");
+   
     return jsonDecode(response.body);
   }
 
   static Future<dynamic> removeArticle({String token, String id}) async {
     var response = await client.get(Uri.parse(StringConst.REMOVEARITCLE + id),
         headers: {"x-access-token": token});
-    print("Article : ${response.body}");
+    
     return jsonDecode(response.body);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -10,9 +11,8 @@ import 'package:paper_app/helper/controller/temp_controller.dart';
 import 'package:paper_app/helper/model/Country.dart';
 import 'package:paper_app/screens/bottombarscr/edit_location.dart';
 import 'package:paper_app/screens/bottombarscr/home/Travel.dart';
-// import 'package:searchable_dropdown/searchable_dropdown.dart';
-// import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:search_choices/search_choices.dart';
 import 'package:shimmer/shimmer.dart';
 import 'home/FoodDrink.dart';
 import 'home/ForYou.dart';
@@ -63,6 +63,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Country country = Country(name: "Argentina", code: "es-ar");
   double celsius = 0;
   GetStorage getStorage = GetStorage();
+  Position position;
 
   final List<Country> countryList = <Country>[
     Country(name: "Argentina", code: "es-ar"),
@@ -124,15 +125,32 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     setState(() {
       countryCode = getStorage.read("countrycode");
       countryname = getStorage.read("countryname");
-      
+
       // country = Country(name: countryname, code: countryCode);
-      print("Countryname ::: ${country.name} Countrycode ::: ${country.code}");
+      // print("Countryname ::: ${country.name} Countrycode ::: ${country.code}");
     });
   }
 
   getCurrentLatLong() async {
-// position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    //  print(position);
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    Coordinates coordinates =
+        new Coordinates(position.latitude, position.longitude);
+
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+
+    if (countryCode == null) {
+      setState(() {
+        countryCode = first.countryCode;
+
+        getStorage.write("countrycode", countryCode);
+        getStorage.write("countryname", countryname);
+      });
+
+      weatherController.getWeather();
+    }
   }
 
   @override
@@ -260,7 +278,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             () => Container(
               padding: EdgeInsets.all(10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
@@ -297,7 +315,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   "${weatherController.weather.value.name}",
                                   style: TextStyle(
                                       color: ColorTheme.black,
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold),
                                 ),
                           SizedBox(
@@ -311,160 +329,279 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   ),
-                  
-                 Expanded(
-                    child: SizedBox(
-                      height: 32,
-                      child: Theme(
-                        data: ThemeData(
-                          primaryColor:ColorTheme.btnshade2,
-                          primaryColorDark: ColorTheme.btnshade2,
-                          primaryColorLight: ColorTheme.btnshade2,
+                  // Expanded(
+                  //   child: SearchChoices.single(
+                  //     isExpanded: true,
+                  //     items: countryList
+                  //         .map(
+                  //           (e) => DropdownMenuItem(
+                  //             child: Text(e.name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
+                  //             value: e.code,
+                  //           ),
+                  //         )
+                  //         .toList(),
+                  //         icon: SizedBox.shrink(),
+                  //         underline:SizedBox.shrink() ,
+                  //         padding: 0,
+                  //     searchInputDecoration: InputDecoration(
+                  //         border: OutlineInputBorder(
+                  //           borderSide: BorderSide(
+                  //             color: ColorTheme.btnshade2,
+                  //           ),
+                  //         ),
+                  //         focusedBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(
+                  //             color: ColorTheme.btnshade2,
+                  //           ),
+                  //         ),
+                  //         enabledBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(
+                  //             color: ColorTheme.btnshade2,
+                  //           ),
+                  //         )),
+                  //     closeButton: SizedBox.shrink(),
+                  //     displayClearIcon: false,
+                  //     value: countryCode,
+                      
+                  //     onChanged: (value) async {
+                  //       // print("value:::: $value");
+                  //        setState(() {
+                  //           // countryname = value.name;
+                  //           countryCode = value.toString();
+                  //         });
+                  //         print("value:::: $value");
+                  //         GetStorage getStorage = GetStorage();
+                  //         getStorage.write("countrycode", value);
+                          
+                  //         forYouController.fetchMarketnews(
+                  //             page: 1,
+                  //             topic: "NEWS",
+                  //             nextUrl: null,
+                  //             change: "0");
+                  //         await local_controller.fetchMarketnews(
+                  //             page: 2,
+                  //             topic: "local",
+                  //             nextUrl: null,
+                  //             change: "0");
+                  //         await sports_controller.fetchMarketnews(
+                  //             page: 1,
+                  //             topic: "SPORTS",
+                  //             nextUrl: null,
+                  //             change: "0");
 
-                          textTheme: TextTheme(
-                            subtitle1: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
+                  //         await weather_controller.fetchMarketnews(
+                  //             page: 1,
+                  //             topic: "WEATHER",
+                  //             nextUrl: null,
+                  //             change: "0");
+                  //         await money_controller.fetchMarketnews(
+                  //             page: 1,
+                  //             topic: "MONEY",
+                  //             nextUrl: null,
+                  //             change: "0");
+                  //         await lifestyle_controller.fetchMarketnews(
+                  //             page: 1,
+                  //             topic: "LIFESTYLE",
+                  //             nextUrl: null,
+                  //             change: "0");
+                  //         await healt_fitness_controller.fetchMarketnews(
+                  //             page: 1,
+                  //             topic: "HEALTH & FITNESS",
+                  //             nextUrl: null,
+                  //             change: "0");
+                  //         await food_drink_controller.fetchMarketnews(
+                  //             page: 1,
+                  //             topic: "FOOD & DRINK",
+                  //             nextUrl: null,
+                  //             change: "0");
+                  //         await travel_controller.fetchMarketnews(
+                  //             page: 1,
+                  //             topic: "TRAVEL",
+                  //             nextUrl: null,
+                  //             change: "0");
+
+                  //            for (int i = 0; i < countryList.length; i++){
+                  //              if (value == countryList[i].code){
+                  //                setState(() {
+                  //                   countryname = countryList[i].name;
+                  //                });
+                                
+                  //                break;
+                  //              }
+                  //            }
+                  //            getStorage.write("countryname", countryname);
+                  //         try {
+                  //           var addresses = await Geocoder.local
+                  //               .findAddressesFromQuery(countryname);
+                  //           Address first = addresses.first;
+                  //           print("${first.coordinates.latitude}");
+                  //           GetStorage getStorage = GetStorage();
+                  //           getStorage.write(
+                  //               "clatitude", first.coordinates.latitude);
+                  //           getStorage.write(
+                  //               "clongitude", first.coordinates.longitude);
+                  //           weatherController.getWeather();
+                  //           // addStore();
+                  //         } catch (e) {
+                  //           // Toast.show("Invalid Address", context, gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+                  //         }
+                  //     },
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   width: 5.0,
+                  // ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width/4,
+                    height: 32,
+                    child: Theme(
+                      data: ThemeData(
+                        primaryColor: ColorTheme.btnshade2,
+                        primaryColorDark: ColorTheme.btnshade2,
+                        primaryColorLight: ColorTheme.btnshade2,
+                        textTheme: TextTheme(
+                          subtitle1: TextStyle(
+                              color: Colors.black,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold),
                         ),
-                        child: DropdownSearch<Country>(
-                          items: countryList,
-                          // selectedItem: Country(name: countryname, code: countryCode),
-                          dropdownSearchBaseStyle: TextStyle(fontSize: 12),
-                          showSearchBox: true,
-                          mode: Mode.DIALOG,
-                          dropDownButton: SizedBox.shrink(),
-                          showAsSuffixIcons: true,
-                          popupSafeArea:
-                              PopupSafeAreaProps(top: true, bottom: true),
-                          selectedItem: countryname == null &&
-                                  countryCode == null
-                              ? Country(name: "Argentina", code: "es-ar")
-                              : Country(name: countryname, code: countryCode),
-                          showClearButton: false,
+                      ),
+                      child: DropdownSearch<Country>(
+                        items: countryList,
+                        // selectedItem: Country(name: countryname, code: countryCode),
+                        dropdownSearchBaseStyle: TextStyle(fontSize: 12),
 
-                          dropdownSearchDecoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.zero,
-                          ),
+                        showSearchBox: true,
+                        mode: Mode.DIALOG,
+                        dropDownButton: SizedBox.shrink(),
+                        showAsSuffixIcons: true,
+                        popupSafeArea:
+                            PopupSafeAreaProps(top: true, bottom: true),
+                        selectedItem: countryname == null &&
+                                countryCode == null
+                            ? Country(name: "Argentina", code: "es-ar")
+                            : Country(name: countryname, code: countryCode),
+                        showClearButton: false,
+                        dropdownSearchDecoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.zero,
+                        ),
 
-                          onChanged: (value) async {
-                            setState(() {
-                              countryname = value.name;
-                              countryCode = value.code;
-                            });
+                        onChanged: (value) async {
+                          setState(() {
+                            countryname = value.name;
+                            countryCode = value.code;
+                          });
+                          GetStorage getStorage = GetStorage();
+                          getStorage.write("countrycode", value.code);
+                          getStorage.write("countryname", value.name);
+                          forYouController.fetchMarketnews(
+                              page: 1,
+                              topic: "NEWS",
+                              nextUrl: null,
+                              change: "0");
+                          await local_controller.fetchMarketnews(
+                              page: 2,
+                              topic: "local",
+                              nextUrl: null,
+                              change: "0");
+                          await sports_controller.fetchMarketnews(
+                              page: 1,
+                              topic: "SPORTS",
+                              nextUrl: null,
+                              change: "0");
+
+                          await weather_controller.fetchMarketnews(
+                              page: 1,
+                              topic: "WEATHER",
+                              nextUrl: null,
+                              change: "0");
+                          await money_controller.fetchMarketnews(
+                              page: 1,
+                              topic: "MONEY",
+                              nextUrl: null,
+                              change: "0");
+                          await lifestyle_controller.fetchMarketnews(
+                              page: 1,
+                              topic: "LIFESTYLE",
+                              nextUrl: null,
+                              change: "0");
+                          await healt_fitness_controller.fetchMarketnews(
+                              page: 1,
+                              topic: "HEALTH & FITNESS",
+                              nextUrl: null,
+                              change: "0");
+                          await food_drink_controller.fetchMarketnews(
+                              page: 1,
+                              topic: "FOOD & DRINK",
+                              nextUrl: null,
+                              change: "0");
+                          await travel_controller.fetchMarketnews(
+                              page: 1,
+                              topic: "TRAVEL",
+                              nextUrl: null,
+                              change: "0");
+                          try {
+                            var addresses = await Geocoder.local
+                                .findAddressesFromQuery(value.name);
+                            Address first = addresses.first;
+                            print("${first.coordinates.latitude}");
                             GetStorage getStorage = GetStorage();
-                            getStorage.write("countrycode", value.code);
-                            getStorage.write("countryname", value.name);
-                            forYouController.fetchMarketnews(
-                                page: 1,
-                                topic: "NEWS",
-                                nextUrl: null,
-                                change: "0");
-                            await local_controller.fetchMarketnews(
-                                page: 2,
-                                topic: "local",
-                                nextUrl: null,
-                                change: "0");
-                            await sports_controller.fetchMarketnews(
-                                page: 1,
-                                topic: "SPORTS",
-                                nextUrl: null,
-                                change: "0");
-
-                            await weather_controller.fetchMarketnews(
-                                page: 1,
-                                topic: "WEATHER",
-                                nextUrl: null,
-                                change: "0");
-                            await money_controller.fetchMarketnews(
-                                page: 1,
-                                topic: "MONEY",
-                                nextUrl: null,
-                                change: "0");
-                            await lifestyle_controller.fetchMarketnews(
-                                page: 1,
-                                topic: "LIFESTYLE",
-                                nextUrl: null,
-                                change: "0");
-                            await healt_fitness_controller.fetchMarketnews(
-                                page: 1,
-                                topic: "HEALTH & FITNESS",
-                                nextUrl: null,
-                                change: "0");
-                            await food_drink_controller.fetchMarketnews(
-                                page: 1,
-                                topic: "FOOD & DRINK",
-                                nextUrl: null,
-                                change: "0");
-                            await travel_controller.fetchMarketnews(
-                                page: 1,
-                                topic: "TRAVEL",
-                                nextUrl: null,
-                                change: "0");
-                            try {
-                              var addresses = await Geocoder.local
-                                  .findAddressesFromQuery(value.name);
-                              Address first = addresses.first;
-                              print("${first.coordinates.latitude}");
-                              GetStorage getStorage = GetStorage();
-                              getStorage.write(
-                                  "clatitude", first.coordinates.latitude);
-                              getStorage.write(
-                                  "clongitude", first.coordinates.longitude);
-                              weatherController.getWeather();
-                              // addStore();
-                            } catch (e) {
-                              // Toast.show("Invalid Address", context, gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-                            }
-                          },
-                        ),
+                            getStorage.write(
+                                "clatitude", first.coordinates.latitude);
+                            getStorage.write(
+                                "clongitude", first.coordinates.longitude);
+                            weatherController.getWeather();
+                            // addStore();
+                          } catch (e) {
+                            // Toast.show("Invalid Address", context, gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+                          }
+                        },
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 5.0,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        ImageProvide.temp,
-                        height: 20,
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
-                      weatherController.isLoading.value
-                          ? SizedBox(
-                              width: 50.0,
-                              height: 20.0,
-                              child: Shimmer.fromColors(
-                                baseColor: Colors.grey,
-                                highlightColor: Colors.grey.withOpacity(0.5),
-                                child: Container(
-                                  width: 50.0,
-                                  height: 20.0,
-                                  color: Colors.white,
+
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          ImageProvide.temp,
+                          height: 20,
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        weatherController.isLoading.value
+                            ? SizedBox(
+                                width: 50.0,
+                                height: 20.0,
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey,
+                                  highlightColor: Colors.grey.withOpacity(0.5),
+                                  child: Container(
+                                    width: 50.0,
+                                    height: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                  // child: Text(
+                                  //   '60.0',
+                                  //   textAlign: TextAlign.center,
+                                  //   style: TextStyle(
+                                  //     fontSize: 20.0,
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  // ),
                                 ),
-                                // child: Text(
-                                //   '60.0',
-                                //   textAlign: TextAlign.center,
-                                //   style: TextStyle(
-                                //     fontSize: 20.0,
-                                //     fontWeight: FontWeight.bold,
-                                //   ),
-                                // ),
-                              ),
-                            )
-                          : Text(
-                              "${weatherController.weather.value.main.temp} °F / ${weatherController.celsius.value.toStringAsFixed(2)} °C",
-                              style: TextStyle(
-                                  color: ColorTheme.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            )
-                    ],
+                              )
+                            : Text(
+                                "${weatherController.weather.value.main.temp} °F \n${weatherController.celsius.value.toStringAsFixed(2)} °C",
+                                style: TextStyle(
+                                    color: ColorTheme.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              )
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -21,14 +21,14 @@ class HistoryArticleService {
   static Future<dynamic> getHistoryArticle({String token}) async {
     var response = await client.get(Uri.parse(StringConst.GETHISTORYARITCLE),
         headers: {"x-access-token": token});
-    print("Article : ${response.body}");
+    
     return jsonDecode(response.body);
   }
 
   static Future<dynamic> removeHistoryArticle({String token, String id}) async {
     var response = await client.get(Uri.parse(StringConst.REMOVEHISTORYARITCLE + id),
         headers: {"x-access-token": token});
-    print("Article : ${response.body}");
+    
     return jsonDecode(response.body);
   }
 }

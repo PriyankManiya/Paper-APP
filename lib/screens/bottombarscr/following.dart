@@ -71,10 +71,19 @@ class _FollowingState extends State<Following> with TickerProviderStateMixin {
     //  setState(() {
     //   pagination++;
     // });
-    channelListController.getChannelList(nextURL: channelListController.nextUrl.value);
-    await Future.delayed(Duration(milliseconds: 1000));
-    
-    refershControllers.loadComplete();
+    try {
+      channelListController.getChannelList(
+          nextURL: channelListController.nextUrl.value);
+    } catch (e) {
+      print("error : $e");
+    } finally {
+      await Future.delayed(Duration(milliseconds: 1000));
+      if (mounted)
+        setState(() {
+          // pagination++;
+        });
+      refershControllers.loadComplete();
+    }
   }
 
   @override
@@ -223,7 +232,7 @@ class _FollowingState extends State<Following> with TickerProviderStateMixin {
                                                             20)),
                                                 child: Row(
                                                   children: [
-                                                    Text("FOLLOWING",
+                                                    Text("FOLLOWED",
                                                         style: TextStyle(
                                                             color: ColorTheme
                                                                 .green,
@@ -561,7 +570,7 @@ class _FollowingState extends State<Following> with TickerProviderStateMixin {
                                                                   .channelList[
                                                                       index]
                                                                   .isFollow
-                                                              ? "FOLLOWING"
+                                                              ? "FOLLOWED"
                                                               : "FOLLOW",
                                                           style: TextStyle(
                                                               color: ColorTheme

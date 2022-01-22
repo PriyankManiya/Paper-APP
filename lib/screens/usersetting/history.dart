@@ -27,38 +27,49 @@ class _HistoryState extends State<History> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: ColorTheme.white,
-          bottom: PreferredSize(
-              preferredSize: Size.fromHeight(48.0),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(Icons.arrow_back_ios,
-                                color: ColorTheme.btnshade2)),
-                        sizedboxwidth(context, 30),
-                        Text(
-                          "History",
-                          style: TextStyle(
-                              fontSize: MediaQuery.of(context).size.height / 35,
-                              color: ColorTheme.btnshade2,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        // Spacer(),
-                        // Text("Edit",
-                        //     style: TextStyle(
-                        //         color: ColorTheme.green,
-                        //         fontSize:
-                        //             MediaQuery.of(context).size.height / 50)),
-                      ],
-                    )),
-              )),
+          leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_ios, color: ColorTheme.btnshade2)),
+          title: Text(
+            "History",
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.height / 35,
+                color: ColorTheme.btnshade2,
+                fontWeight: FontWeight.bold),
+          ),
+          // bottom: PreferredSize(
+          //     child: Padding(
+          //       padding:
+          //           const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          //       child: Container(
+          //           alignment: Alignment.centerLeft,
+          //           child: Row(
+          //             children: [
+          //               InkWell(
+          //                   onTap: () {
+          //                     Navigator.pop(context);
+          //                   },
+          //                   child: Icon(Icons.arrow_back_ios,
+          //                       color: ColorTheme.btnshade2)),
+          //               sizedboxwidth(context, 30),
+          //               Text(
+          //                 "History",
+          //                 style: TextStyle(
+          //                     fontSize: MediaQuery.of(context).size.height / 35,
+          //                     color: ColorTheme.btnshade2,
+          //                     fontWeight: FontWeight.bold),
+          //               ),
+          //               // Spacer(),
+          //               // Text("Edit",
+          //               //     style: TextStyle(
+          //               //         color: ColorTheme.green,
+          //               //         fontSize:
+          //               //             MediaQuery.of(context).size.height / 50)),
+          //             ],
+          //           )),
+          //     )),
         ),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -79,7 +90,8 @@ class _HistoryState extends State<History> {
                               )
                             : ListView.separated(
                                 physics: BouncingScrollPhysics(),
-                                itemCount: historyArticleController.savedList.length,
+                                itemCount:
+                                    historyArticleController.savedList.length,
                                 separatorBuilder:
                                     (BuildContext context, int index) {
                                   return Divider(
@@ -92,7 +104,10 @@ class _HistoryState extends State<History> {
                                     children: [
                                       IconButton(
                                           onPressed: () {
-                                            historyArticleController.removeHistoryArticle(historyArticleController.savedList[index].id);
+                                            historyArticleController
+                                                .removeHistoryArticle(
+                                                    historyArticleController
+                                                        .savedList[index].id);
                                           },
                                           icon:
                                               Image.asset(ImageProvide.close)),
@@ -117,7 +132,7 @@ class _HistoryState extends State<History> {
                                             ),
                                             sizedbox(context, 40),
                                             Text(
-                                             "${jsonDecode(historyArticleController.savedList[index].articleDetails)['provider']['name']}",
+                                              "${jsonDecode(historyArticleController.savedList[index].articleDetails)['provider']['name']}",
                                               style: TextStyle(
                                                   color: ColorTheme.black
                                                       .withOpacity(0.4),
@@ -130,7 +145,7 @@ class _HistoryState extends State<History> {
                                           ],
                                         ),
                                       ),
-                                       SizedBox(
+                                      SizedBox(
                                         width: 5.0,
                                       ),
                                       Container(
@@ -140,7 +155,7 @@ class _HistoryState extends State<History> {
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             image: DecorationImage(
-                                                image: AssetImage(
+                                                image: NetworkImage(
                                                     "${jsonDecode(historyArticleController.savedList[index].articleDetails)['images'][0]['url']}"),
                                                 fit: BoxFit.cover)),
                                       )

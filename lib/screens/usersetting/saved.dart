@@ -25,38 +25,50 @@ class _SavedNewsState extends State<SavedNews> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: ColorTheme.white,
-          bottom: PreferredSize(
-              preferredSize: Size.fromHeight(48.0),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(Icons.arrow_back_ios,
-                                color: ColorTheme.btnshade2)),
-                        sizedboxwidth(context, 30),
-                        Text(
-                          "Saved",
-                          style: TextStyle(
-                              fontSize: MediaQuery.of(context).size.height / 35,
-                              color: ColorTheme.btnshade2,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        // Spacer(),
-                        // Text("Edit",
-                        //     style: TextStyle(
-                        //         color: ColorTheme.green,
-                        //         fontSize:
-                        //             MediaQuery.of(context).size.height / 50)),
-                      ],
-                    )),
-              )),
+           leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_ios, color: ColorTheme.btnshade2)),
+          title: Text(
+            "Saved",
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.height / 35,
+                color: ColorTheme.btnshade2,
+                fontWeight: FontWeight.bold),
+          ),
+          // bottom: PreferredSize(
+          //     preferredSize: Size.fromHeight(48.0),
+          //     child: Padding(
+          //       padding:
+          //           const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          //       child: Container(
+          //           alignment: Alignment.centerLeft,
+          //           child: Row(
+          //             children: [
+          //               InkWell(
+          //                   onTap: () {
+          //                     Navigator.pop(context);
+          //                   },
+          //                   child: Icon(Icons.arrow_back_ios,
+          //                       color: ColorTheme.btnshade2)),
+          //               sizedboxwidth(context, 30),
+          //               Text(
+          //                 "Saved",
+          //                 style: TextStyle(
+          //                     fontSize: MediaQuery.of(context).size.height / 35,
+          //                     color: ColorTheme.btnshade2,
+          //                     fontWeight: FontWeight.bold),
+          //               ),
+          //               // Spacer(),
+          //               // Text("Edit",
+          //               //     style: TextStyle(
+          //               //         color: ColorTheme.green,
+          //               //         fontSize:
+          //               //             MediaQuery.of(context).size.height / 50)),
+          //             ],
+          //           )),
+          //     )),
         ),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),

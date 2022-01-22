@@ -10,6 +10,7 @@ import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/article_controller.dart';
+import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/history_article_controller.dart';
 import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/helper/model/news_model.dart' as news_model;
@@ -30,6 +31,7 @@ class _NewsDetailsState extends State<NewsDetails> {
   HistoryArticleController articleHistoryController =
       Get.put(HistoryArticleController());
   LikeUnlikeController likeUnlikeController = Get.put(LikeUnlikeController());
+  FollowController followController = Get.put(FollowController());
   bool isSaved = false;
 
   @override
@@ -218,14 +220,70 @@ class _NewsDetailsState extends State<NewsDetails> {
                   ),
                   sizedboxwidth(context, 70),
                   InkWell(
-                    onTap: () {
-                      print("Follow Part");
+                    onTap: () async {
+                      // print("Follow Part");
+                      if (widget.subCard.provider.follow) {
+                        followController.unfollow(
+                            id: widget.subCard.provider.followid);
+
+                        // for (int i = 0;
+                        //     i <
+                        //         today_Controller
+                        //             .localList.value.value[0].subCards.length;
+                        //     i++) {
+                        //   if (widget.subCard.provider.id ==
+                        //       widget.subCard.provider.id) {
+                          setState(() {
+                            widget.subCard.provider.follow = false;
+                          });
+                            
+                          // }
+                        // }
+                        // newsController
+                        //     .newsList
+                        //     .value
+                        //     .value[0]
+                        //     .subCards[index]
+                        //     .provider
+                        //     .follow = false;
+                      } else {
+                        String id = await followController.follow(
+                          channelId: widget.subCard.provider.id,
+                          channel_details: widget.subCard.provider.name,
+                          channel_url: widget.subCard.provider.logo.url,
+                          title: widget.subCard.provider.name,
+                        );
+
+                        // for (int i = 0;
+                        //     i <
+                        //         today_Controller
+                        //             .localList.value.value[0].subCards.length;
+                        //     i++) {
+                          // if (widget.subCard.provider.id ==
+                          //     widget.subCard.provider.id) {
+                            setState(() {
+                               widget.subCard.provider.follow = true;
+
+                            widget.subCard.provider.followid = id;
+                            });
+                           
+                          // }
+                        // }
+                      }
                     },
-                    child: Text("FOLLOW",
-                        style: TextStyle(
-                            color: ColorTheme.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height / 60)),
+                    child: widget.subCard.provider.follow
+                        ? Text("FOLLOWED",
+                            style: TextStyle(
+                                color: ColorTheme.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 60))
+                        : Text("FOLLOW",
+                            style: TextStyle(
+                                color: ColorTheme.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 60)),
                   ),
                   sizedboxwidth(context, 20),
                   GetBuilder(

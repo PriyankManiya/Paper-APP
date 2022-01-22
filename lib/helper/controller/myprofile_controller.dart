@@ -26,7 +26,7 @@ class GetProfileController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("TOken ::: ${storage.read("token")}");
+        
         var getProfileResponse = await GetProfileService.getProfile(
           token: token,
         );

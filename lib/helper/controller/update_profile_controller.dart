@@ -28,7 +28,7 @@ class UpdateProfileController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("TOken ::: ${storage.read("token")}");
+        
         var updateProfileResponse = await UpdateProfileService.updateProfile(
           fullname: fullname,
           password: password,

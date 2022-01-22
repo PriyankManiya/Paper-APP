@@ -8,6 +8,7 @@ import 'package:paper_app/helper/service/follow_service.dart';
 class FollowController extends GetxController {
   var isLoading = true.obs;
   var followingList = <FollowingData>[].obs;
+  Follow follows;
 
   @override
   void onInit() {
@@ -46,13 +47,13 @@ class FollowController extends GetxController {
     }
   }
 
-   Future<void> follow({String channelId, String channel_details, String channel_url, String title}) async {
+   Future<String> follow({String channelId, String channel_details, String channel_url, String title}) async {
     // isLoading(true);
     try {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("TOken ::: ${storage.read("token")}");
+        
         var followResponse = await FollowService.followChannel(
           token: token,
           channelId: channelId,
@@ -63,7 +64,8 @@ class FollowController extends GetxController {
 
         if (followResponse["status"] == 200) {
         
-          Follow follow = Follow.fromJson(followResponse);
+          
+          follows = Follow.fromJson(followResponse);
           print("you have followed successfully.");
           getList();
           // followingList(follow);
@@ -86,6 +88,8 @@ class FollowController extends GetxController {
       print("ERROR ****** ERROR");
       print("ERROR WHILE FETCHING DATA : $e");
     }
+
+    return follows.data.id;
   }
 
 
@@ -95,7 +99,7 @@ class FollowController extends GetxController {
       try {
         GetStorage storage = GetStorage();
         String token = storage.read("token");
-        print("TOken ::: ${storage.read("token")}");
+        
         var unfollowResponse = await FollowService.unfollowChannel(
           token: token,
           id: id

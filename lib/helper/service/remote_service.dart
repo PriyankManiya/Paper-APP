@@ -21,6 +21,7 @@ class RemoteServices {
           ? nextUrl
           : "$domain/MSN/Feed?ocid=sm-simcast&market=$countryCode&query=$topic&apikey=$apikey&\$top=10&\$skip=0&\$select=sourceid,type,url,provider,title,images,publishedDateTime"));
           print("response : ${response.body}");
+          
       return Newsdata.fromJson(jsonDecode(response.body));
     } catch (e) {
       print("***** ERROR *****");
