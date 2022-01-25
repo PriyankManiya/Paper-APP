@@ -92,13 +92,13 @@ class _HistoryState extends State<History> {
                                 physics: BouncingScrollPhysics(),
                                 itemCount:
                                     historyArticleController.savedList.length,
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return Divider(
-                                    height: 40,
-                                    thickness: 1,
-                                  );
-                                },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return Divider(
+                                      height: 40,
+                                      thickness: 1,
+                                    );
+                                  },
                                 itemBuilder: (BuildContext context, int index) {
                                   return Row(
                                     children: [

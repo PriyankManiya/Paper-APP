@@ -54,6 +54,7 @@ dependencies:
   geolocator: ^7.7.0
   dropdown_search: ^2.0.1
   search_choices: ^2.0.16
+  material_floating_search_bar: ^0.3.6
   # searchable_dropdown: ^1.0.0
 
 dev_dependencies:

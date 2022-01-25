@@ -4,15 +4,18 @@ import 'package:geolocator/geolocator.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
+import 'package:paper_app/helper/controller/search_news_controller.dart';
 import 'package:paper_app/helper/controller/temp_controller.dart';
 import 'package:paper_app/helper/model/Country.dart';
+import 'package:paper_app/helper/model/news_model.dart' hide Image;
 import 'package:paper_app/screens/bottombarscr/edit_location.dart';
 import 'package:paper_app/screens/bottombarscr/home/Travel.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:search_choices/search_choices.dart';
+import 'package:paper_app/screens/bottombarscr/search.dart';
 import 'package:shimmer/shimmer.dart';
 import 'home/FoodDrink.dart';
 import 'home/ForYou.dart';
@@ -31,6 +34,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  final SearchNewsController searchNewsController =
+      Get.put(SearchNewsController());
   final TodayController newsController = Get.find<TodayController>();
   final ForYouController forYouController = Get.find<ForYouController>();
   final LocalController local_controller = Get.find<LocalController>();
@@ -129,6 +134,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       // country = Country(name: countryname, code: countryCode);
       // print("Countryname ::: ${country.name} Countrycode ::: ${country.code}");
     });
+    print("Search ::: ${searchNewsController.newsList.value.value == null}");
   }
 
   getCurrentLatLong() async {
@@ -142,13 +148,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     var first = addresses.first;
 
     if (countryCode == null) {
-      setState(() {
-        countryCode = first.countryCode;
+      for (int i = 0; i < countryList.length; i++) {
+        if (countryList[i].name.toLowerCase() ==
+            first.countryName.toLowerCase()) {
+          setState(() {
+            // countryCode = first.countryCode;
+            countryCode = countryList[i].code;
+            countryname = countryList[i].name;
+          });
+          break;
+        }
+      }
 
-        getStorage.write("countrycode", countryCode);
-        getStorage.write("countryname", countryname);
-      });
-
+      getStorage.write("countrycode", countryCode);
+      getStorage.write("countryname", countryname);
       weatherController.getWeather();
     }
   }
@@ -177,63 +190,78 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     children: [
                       Expanded(
                         child: Container(
-                          margin: EdgeInsets.only(top: 00, left: 22),
+                            margin: EdgeInsets.only(top: 00, left: 22),
 
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          // height: 43,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              width: MediaQuery.of(context).size.width,
-                              height: 40,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color:
-                                      ColorTheme.textboxgrey.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: TextField(
-                                        cursorColor: ColorTheme.white,
-                                        style:
-                                            TextStyle(color: ColorTheme.white),
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                          focusedBorder: InputBorder.none,
-                                          errorBorder: InputBorder.none,
-                                          enabledBorder: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          focusedErrorBorder: InputBorder.none,
-                                          hintText: "Search News",
-                                          hintStyle: TextStyle(
-                                            color: ColorTheme.white,
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              style: BorderStyle.solid,
-                                              color: ColorTheme.white,
+                            width: MediaQuery.of(context).size.width / 1.2,
+                            // height: 43,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0)),
+                            child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                width: MediaQuery.of(context).size.width,
+                                height: 40,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color:
+                                        ColorTheme.textboxgrey.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          child: InkWell(
+                                            onTap: (){
+                                               Get.to(SearchScreen());
+                                            },
+                                            child: TextField(
+                                            cursorColor: ColorTheme.white,
+                                            style:
+                                                TextStyle(color: ColorTheme.white),
+                                            keyboardType: TextInputType.text,
+                                        
+                                            onChanged: (value) async {
+                                              print("value : $value");
+                                              // await searchNewsController
+                                              //     .fetchMarketnews(
+                                              //         nextUrl: null, search: value);
+                                              // _streamController.add(newsController.newsList.value);
+                                            },
+                                            enabled: false,
+                                            decoration: InputDecoration(
+                                              focusedBorder: InputBorder.none,
+                                              errorBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                              focusedErrorBorder: InputBorder.none,
+                                              hintText: "Search News",
+                                              hintStyle: TextStyle(
+                                                color: ColorTheme.white,
+                                              ),
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  style: BorderStyle.solid,
+                                                  color: ColorTheme.white,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
                                         ),
-                                      ),
+                                          ),
+                                          ),
                                     ),
-                                  ),
-                                  Image.asset(
-                                    ImageProvide.seach,
-                                    height: 20,
-                                    width: 20,
-                                    // scale: 3.5,
-                                    color: ColorTheme.white,
-                                  )
-                                ],
-                              )),
-                        ),
+                                    Image.asset(
+                                      ImageProvide.seach,
+                                      height: 20,
+                                      width: 20,
+                                      // scale: 3.5,
+                                      color: ColorTheme.white,
+                                    )
+                                  ],
+                                )),
+                            ),
                       ),
                       SizedBox(
                         width: 10,
@@ -362,7 +390,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   //     closeButton: SizedBox.shrink(),
                   //     displayClearIcon: false,
                   //     value: countryCode,
-                      
+
                   //     onChanged: (value) async {
                   //       // print("value:::: $value");
                   //        setState(() {
@@ -372,7 +400,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   //         print("value:::: $value");
                   //         GetStorage getStorage = GetStorage();
                   //         getStorage.write("countrycode", value);
-                          
+
                   //         forYouController.fetchMarketnews(
                   //             page: 1,
                   //             topic: "NEWS",
@@ -425,7 +453,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   //                setState(() {
                   //                   countryname = countryList[i].name;
                   //                });
-                                
+
                   //                break;
                   //              }
                   //            }
@@ -452,7 +480,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   //   width: 5.0,
                   // ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width/4,
+                    width: MediaQuery.of(context).size.width / 4,
                     height: 32,
                     child: Theme(
                       data: ThemeData(
@@ -477,8 +505,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         showAsSuffixIcons: true,
                         popupSafeArea:
                             PopupSafeAreaProps(top: true, bottom: true),
-                        selectedItem: countryname == null &&
-                                countryCode == null
+                        selectedItem: countryname == null && countryCode == null
                             ? Country(name: "Argentina", code: "es-ar")
                             : Country(name: countryname, code: countryCode),
                         showClearButton: false,
