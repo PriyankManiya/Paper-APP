@@ -4,10 +4,12 @@ import 'package:paper_app/constants/buttonstyle.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/helper/model/Channel.dart' as news_model;
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 
 class FollowDisplay extends StatefulWidget {
-  FollowDisplay({Key key}) : super(key: key);
+  news_model.SubCard subCard;
+  FollowDisplay({Key key, this.subCard}) : super(key: key);
 
   @override
   _FollowDisplayState createState() => _FollowDisplayState();
@@ -67,14 +69,14 @@ class _FollowDisplayState extends State<FollowDisplay> {
                           radius: MediaQuery.of(context).size.height / 22,
                           backgroundColor: Colors.transparent,
                           backgroundImage:
-                              AssetImage("assets/images/trash.png"),
+                              NetworkImage("${widget.subCard.provider.logo.url}"),
                         ),
                         sizedboxwidth(context, 30),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "The New York Times",
+                              "${widget.subCard.provider.name}",
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize:

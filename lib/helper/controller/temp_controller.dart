@@ -38,7 +38,7 @@ class TempController extends GetxController {
         print("Lat : ${lat == null ? "${position.latitude}" : lat.toString()} Lon : ${lon == null ? "${position.longitude}" : lon.toString()}");
 
         weather(Weather.fromJson(getWeatherResponse));
-        celsius.value = (weather.value.main.temp - 32.0) * 5.0 / 9.0;
+        celsius.value = (weather.value.main.temp * (9.0 / 5.0)) + 32;
       
       } catch (e) {
         print("API ERROR" + e);
