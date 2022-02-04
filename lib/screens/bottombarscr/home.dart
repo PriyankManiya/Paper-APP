@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:paper_app/constants/colortheme.dart';
+import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/fetchnews_controller.dart';
 import 'package:paper_app/helper/controller/search_news_controller.dart';
@@ -16,6 +17,7 @@ import 'package:paper_app/screens/bottombarscr/edit_location.dart';
 import 'package:paper_app/screens/bottombarscr/home/Travel.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:paper_app/screens/bottombarscr/search.dart';
+import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:shimmer/shimmer.dart';
 import 'home/FoodDrink.dart';
 import 'home/ForYou.dart';
@@ -182,496 +184,620 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorTheme.lightgrey,
-      appBar: PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, 101),
-        child: Container(
-          color: ColorTheme.btnshade2,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+      // appBar:
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          PreferredSize(
+            preferredSize: Size(MediaQuery.of(context).size.width, 101),
+            child: Container(
+              color: ColorTheme.lightgrey,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 00, left: 22),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(top: 00, left: 22),
 
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          // height: 43,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              width: MediaQuery.of(context).size.width,
-                              height: 40,
-                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width / 1.2,
+                              // height: 43,
                               decoration: BoxDecoration(
-                                  color:
-                                      ColorTheme.textboxgrey.withOpacity(0.3),
                                   borderRadius: BorderRadius.circular(5.0)),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: InkWell(
-                                        onTap: () {
-                                          Get.to(SearchScreen());
-                                        },
-                                        child: TextField(
-                                          cursorColor: ColorTheme.white,
-                                          style: TextStyle(
-                                              color: ColorTheme.white),
-                                          keyboardType: TextInputType.text,
-                                          onChanged: (value) async {
-                                            print("value : $value");
-                                            // await searchNewsController
-                                            //     .fetchMarketnews(
-                                            //         nextUrl: null, search: value);
-                                            // _streamController.add(newsController.newsList.value);
-                                          },
-                                          enabled: false,
-                                          decoration: InputDecoration(
-                                            focusedBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                            focusedErrorBorder:
-                                                InputBorder.none,
-                                            hintText: "Search News",
-                                            hintStyle: TextStyle(
-                                              color: ColorTheme.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                style: BorderStyle.solid,
-                                                color: ColorTheme.white,
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 40,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: ColorTheme.textboxgrey
+                                          .withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(5.0)),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Get.to(SearchScreen());
+                                            },
+                                            child: TextField(
+                                              cursorColor: ColorTheme.white,
+                                              style: TextStyle(
+                                                  color: ColorTheme.white),
+                                              keyboardType: TextInputType.text,
+                                              onChanged: (value) async {
+                                                print("value : $value");
+                                                // await searchNewsController
+                                                //     .fetchMarketnews(
+                                                //         nextUrl: null, search: value);
+                                                // _streamController.add(newsController.newsList.value);
+                                              },
+                                              enabled: false,
+                                              decoration: InputDecoration(
+                                                focusedBorder: InputBorder.none,
+                                                errorBorder: InputBorder.none,
+                                                enabledBorder: InputBorder.none,
+                                                disabledBorder:
+                                                    InputBorder.none,
+                                                focusedErrorBorder:
+                                                    InputBorder.none,
+                                                hintText: "Search News",
+                                                hintStyle: TextStyle(
+                                                  color: ColorTheme.white,
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    style: BorderStyle.solid,
+                                                    color: ColorTheme.white,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Image.asset(
-                                    ImageProvide.seach,
-                                    height: 20,
-                                    width: 20,
-                                    // scale: 3.5,
-                                    color: ColorTheme.white,
-                                  )
-                                ],
-                              )),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Image.asset(
-                        ImageProvide.setting,
-                        height: 25,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
-                  ),
-                  AppBar(
-                    leading: SizedBox(),
-                    backgroundColor: ColorTheme.btnshade2,
-                    flexibleSpace: Column(
-                      children: [
-                        TabBar(
-                          isScrollable: true,
-                          indicatorPadding: EdgeInsets.all(0),
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicatorWeight: 3,
-                          indicatorColor: ColorTheme.white,
-                          automaticIndicatorColorAdjustment: true,
-                          tabs: myTabs,
-                          controller: _tabController,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      body: Container(
-          child: Column(
-        children: [
-          Obx(
-            () => Container(
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        Get.to(EditLocation());
-                      },
-                      child: Row(
-                        children: [
-                          weatherController.isLoading.value
-                              ? SizedBox(
-                                  width: 70.0,
-                                  height: 20.0,
-                                  child: Shimmer.fromColors(
-                                    baseColor: Colors.grey,
-                                    highlightColor:
-                                        Colors.grey.withOpacity(0.5),
-                                    child: Container(
-                                      width: 50.0,
-                                      height: 20.0,
-                                      color: Colors.white,
-                                    ),
-                                    // child: Text(
-                                    //   '60.0',
-                                    //   textAlign: TextAlign.center,
-                                    //   style: TextStyle(
-                                    //     fontSize: 20.0,
-                                    //     fontWeight: FontWeight.bold,
-                                    //   ),
-                                    // ),
-                                  ),
-                                )
-                              : Text(
-                                  "${weatherController.weather.value.name}",
-                                  style: TextStyle(
-                                      color: ColorTheme.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                      Image.asset(
+                                        ImageProvide.seach,
+                                        height: 20,
+                                        width: 20,
+                                        // scale: 3.5,
+                                        color: ColorTheme.white,
+                                      )
+                                    ],
+                                  )),
+                            ),
+                          ),
                           SizedBox(
-                            width: 5.0,
+                            width: 10,
                           ),
                           Image.asset(
-                            ImageProvide.edit,
-                            height: 20,
+                            ImageProvide.setting,
+                            height: 25,
+                          ),
+                          SizedBox(
+                            width: 10,
                           ),
                         ],
                       ),
-                    ),
+                      AppBar(
+                        leading: SizedBox(),
+                        backgroundColor: ColorTheme.btnshade2,
+                        flexibleSpace: Column(
+                          children: [
+                            TabBar(
+                              isScrollable: true,
+                              indicatorPadding: EdgeInsets.all(0),
+                              indicatorSize: TabBarIndicatorSize.label,
+                              indicatorWeight: 3,
+                              indicatorColor: ColorTheme.white,
+                              automaticIndicatorColorAdjustment: true,
+                              tabs: myTabs,
+                              controller: _tabController,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  // Expanded(
-                  //   child: SearchChoices.single(
-                  //     isExpanded: true,
-                  //     items: countryList
-                  //         .map(
-                  //           (e) => DropdownMenuItem(
-                  //             child: Text(e.name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
-                  //             value: e.code,
-                  //           ),
-                  //         )
-                  //         .toList(),
-                  //         icon: SizedBox.shrink(),
-                  //         underline:SizedBox.shrink() ,
-                  //         padding: 0,
-                  //     searchInputDecoration: InputDecoration(
-                  //         border: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //             color: ColorTheme.btnshade2,
-                  //           ),
-                  //         ),
-                  //         focusedBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //             color: ColorTheme.btnshade2,
-                  //           ),
-                  //         ),
-                  //         enabledBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //             color: ColorTheme.btnshade2,
-                  //           ),
-                  //         )),
-                  //     closeButton: SizedBox.shrink(),
-                  //     displayClearIcon: false,
-                  //     value: countryCode,
-
-                  //     onChanged: (value) async {
-                  //       // print("value:::: $value");
-                  //        setState(() {
-                  //           // countryname = value.name;
-                  //           countryCode = value.toString();
-                  //         });
-                  //         print("value:::: $value");
-                  //         GetStorage getStorage = GetStorage();
-                  //         getStorage.write("countrycode", value);
-
-                  //         forYouController.fetchMarketnews(
-                  //             page: 1,
-                  //             topic: "NEWS",
-                  //             nextUrl: null,
-                  //             change: "0");
-                  //         await local_controller.fetchMarketnews(
-                  //             page: 2,
-                  //             topic: "local",
-                  //             nextUrl: null,
-                  //             change: "0");
-                  //         await sports_controller.fetchMarketnews(
-                  //             page: 1,
-                  //             topic: "SPORTS",
-                  //             nextUrl: null,
-                  //             change: "0");
-
-                  //         await weather_controller.fetchMarketnews(
-                  //             page: 1,
-                  //             topic: "WEATHER",
-                  //             nextUrl: null,
-                  //             change: "0");
-                  //         await money_controller.fetchMarketnews(
-                  //             page: 1,
-                  //             topic: "MONEY",
-                  //             nextUrl: null,
-                  //             change: "0");
-                  //         await lifestyle_controller.fetchMarketnews(
-                  //             page: 1,
-                  //             topic: "LIFESTYLE",
-                  //             nextUrl: null,
-                  //             change: "0");
-                  //         await healt_fitness_controller.fetchMarketnews(
-                  //             page: 1,
-                  //             topic: "HEALTH & FITNESS",
-                  //             nextUrl: null,
-                  //             change: "0");
-                  //         await food_drink_controller.fetchMarketnews(
-                  //             page: 1,
-                  //             topic: "FOOD & DRINK",
-                  //             nextUrl: null,
-                  //             change: "0");
-                  //         await travel_controller.fetchMarketnews(
-                  //             page: 1,
-                  //             topic: "TRAVEL",
-                  //             nextUrl: null,
-                  //             change: "0");
-
-                  //            for (int i = 0; i < countryList.length; i++){
-                  //              if (value == countryList[i].code){
-                  //                setState(() {
-                  //                   countryname = countryList[i].name;
-                  //                });
-
-                  //                break;
-                  //              }
-                  //            }
-                  //            getStorage.write("countryname", countryname);
-                  //         try {
-                  //           var addresses = await Geocoder.local
-                  //               .findAddressesFromQuery(countryname);
-                  //           Address first = addresses.first;
-                  //           print("${first.coordinates.latitude}");
-                  //           GetStorage getStorage = GetStorage();
-                  //           getStorage.write(
-                  //               "clatitude", first.coordinates.latitude);
-                  //           getStorage.write(
-                  //               "clongitude", first.coordinates.longitude);
-                  //           weatherController.getWeather();
-                  //           // addStore();
-                  //         } catch (e) {
-                  //           // Toast.show("Invalid Address", context, gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-                  //         }
-                  //     },
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   width: 5.0,
-                  // ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 4,
-                    height: 32,
-                    child: Theme(
-                      data: ThemeData(
-                        primaryColor: ColorTheme.btnshade2,
-                        primaryColorDark: ColorTheme.btnshade2,
-                        primaryColorLight: ColorTheme.btnshade2,
-                        textTheme: TextTheme(
-                          subtitle1: TextStyle(
-                              color: Colors.black,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      child: DropdownSearch<Country>(
-                        items: countryList,
-                        // selectedItem: Country(name: countryname, code: countryCode),
-                        dropdownSearchBaseStyle: TextStyle(fontSize: 12),
-
-                        showSearchBox: true,
-                        mode: Mode.DIALOG,
-                        dropDownButton: SizedBox.shrink(),
-                        showAsSuffixIcons: true,
-                        popupSafeArea:
-                            PopupSafeAreaProps(top: true, bottom: true),
-                        selectedItem: countryname == null && countryCode == null
-                            ? Country(name: "Argentina", code: "es-ar")
-                            : Country(name: countryname, code: countryCode),
-                        showClearButton: false,
-                        dropdownSearchDecoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.zero,
-                        ),
-
-                        onChanged: (value) async {
-                          setState(() {
-                            countryname = value.name;
-                            countryCode = value.code;
-                          });
-                          GetStorage getStorage = GetStorage();
-                          getStorage.write("countrycode", value.code);
-                          getStorage.write("countryname", value.name);
-                          forYouController.fetchMarketnews(
-                              page: 1,
-                              topic: "NEWS",
-                              nextUrl: null,
-                              change: "0");
-                          await local_controller.fetchMarketnews(
-                              page: 2,
-                              topic: "local",
-                              nextUrl: null,
-                              change: "0");
-                          await sports_controller.fetchMarketnews(
-                              page: 1,
-                              topic: "SPORTS",
-                              nextUrl: null,
-                              change: "0");
-
-                          await weather_controller.fetchMarketnews(
-                              page: 1,
-                              topic: "WEATHER",
-                              nextUrl: null,
-                              change: "0");
-                          await money_controller.fetchMarketnews(
-                              page: 1,
-                              topic: "MONEY",
-                              nextUrl: null,
-                              change: "0");
-                          await lifestyle_controller.fetchMarketnews(
-                              page: 1,
-                              topic: "LIFESTYLE",
-                              nextUrl: null,
-                              change: "0");
-                          await healt_fitness_controller.fetchMarketnews(
-                              page: 1,
-                              topic: "HEALTH & FITNESS",
-                              nextUrl: null,
-                              change: "0");
-                          await food_drink_controller.fetchMarketnews(
-                              page: 1,
-                              topic: "FOOD & DRINK",
-                              nextUrl: null,
-                              change: "0");
-                          await travel_controller.fetchMarketnews(
-                              page: 1,
-                              topic: "TRAVEL",
-                              nextUrl: null,
-                              change: "0");
-                          await newsController.fetchMarketnews(
-                              page: 1,
-                              topic: "TODAY",
-                              nextUrl: null,
-                              change: "0");
-                          try {
-                            var addresses = await Geocoder.local
-                                .findAddressesFromQuery(value.name);
-                            Address first = addresses.first;
-                            print("${first.coordinates.latitude}");
-                            GetStorage getStorage = GetStorage();
-                            getStorage.write(
-                                "clatitude", first.coordinates.latitude);
-                            getStorage.write(
-                                "clongitude", first.coordinates.longitude);
-                            weatherController.getWeather();
-                            // addStore();
-                          } catch (e) {
-                            // Toast.show("Invalid Address", context, gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          ImageProvide.temp,
-                          height: 20,
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        weatherController.isLoading.value
-                            ? SizedBox(
-                                width: 50.0,
-                                height: 20.0,
-                                child: Shimmer.fromColors(
-                                  baseColor: Colors.grey,
-                                  highlightColor: Colors.grey.withOpacity(0.5),
-                                  child: Container(
-                                    width: 50.0,
-                                    height: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                  // child: Text(
-                                  //   '60.0',
-                                  //   textAlign: TextAlign.center,
-                                  //   style: TextStyle(
-                                  //     fontSize: 20.0,
-                                  //     fontWeight: FontWeight.bold,
-                                  //   ),
-                                  // ),
-                                ),
-                              )
-                            : Text(
-                                "${weatherController.weather.value.main.temp} °C \n${weatherController.celsius.value.toStringAsFixed(2)} °F",
-                                style: TextStyle(
-                                    color: ColorTheme.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
-                              )
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
+          Padding(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 6),
+            child: Container(
+                child: Column(
               children: [
-                ForYouScreen(topic: "NEWS"),
-                LocalScreen(topic: "local"),
-                SportScreen(topic: "SPORTS"),
-                WeatherScreen(topic: "WEATHER"),
-                MoneyScreen(
-                  topic: "MONEY",
+                Obx(
+                  () => Container(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(EditLocation());
+                            },
+                            child: Row(
+                              children: [
+                                weatherController.isLoading.value
+                                    ? SizedBox(
+                                        width: 70.0,
+                                        height: 20.0,
+                                        child: Shimmer.fromColors(
+                                          baseColor: Colors.grey,
+                                          highlightColor:
+                                              Colors.grey.withOpacity(0.5),
+                                          child: Container(
+                                            width: 50.0,
+                                            height: 20.0,
+                                            color: Colors.white,
+                                          ),
+                                          // child: Text(
+                                          //   '60.0',
+                                          //   textAlign: TextAlign.center,
+                                          //   style: TextStyle(
+                                          //     fontSize: 20.0,
+                                          //     fontWeight: FontWeight.bold,
+                                          //   ),
+                                          // ),
+                                        ),
+                                      )
+                                    : Text(
+                                        "${weatherController.weather.value.name}",
+                                        style: TextStyle(
+                                            color: ColorTheme.black,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                Image.asset(
+                                  ImageProvide.edit,
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Expanded(
+                        //   child: SearchChoices.single(
+                        //     isExpanded: true,
+                        //     items: countryList
+                        //         .map(
+                        //           (e) => DropdownMenuItem(
+                        //             child: Text(e.name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
+                        //             value: e.code,
+                        //           ),
+                        //         )
+                        //         .toList(),
+                        //         icon: SizedBox.shrink(),
+                        //         underline:SizedBox.shrink() ,
+                        //         padding: 0,
+                        //     searchInputDecoration: InputDecoration(
+                        //         border: OutlineInputBorder(
+                        //           borderSide: BorderSide(
+                        //             color: ColorTheme.btnshade2,
+                        //           ),
+                        //         ),
+                        //         focusedBorder: OutlineInputBorder(
+                        //           borderSide: BorderSide(
+                        //             color: ColorTheme.btnshade2,
+                        //           ),
+                        //         ),
+                        //         enabledBorder: OutlineInputBorder(
+                        //           borderSide: BorderSide(
+                        //             color: ColorTheme.btnshade2,
+                        //           ),
+                        //         )),
+                        //     closeButton: SizedBox.shrink(),
+                        //     displayClearIcon: false,
+                        //     value: countryCode,
+
+                        //     onChanged: (value) async {
+                        //       // print("value:::: $value");
+                        //        setState(() {
+                        //           // countryname = value.name;
+                        //           countryCode = value.toString();
+                        //         });
+                        //         print("value:::: $value");
+                        //         GetStorage getStorage = GetStorage();
+                        //         getStorage.write("countrycode", value);
+
+                        //         forYouController.fetchMarketnews(
+                        //             page: 1,
+                        //             topic: "NEWS",
+                        //             nextUrl: null,
+                        //             change: "0");
+                        //         await local_controller.fetchMarketnews(
+                        //             page: 2,
+                        //             topic: "local",
+                        //             nextUrl: null,
+                        //             change: "0");
+                        //         await sports_controller.fetchMarketnews(
+                        //             page: 1,
+                        //             topic: "SPORTS",
+                        //             nextUrl: null,
+                        //             change: "0");
+
+                        //         await weather_controller.fetchMarketnews(
+                        //             page: 1,
+                        //             topic: "WEATHER",
+                        //             nextUrl: null,
+                        //             change: "0");
+                        //         await money_controller.fetchMarketnews(
+                        //             page: 1,
+                        //             topic: "MONEY",
+                        //             nextUrl: null,
+                        //             change: "0");
+                        //         await lifestyle_controller.fetchMarketnews(
+                        //             page: 1,
+                        //             topic: "LIFESTYLE",
+                        //             nextUrl: null,
+                        //             change: "0");
+                        //         await healt_fitness_controller.fetchMarketnews(
+                        //             page: 1,
+                        //             topic: "HEALTH & FITNESS",
+                        //             nextUrl: null,
+                        //             change: "0");
+                        //         await food_drink_controller.fetchMarketnews(
+                        //             page: 1,
+                        //             topic: "FOOD & DRINK",
+                        //             nextUrl: null,
+                        //             change: "0");
+                        //         await travel_controller.fetchMarketnews(
+                        //             page: 1,
+                        //             topic: "TRAVEL",
+                        //             nextUrl: null,
+                        //             change: "0");
+
+                        //            for (int i = 0; i < countryList.length; i++){
+                        //              if (value == countryList[i].code){
+                        //                setState(() {
+                        //                   countryname = countryList[i].name;
+                        //                });
+
+                        //                break;
+                        //              }
+                        //            }
+                        //            getStorage.write("countryname", countryname);
+                        //         try {
+                        //           var addresses = await Geocoder.local
+                        //               .findAddressesFromQuery(countryname);
+                        //           Address first = addresses.first;
+                        //           print("${first.coordinates.latitude}");
+                        //           GetStorage getStorage = GetStorage();
+                        //           getStorage.write(
+                        //               "clatitude", first.coordinates.latitude);
+                        //           getStorage.write(
+                        //               "clongitude", first.coordinates.longitude);
+                        //           weatherController.getWeather();
+                        //           // addStore();
+                        //         } catch (e) {
+                        //           // Toast.show("Invalid Address", context, gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+                        //         }
+                        //     },
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   width: 5.0,
+                        // ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 4,
+                          height: 32,
+                          child: Theme(
+                            data: ThemeData(
+                              primaryColor: ColorTheme.btnshade2,
+                              primaryColorDark: ColorTheme.btnshade2,
+                              primaryColorLight: ColorTheme.btnshade2,
+                              textTheme: TextTheme(
+                                subtitle1: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            child: DropdownSearch<Country>(
+                              items: countryList,
+                              // selectedItem: Country(name: countryname, code: countryCode),
+                              dropdownSearchBaseStyle: TextStyle(fontSize: 12),
+
+                              showSearchBox: true,
+                              mode: Mode.DIALOG,
+                              dropDownButton: SizedBox.shrink(),
+                              showAsSuffixIcons: true,
+                              popupSafeArea:
+                                  PopupSafeAreaProps(top: true, bottom: true),
+                              selectedItem: countryname == null &&
+                                      countryCode == null
+                                  ? Country(name: "Argentina", code: "es-ar")
+                                  : Country(name: countryname, code: countryCode),
+                              showClearButton: false,
+                              dropdownSearchDecoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.zero,
+                              ),
+                              onChanged: (value) async {
+                                setState(() {
+                                  countryname = value.name;
+                                  countryCode = value.code;
+                                });
+                                GetStorage getStorage = GetStorage();
+                                getStorage.write("countrycode", value.code);
+                                getStorage.write("countryname", value.name);
+                                try {
+                                  var addresses = await Geocoder.local
+                                      .findAddressesFromQuery(value.name);
+                                  Address first = addresses.first;
+                                  print("${first.coordinates.latitude}");
+                                  GetStorage getStorage = GetStorage();
+                                  getStorage.write(
+                                      "clatitude", first.coordinates.latitude);
+                                  getStorage.write(
+                                      "clongitude", first.coordinates.longitude);
+                                  weatherController.getWeather();
+                                  // addStore();
+                                } catch (e) {
+                                  // Toast.show("Invalid Address", context, gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+                                }
+                                forYouController.fetchMarketnews(
+                                    page: 1,
+                                    topic: "NEWS",
+                                    nextUrl: null,
+                                    change: "0");
+                                await local_controller.fetchMarketnews(
+                                    page: 2,
+                                    topic: "local",
+                                    nextUrl: null,
+                                    change: "0");
+                                await sports_controller.fetchMarketnews(
+                                    page: 1,
+                                    topic: "SPORTS",
+                                    nextUrl: null,
+                                    change: "0");
+                                await weather_controller.fetchMarketnews(
+                                    page: 1,
+                                    topic: "WEATHER",
+                                    nextUrl: null,
+                                    change: "0");
+                                await money_controller.fetchMarketnews(
+                                    page: 1,
+                                    topic: "MONEY",
+                                    nextUrl: null,
+                                    change: "0");
+                                await lifestyle_controller.fetchMarketnews(
+                                    page: 1,
+                                    topic: "LIFESTYLE",
+                                    nextUrl: null,
+                                    change: "0");
+                                await healt_fitness_controller.fetchMarketnews(
+                                    page: 1,
+                                    topic: "HEALTH & FITNESS",
+                                    nextUrl: null,
+                                    change: "0");
+                                await food_drink_controller.fetchMarketnews(
+                                    page: 1,
+                                    topic: "FOOD & DRINK",
+                                    nextUrl: null,
+                                    change: "0");
+                                await travel_controller.fetchMarketnews(
+                                    page: 1,
+                                    topic: "TRAVEL",
+                                    nextUrl: null,
+                                    change: "0");
+                                await newsController.fetchMarketnews(
+                                    page: 1,
+                                    topic: "TODAY",
+                                    nextUrl: null,
+                                    change: "0");
+                              },
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                ImageProvide.temp,
+                                height: 20,
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              weatherController.isLoading.value
+                                  ? SizedBox(
+                                      width: 50.0,
+                                      height: 20.0,
+                                      child: Shimmer.fromColors(
+                                        baseColor: Colors.grey,
+                                        highlightColor:
+                                            Colors.grey.withOpacity(0.5),
+                                        child: Container(
+                                          width: 50.0,
+                                          height: 20.0,
+                                          color: Colors.white,
+                                        ),
+                                        // child: Text(
+                                        //   '60.0',
+                                        //   textAlign: TextAlign.center,
+                                        //   style: TextStyle(
+                                        //     fontSize: 20.0,
+                                        //     fontWeight: FontWeight.bold,
+                                        //   ),
+                                        // ),
+                                      ),
+                                    )
+                                  : Text(
+                                      "${weatherController.weather.value.main.temp} °C \n${weatherController.celsius.value.toStringAsFixed(2)} °F",
+                                      style: TextStyle(
+                                          color: ColorTheme.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                LifeStyleScreen(
-                  topic: "LIFESTYLE",
-                ),
-                HealthFitnessScreen(
-                  topic: "HEALTH & FITNESS",
-                ),
-                FoodDrinkScreen(
-                  topic: "FOOD & DRINK",
-                ),
-                TravelScreen(
-                  topic: "TRAVEL",
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      ForYouScreen(topic: "NEWS"),
+                      LocalScreen(topic: "local"),
+                      SportScreen(topic: "SPORTS"),
+                      WeatherScreen(topic: "WEATHER"),
+                      MoneyScreen(
+                        topic: "MONEY",
+                      ),
+                      LifeStyleScreen(
+                        topic: "LIFESTYLE",
+                      ),
+                      HealthFitnessScreen(
+                        topic: "HEALTH & FITNESS",
+                      ),
+                      FoodDrinkScreen(
+                        topic: "FOOD & DRINK",
+                      ),
+                      TravelScreen(
+                        topic: "TRAVEL",
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            ),
+            )),
           ),
+          FloatingSearchBar(
+              hint: 'Search...',
+              scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+              transitionDuration: const Duration(milliseconds: 800),
+              transitionCurve: Curves.easeInOut,
+              physics: const BouncingScrollPhysics(),
+              axisAlignment: 0.0,
+              openAxisAlignment: 0.0,
+              width: 600,
+              debounceDelay: const Duration(milliseconds: 500),
+              onQueryChanged: (query) {
+                // Call your model, bloc, controller here.
+                print("query:::: $query");
+                searchNewsController.fetchMarketnews(
+                    nextUrl: null, search: query);
+              },
+              transition: CircularFloatingSearchBarTransition(),
+              builder: (context, transition) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Material(
+                    color: Colors.white,
+                    elevation: 4.0,
+                    child: Obx(
+                      () => searchNewsController.newsList.value.value == null ||
+                              searchNewsController
+                                      .newsList.value.value.length ==
+                                  0
+                          ? Center(child: Text("No Data"))
+                          : SizedBox(
+                              height: 300,
+                              child: ListView.separated(
+                                padding: EdgeInsets.only(
+                                    right: 10, left: 10, top: 10),
+                                physics: BouncingScrollPhysics(),
+                                itemCount: searchNewsController
+                                    .newsList.value.value[0].subCards.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return Divider(
+                                    height: 40,
+                                    thickness: 1,
+                                  );
+                                },
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(
+                                          () => NewsDetails(
+                                              subCard: searchNewsController
+                                                  .newsList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index]),
+                                          transition: Transition.cupertino);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: 80,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      "${searchNewsController.newsList.value.value[0].subCards[index].images[0].url}"),
+                                                  fit: BoxFit.cover)),
+                                        ),
+                                        SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${searchNewsController.newsList.value.value[0].subCards[index].title}",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            45),
+                                              ),
+                                              sizedbox(context, 40),
+                                              Text(
+                                                "",
+                                                style: TextStyle(
+                                                    color: ColorTheme.black
+                                                        .withOpacity(0.4),
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            60),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                    ),
+                  ),
+                );
+              })
         ],
-      )),
+      ),
     );
   }
 }
