@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+
 // import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -121,6 +122,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Country(name: "Venezuela", code: "es-ve"),
     Country(name: "Vietnam", code: "vi-vn"),
   ];
+
   // Position position;
 
   @override
@@ -182,139 +184,145 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    print("Width::::::${MediaQuery.of(context).size.width}");
+    print("Height::::::${MediaQuery.of(context).size.height}");
     return Scaffold(
       backgroundColor: ColorTheme.lightgrey,
       // appBar:
       body: Stack(
-        fit: StackFit.expand,
+        // fit: StackFit.expand,
+        // alignment: Alignment.topLeft,
         children: [
-          PreferredSize(
-            preferredSize: Size(MediaQuery.of(context).size.width, 101),
-            child: Container(
-              color: ColorTheme.lightgrey,
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(top: 00, left: 22),
-
-                              width: MediaQuery.of(context).size.width / 1.2,
-                              // height: 43,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 40,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: ColorTheme.textboxgrey
-                                          .withOpacity(0.3),
-                                      borderRadius: BorderRadius.circular(5.0)),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 10),
-                                          child: InkWell(
-                                            onTap: () {
-                                              Get.to(SearchScreen());
-                                            },
-                                            child: TextField(
-                                              cursorColor: ColorTheme.white,
-                                              style: TextStyle(
-                                                  color: ColorTheme.white),
-                                              keyboardType: TextInputType.text,
-                                              onChanged: (value) async {
-                                                print("value : $value");
-                                                // await searchNewsController
-                                                //     .fetchMarketnews(
-                                                //         nextUrl: null, search: value);
-                                                // _streamController.add(newsController.newsList.value);
-                                              },
-                                              enabled: false,
-                                              decoration: InputDecoration(
-                                                focusedBorder: InputBorder.none,
-                                                errorBorder: InputBorder.none,
-                                                enabledBorder: InputBorder.none,
-                                                disabledBorder:
-                                                    InputBorder.none,
-                                                focusedErrorBorder:
-                                                    InputBorder.none,
-                                                hintText: "Search News",
-                                                hintStyle: TextStyle(
-                                                  color: ColorTheme.white,
-                                                ),
-                                                border: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    style: BorderStyle.solid,
-                                                    color: ColorTheme.white,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Image.asset(
-                                        ImageProvide.seach,
-                                        height: 20,
-                                        width: 20,
-                                        // scale: 3.5,
-                                        color: ColorTheme.white,
-                                      )
-                                    ],
-                                  )),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Image.asset(
-                            ImageProvide.setting,
-                            height: 25,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      AppBar(
-                        leading: SizedBox(),
-                        backgroundColor: ColorTheme.btnshade2,
-                        flexibleSpace: Column(
-                          children: [
-                            TabBar(
-                              isScrollable: true,
-                              indicatorPadding: EdgeInsets.all(0),
-                              indicatorSize: TabBarIndicatorSize.label,
-                              indicatorWeight: 3,
-                              indicatorColor: ColorTheme.white,
-                              automaticIndicatorColorAdjustment: true,
-                              tabs: myTabs,
-                              controller: _tabController,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+//           Container(
+//             color: ColorTheme.lightgrey,
+//             child: Padding(
+//               padding: const EdgeInsets.only(top: 5),
+//               child: Column(
+//                 children: [
+//                   // Row(
+//                   //   crossAxisAlignment: CrossAxisAlignment.center,
+//                   //   children: [
+//                   //     // Expanded(
+//                   //     //   child: Container(
+//                   //     //     margin: EdgeInsets.only(top: 00, left: 22),
+//                   //     //
+//                   //     //     width: MediaQuery.of(context).size.width / 1.2,
+//                   //     //     // height: 43,
+//                   //     //     decoration: BoxDecoration(
+//                   //     //         borderRadius: BorderRadius.circular(5.0)),
+//                   //     //     child: Container(
+//                   //     //         padding: EdgeInsets.symmetric(horizontal: 10),
+//                   //     //         width: MediaQuery.of(context).size.width,
+//                   //     //         height: 40,
+//                   //     //         alignment: Alignment.center,
+//                   //     //         decoration: BoxDecoration(
+//                   //     //             color: ColorTheme.textboxgrey
+//                   //     //                 .withOpacity(0.3),
+//                   //     //             borderRadius: BorderRadius.circular(5.0)),
+//                   //     //         child: Row(
+//                   //     //           children: [
+//                   //     //             // Expanded(
+//                   //     //             //   child: Padding(
+//                   //     //             //     padding:
+//                   //     //             //     const EdgeInsets.only(right: 10),
+//                   //     //             //     child: InkWell(
+//                   //     //             //       onTap: () {
+//                   //     //             //         Get.to(SearchScreen());
+//                   //     //             //       },
+//                   //     //             //       child: TextField(
+//                   //     //             //         cursorColor: ColorTheme.white,
+//                   //     //             //         style: TextStyle(
+//                   //     //             //             color: ColorTheme.white),
+//                   //     //             //         keyboardType: TextInputType.text,
+//                   //     //             //         onChanged: (value) async {
+//                   //     //             //           print("value : $value");
+//                   //     //             //           // await searchNewsController
+//                   //     //             //           //     .fetchMarketnews(
+//                   //     //             //           //         nextUrl: null, search: value);
+//                   //     //             //           // _streamController.add(newsController.newsList.value);
+//                   //     //             //         },
+//                   //     //             //         enabled: false,
+//                   //     //             //         decoration: InputDecoration(
+//                   //     //             //           focusedBorder: InputBorder.none,
+//                   //     //             //           errorBorder: InputBorder.none,
+//                   //     //             //           enabledBorder: InputBorder.none,
+//                   //     //             //           disabledBorder:
+//                   //     //             //           InputBorder.none,
+//                   //     //             //           focusedErrorBorder:
+//                   //     //             //           InputBorder.none,
+//                   //     //             //           hintText: "Search News",
+//                   //     //             //           hintStyle: TextStyle(
+//                   //     //             //             color: ColorTheme.white,
+//                   //     //             //           ),
+//                   //     //             //           border: OutlineInputBorder(
+//                   //     //             //             borderSide: BorderSide(
+//                   //     //             //               style: BorderStyle.solid,
+//                   //     //             //               color: ColorTheme.white,
+//                   //     //             //             ),
+//                   //     //             //             borderRadius:
+//                   //     //             //             BorderRadius.circular(
+//                   //     //             //                 10.0),
+//                   //     //             //           ),
+//                   //     //             //         ),
+//                   //     //             //       ),
+//                   //     //             //     ),
+//                   //     //             //   ),
+//                   //     //             // ),
+//                   //     //             Image.asset(
+//                   //     //               ImageProvide.seach,
+//                   //     //               height: 20,
+//                   //     //               width: 20,
+//                   //     //               // scale: 3.5,
+//                   //     //               color: ColorTheme.white,
+//                   //     //             )
+//                   //     //           ],
+//                   //     //         )
+//                   //     //     ),
+//                   //     //   ),
+//                   //     // ),
+//                   //     SizedBox(
+//                   //       width: 10,
+//                   //     ),
+//                   //     Image.asset(
+//                   //       ImageProvide.setting,
+//                   //       height: 25,
+//                   //     ),
+//                   //     SizedBox(
+//                   //       width: 10,
+//                   //     ),
+//                   //   ],
+//                   // ),
+// /*
+//                   AppBar(
+//                     leading: SizedBox(),
+//                     backgroundColor: ColorTheme.btnshade2,
+//                     flexibleSpace: Column(
+//                       children: [
+//
+//                       ],
+//                     ),
+//                   )
+// */
+//                 ],
+//               ),
+//             ),
+//           ),
+          Container(
+            color: ColorTheme.btnshade2,
+            padding: EdgeInsets.only(top: 80),
+            child: TabBar(
+              isScrollable: true,
+              indicatorPadding: EdgeInsets.all(0),
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorWeight: 3,
+              indicatorColor: ColorTheme.white,
+              automaticIndicatorColorAdjustment: true,
+              tabs: myTabs,
+              controller: _tabController,
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 6),
+            padding: EdgeInsets.only(top: 130),
             child: Container(
                 child: Column(
               children: [
@@ -524,7 +532,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               selectedItem: countryname == null &&
                                       countryCode == null
                                   ? Country(name: "Argentina", code: "es-ar")
-                                  : Country(name: countryname, code: countryCode),
+                                  : Country(
+                                      name: countryname, code: countryCode),
                               showClearButton: false,
                               dropdownSearchDecoration: InputDecoration(
                                 border: InputBorder.none,
@@ -546,8 +555,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   GetStorage getStorage = GetStorage();
                                   getStorage.write(
                                       "clatitude", first.coordinates.latitude);
-                                  getStorage.write(
-                                      "clongitude", first.coordinates.longitude);
+                                  getStorage.write("clongitude",
+                                      first.coordinates.longitude);
                                   weatherController.getWeather();
                                   // addStore();
                                 } catch (e) {
@@ -683,119 +692,137 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ],
             )),
           ),
-          FloatingSearchBar(
-              hint: 'Search...',
-              scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-              transitionDuration: const Duration(milliseconds: 800),
-              transitionCurve: Curves.easeInOut,
-              physics: const BouncingScrollPhysics(),
-              axisAlignment: 0.0,
-              openAxisAlignment: 0.0,
-              width: 600,
-              debounceDelay: const Duration(milliseconds: 500),
-              onQueryChanged: (query) {
-                // Call your model, bloc, controller here.
-                print("query:::: $query");
-                searchNewsController.fetchMarketnews(
-                    nextUrl: null, search: query);
-              },
-              transition: CircularFloatingSearchBarTransition(),
-              builder: (context, transition) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Material(
-                    color: Colors.white,
-                    elevation: 4.0,
-                    child: Obx(
-                      () => searchNewsController.newsList.value.value == null ||
-                              searchNewsController
-                                      .newsList.value.value.length ==
-                                  0
-                          ? Center(child: Text("No Data"))
-                          : SizedBox(
-                              height: 300,
-                              child: ListView.separated(
-                                padding: EdgeInsets.only(
-                                    right: 10, left: 10, top: 10),
-                                physics: BouncingScrollPhysics(),
-                                itemCount: searchNewsController
-                                    .newsList.value.value[0].subCards.length,
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return Divider(
-                                    height: 40,
-                                    thickness: 1,
-                                  );
-                                },
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Get.to(
-                                          () => NewsDetails(
-                                              subCard: searchNewsController
-                                                  .newsList
-                                                  .value
-                                                  .value[0]
-                                                  .subCards[index]),
-                                          transition: Transition.cupertino);
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: 80,
-                                          width: 80,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      "${searchNewsController.newsList.value.value[0].subCards[index].images[0].url}"),
-                                                  fit: BoxFit.cover)),
-                                        ),
-                                        SizedBox(
-                                          width: 5.0,
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${searchNewsController.newsList.value.value[0].subCards[index].title}",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            45),
-                                              ),
-                                              sizedbox(context, 40),
-                                              Text(
-                                                "",
-                                                style: TextStyle(
-                                                    color: ColorTheme.black
-                                                        .withOpacity(0.4),
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            60),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                    ),
+          // Positioned(
+          //   right: 10,
+          //   top: 45,
+          //   child: Image.asset(
+          //     ImageProvide.setting,
+          //     height: 25,
+          //   ),
+          // ),
+          Container(
+            // width: 300,
+            // padding: EdgeInsets.only(right: 50),
+            child: FloatingSearchBar(
+                hint: 'Search...',
+                scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+                // transitionDuration: const Duration(milliseconds: 800),
+                // transitionCurve: Curves.easeInOut,
+                physics: const BouncingScrollPhysics(),
+                // axisAlignment: 0.0,
+                elevation: 0,
+                actions: [
+                  Image.asset(
+                    ImageProvide.seach,
+                    height: 20,
+                    width: 20,
+                    // scale: 3.5,
+                    color: ColorTheme.white,
                   ),
-                );
-              })
+                  SizedBox(width: 15,),
+                  Image.asset(
+                    ImageProvide.setting,
+                    height: 25,
+                  ),
+                ],
+                // openAxisAlignment: 0.0,
+                backgroundColor: Colors.red,
+                // padding: EdgeInsets.only(right: 20),
+                width: MediaQuery.of(context).size.width,
+                height: 40,
+                hintStyle: TextStyle(color: Colors.white),
+                // debounceDelay: const Duration(milliseconds: 500),
+                onQueryChanged: (query) {
+                  // Call your model, bloc, controller here.
+                  print("query:::: $query");
+                  searchNewsController.fetchMarketnews(
+                      nextUrl: null, search: query);
+                },
+                // transition: CircularFloatingSearchBarTransition(),
+                builder: (context, transition) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Material(
+                      color: Colors.white,
+                      elevation: 4.0,
+                      child: Obx(
+                        () => searchNewsController.newsList.value.value ==
+                                    null ||
+                                searchNewsController
+                                        .newsList.value.value.length ==
+                                    0
+                            ? Center(child: Text("No Data"))
+                            : SizedBox(
+                                height: 300,
+                                child: ListView.separated(
+                                  padding: EdgeInsets.only(
+                                      right: 10, left: 10, top: 10),
+                                  physics: BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: searchNewsController
+                                      .newsList.value.value[0].subCards.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return Divider(
+                                      height: 40,
+                                      thickness: 1,
+                                    );
+                                  },
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Get.to(
+                                            () => NewsDetails(
+                                                subCard: searchNewsController
+                                                    .newsList
+                                                    .value
+                                                    .value[0]
+                                                    .subCards[index]),
+                                            transition: Transition.cupertino);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        "${searchNewsController.newsList.value.value[0].subCards[index].images[0].url}"),
+                                                    fit: BoxFit.cover)),
+                                          ),
+                                          SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${searchNewsController.newsList.value.value[0].subCards[index].title}",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                      ),
+                    ),
+                  );
+                }),
+          ),
         ],
       ),
     );
