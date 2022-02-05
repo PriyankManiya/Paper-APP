@@ -176,7 +176,7 @@ class _AddLocationState extends State<AddLocation> {
             TextField(
               onChanged: (value) async {
                 var googlePlace = GooglePlace("AIzaSyDKCJPi6Jo_8lPM78Vzcq-hrHf-1tf5fkg");
-                var result = await googlePlace.search.getTextSearchJson("restaurants in Sydney", ).then((value) {
+                var result = await googlePlace.search.getTextSearchJson("restaurants in Sydney",).then((value) {
                   print("Search::::${value}");
                 }).catchError((onError){
                   print("Error::::::$onError");
