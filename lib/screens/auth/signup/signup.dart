@@ -192,7 +192,7 @@ class _SignUpState extends State<SignUp> {
                     onTap: () {
                       // Get.to(() => SignIn(), transition: Transition.cupertino,binding: SignInBind());
                       Navigator.push(context,
-                          CupertinoPageRoute(builder: (context) => SignIn()));
+                          CupertinoPageRoute(builder: (context) => SignInScreen()));
                     },
                     child: RichText(
                         text: TextSpan(

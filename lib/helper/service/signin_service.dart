@@ -25,4 +25,34 @@ class SigninService {
         // print("Response : ${response.body}");
       return jsonDecode(response.body);
   }
+
+  static Future<dynamic> forgotPassword({String email}) async {
+
+    var response = await client.post(Uri.parse(StringConst.FORGOT_PASSWORD), body: {
+      "email": email,
+    });
+    // print("Response : ${response.body}");
+    return jsonDecode(response.body);
+  }
+
+  static Future<dynamic> otpVerify({String otp}) async {
+
+    var response = await client.post(Uri.parse(StringConst.OTP), body: {
+      "otp": otp,
+    });
+    // print("Response : ${response.body}");
+    return jsonDecode(response.body);
+  }
+
+  static Future<dynamic> resetPassword({String newPassword, String token}) async {
+
+    var response = await client.post(Uri.parse(StringConst.RESETPASSWORD), body: {
+      "new_password": newPassword,
+    },
+    headers: {
+      "x-access-token":token
+    });
+    // print("Response : ${response.body}");
+    return jsonDecode(response.body);
+  }
 }

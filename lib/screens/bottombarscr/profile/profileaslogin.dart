@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/myprofile_controller.dart';
+import 'package:paper_app/screens/auth/signin/signin.dart';
 import 'package:paper_app/screens/usersetting/editprofile.dart';
 import 'package:paper_app/screens/usersetting/history.dart';
 import 'package:paper_app/screens/usersetting/location.dart';
@@ -242,6 +244,11 @@ class _ProfileAsLoginState extends State<ProfileAsLogin> {
                           children: [
                             sizedbox(context, 30),
                             InkWell(
+                              onTap: (){
+                                GetStorage getStorage = GetStorage();
+                                getStorage.erase();
+                                Get.offAll(SignInScreen());
+                              },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: 55,

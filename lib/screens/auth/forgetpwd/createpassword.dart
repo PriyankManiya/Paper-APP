@@ -1,12 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/buttonstyle.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/helper/controller/signincontroller.dart';
 
 class CreatePassword extends StatefulWidget {
-  CreatePassword({Key key}) : super(key: key);
+  String token;
+  CreatePassword({Key key, this.token}) : super(key: key);
 
   @override
   _CreatePasswordState createState() => _CreatePasswordState();
@@ -16,6 +19,10 @@ class _CreatePasswordState extends State<CreatePassword> {
   final GlobalKey<FormState> forgotkey = new GlobalKey<FormState>();
   TextEditingController pwdcontroller;
   TextEditingController confirmcontroller;
+
+  SigninController signinController = Get.put(SigninController());
+
+
   @override
   void initState() {
     super.initState();
@@ -127,20 +134,22 @@ class _CreatePasswordState extends State<CreatePassword> {
                     ),
                   ),
                   sizedbox(context, 20),
-                  InkWell(
-                    onTap: () {
-                      checkvalidation();
-                    },
-                    child: Container(
-                      height: 55,
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.center,
-                      decoration: boxDecoration,
-                      child: Text("Save",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: MediaQuery.of(context).size.height / 55,
-                              color: ColorTheme.white)),
+                  Obx(
+                      ()=>signinController.resetLoader.value ? CupertinoActivityIndicator(): InkWell(
+                      onTap: () {
+                        checkvalidation();
+                      },
+                      child: Container(
+                        height: 55,
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        decoration: boxDecoration,
+                        child: Text("Save",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.height / 55,
+                                color: ColorTheme.white)),
+                      ),
                     ),
                   ),
                 ],
@@ -172,5 +181,6 @@ class _CreatePasswordState extends State<CreatePassword> {
       return;
     }
     forgotkey.currentState.save();
+    signinController.resetPassword(newPassword: pwdcontroller.text.trim(), token: widget.token);
   }
 }

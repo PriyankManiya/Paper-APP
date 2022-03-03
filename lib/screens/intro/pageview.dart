@@ -55,7 +55,7 @@ int indicator = 0;
                 onTap: () {
                   if (introcontroller.page.round() == 1) {
                     // introcontroller.jumpTo(1);
-                    Get.to(() => SignIn(), transition: Transition.cupertino);
+                    Get.to(() => SignInScreen(), transition: Transition.cupertino);
                   }
                   introcontroller.nextPage(
                       duration: Duration(milliseconds: 500),
@@ -78,7 +78,7 @@ int indicator = 0;
               sizedbox(context, 40),
               InkWell(
                   onTap: () {
-                    Get.to(() => SignIn(), transition: Transition.cupertino);
+                    Get.to(() => SignInScreen(), transition: Transition.cupertino);
                   },
                   child: Text("Skip")),
               sizedbox(context, 20),

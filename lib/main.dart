@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         disabledColor: Colors.transparent,
       ),
       debugShowCheckedModeBanner: false,
-      home: storage.read("token") != null ? Bottombar() : SignIn(),
+      home: storage.read("token") != null ? Bottombar() : SignInScreen(),
       // home: SignIn(),
     );
   }

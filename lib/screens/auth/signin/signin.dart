@@ -9,14 +9,14 @@ import 'package:paper_app/helper/controller/signincontroller.dart';
 import 'package:paper_app/screens/auth/forgetpwd/forgetpassword.dart';
 import 'package:paper_app/screens/auth/signup/signup.dart';
 
-class SignIn extends StatefulWidget {
-  SignIn({Key key}) : super(key: key);
+class SignInScreen extends StatefulWidget {
+  SignInScreen({Key key}) : super(key: key);
 
   @override
   _SignInState createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State<SignInScreen> {
   GlobalKey<FormState> signformkey = new GlobalKey<FormState>();
   bool _isVisible = false;
   final SigninController controller = Get.put(SigninController());

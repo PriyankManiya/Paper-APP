@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/buttonstyle.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/helper/controller/signincontroller.dart';
 import 'package:paper_app/screens/auth/forgetpwd/emailcode.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -16,6 +18,8 @@ class ForgetPassword extends StatefulWidget {
 class _ForgetPasswordState extends State<ForgetPassword> {
   final GlobalKey<FormState> forgotkey = new GlobalKey<FormState>();
   TextEditingController emailController;
+  SigninController signinController = Get.put(SigninController());
+
   @override
   void initState() {
     super.initState();
@@ -96,20 +100,22 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     ),
                   ),
                   sizedbox(context, 20),
-                  InkWell(
-                    onTap: () {
-                      checkvalidation();
-                    },
-                    child: Container(
-                      height: 55,
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.center,
-                      decoration: boxDecoration,
-                      child: Text("Send",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: MediaQuery.of(context).size.height / 55,
-                              color: ColorTheme.white)),
+                  Obx(
+                    ()=>signinController.forgotLoader.value ? CupertinoActivityIndicator() : InkWell(
+                      onTap: () {
+                        checkvalidation();
+                      },
+                      child: Container(
+                        height: 55,
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        decoration: boxDecoration,
+                        child: Text("Send",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.height / 55,
+                                color: ColorTheme.white)),
+                      ),
                     ),
                   )
                 ],
@@ -134,6 +140,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       return;
     }
     forgotkey.currentState.save();
-    Get.to(() => EmailCode(), transition: Transition.cupertino);
+    signinController.forgotpassword(email: emailController.text.trim());
+    // Get.to(() => EmailCode(), transition: Transition.cupertino);
   }
 }

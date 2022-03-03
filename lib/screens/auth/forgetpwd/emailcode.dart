@@ -1,13 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paper_app/constants/buttonstyle.dart';
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
+import 'package:paper_app/helper/controller/signincontroller.dart';
 import 'package:paper_app/screens/auth/forgetpwd/createpassword.dart';
 
 class EmailCode extends StatefulWidget {
-  EmailCode({Key key}) : super(key: key);
+  String email;
+  EmailCode({Key key, this.email}) : super(key: key);
 
   @override
   _EmailCodeState createState() => _EmailCodeState();
@@ -16,6 +19,7 @@ class EmailCode extends StatefulWidget {
 class _EmailCodeState extends State<EmailCode> {
   final GlobalKey<FormState> forgotkey = new GlobalKey<FormState>();
   TextEditingController emailController;
+  SigninController signinController = Get.put(SigninController());
   @override
   void initState() {
     super.initState();
@@ -102,45 +106,50 @@ class _EmailCodeState extends State<EmailCode> {
                     ),
                   ),
                   sizedbox(context, 20),
-                  InkWell(
-                    onTap: () {
-                      checkvalidation();
-                    },
-                    child: Container(
-                      height: 55,
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.center,
-                      decoration: boxDecoration,
-                      child: Text("Send",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: MediaQuery.of(context).size.height / 55,
-                              color: ColorTheme.white)),
+                  Obx(
+                      ()=>signinController.otpLoader.value ? CupertinoActivityIndicator() :  InkWell(
+                      onTap: () {
+                        checkvalidation();
+                      },
+                      child: Container(
+                        height: 55,
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        decoration: boxDecoration,
+                        child: Text("Send",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.height / 55,
+                                color: ColorTheme.white)),
+                      ),
                     ),
                   ),
                   sizedbox(context, 20),
-                  InkWell(
-                    onTap: () {
-                      // Get.to(() => SignUp(), transition: Transition.cupertino);
-                    },
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Didn’t get the Code?  ",
-                            style: TextStyle(
-                                color: ColorTheme.grey,
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 55),
-                            children: <TextSpan>[
-                          TextSpan(
-                              text: "Resend",
+                  Obx(
+                    ()=> InkWell(
+                      onTap: () {
+                        // signinController.otp(otp: widget.email, isResend: true);
+                        // Get.to(() => SignUp(), transition: Transition.cupertino);
+                      },
+                      child: RichText(
+                          text: TextSpan(
+                              text: "Didn’t get the Code?  ",
                               style: TextStyle(
-                                  color: ColorTheme.btnshade1,
+                                  color: ColorTheme.grey,
                                   fontWeight: FontWeight.bold,
                                   fontSize:
-                                      MediaQuery.of(context).size.height / 55,
-                                  decoration: TextDecoration.underline))
-                        ])),
+                                      MediaQuery.of(context).size.height / 55),
+                              children: <TextSpan>[
+                            TextSpan(
+                                text: "Resend",
+                                style: TextStyle(
+                                    color: ColorTheme.btnshade1,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 55,
+                                    decoration: TextDecoration.underline))
+                          ])),
+                    ),
                   ),
                 ],
               ),
@@ -164,6 +173,7 @@ class _EmailCodeState extends State<EmailCode> {
       return;
     }
     forgotkey.currentState.save();
-    Get.to(() => CreatePassword(), transition: Transition.cupertino);
+    signinController.otp(otp: emailController.text.trim(), isResend: false);
+    // Get.to(() => CreatePassword(), transition: Transition.cupertino);
   }
 }

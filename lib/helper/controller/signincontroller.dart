@@ -6,11 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:get/get.dart';
+import 'package:paper_app/helper/model/ForgotPassword.dart';
+import 'package:paper_app/helper/model/OtpVerify.dart';
+import 'package:paper_app/helper/model/ResetPassword.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paper_app/helper/model/SignIn.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paper_app/helper/model/SocialSignin.dart';
 import 'package:paper_app/helper/service/signin_service.dart';
+import 'package:paper_app/screens/auth/forgetpwd/createpassword.dart';
+import 'package:paper_app/screens/auth/forgetpwd/emailcode.dart';
+import 'package:paper_app/screens/auth/signin/signin.dart' show SignIn, SignInScreen;
 import 'package:paper_app/widgets/bottombar.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +27,9 @@ class SigninController extends GetxController {
   var password = '';
 
   var isLoading = false.obs;
+  var forgotLoader = false.obs;
+  var otpLoader = false.obs;
+  var resetLoader = false.obs;
 
   @override
   void onInit() {
@@ -66,6 +75,110 @@ class SigninController extends GetxController {
       print("ERROR WHILE FETCHING DATA : $e");
     }
   }
+
+  Future<void> forgotpassword({String email}) async {
+    forgotLoader(true);
+    try {
+      try {
+        var signInResponse = await SigninService.forgotPassword(
+            email: email,);
+
+        if (signInResponse["status"] == 200) {
+          ForgotPassword forgotPassword = ForgotPassword.fromJson(signInResponse);
+          // GetStorage storage = GetStorage();
+          // storage.write("token", signIn.token);
+          print("OTP::::${forgotPassword.data.otp}");
+          // storage.write("id", signIn.data.id);
+          Get.to(EmailCode());
+        } else {
+          Get.snackbar("Opps", signInResponse["message"],
+              snackStyle: SnackStyle.FLOATING);
+          print("${signInResponse["message"]}");
+          forgotLoader(false);
+        }
+
+        // print("Sing in success : ${signIn.token}");
+      } catch (e) {
+        print("API ERROR" + e);
+      }
+      forgotLoader(false);
+    } catch (e) {
+      forgotLoader(false);
+      print("ERROR ****** ERROR");
+      print("ERROR WHILE FETCHING DATA : $e");
+    }
+  }
+
+
+  Future<void> otp({String otp, bool isResend}) async {
+    otpLoader(true);
+    try {
+      try {
+        var signInResponse = await SigninService.otpVerify(
+          otp: otp,);
+
+        if (signInResponse["status"] == 200) {
+          OtpVerify forgotPassword = OtpVerify.fromJson(signInResponse);
+          // GetStorage storage = GetStorage();
+          // storage.write("token", signIn.token);
+          print("OTP::::${forgotPassword.data.otp}");
+          // storage.write("id", signIn.data.id);
+          if (!isResend){
+            Get.to(CreatePassword(token: forgotPassword.token,));
+          }
+
+        } else {
+          Get.snackbar("Opps", signInResponse["message"],
+              snackStyle: SnackStyle.FLOATING);
+          print("${signInResponse["message"]}");
+          otpLoader(false);
+        }
+
+        // print("Sing in success : ${signIn.token}");
+      } catch (e) {
+        print("API ERROR" + e);
+      }
+      otpLoader(false);
+    } catch (e) {
+      otpLoader(false);
+      print("ERROR ****** ERROR");
+      print("ERROR WHILE FETCHING DATA : $e");
+    }
+  }
+
+  Future<void> resetPassword({String newPassword, String token}) async {
+    resetLoader(true);
+    try {
+      try {
+        var signInResponse = await SigninService.resetPassword(
+          newPassword: newPassword, token: token);
+
+        if (signInResponse["status"] == 200) {
+          ResetPassword forgotPassword = ResetPassword.fromJson(signInResponse);
+          // GetStorage storage = GetStorage();
+          // storage.write("token", signIn.token);
+          // print("OTP::::${forgotPassword.data.otp}");
+          // storage.write("id", signIn.data.id);
+          Get.to(SignInScreen());
+        } else {
+          Get.snackbar("Opps", signInResponse["message"],
+              snackStyle: SnackStyle.FLOATING);
+          print("${signInResponse["message"]}");
+          resetLoader(false);
+        }
+
+        // print("Sing in success : ${signIn.token}");
+      } catch (e) {
+        print("API ERROR" + e);
+      }
+      resetLoader(false);
+    } catch (e) {
+      resetLoader(false);
+      print("ERROR ****** ERROR");
+      print("ERROR WHILE FETCHING DATA : $e");
+    }
+  }
+
 
   String validateEmail(String value) {
     if (!GetUtils.isEmail(value)) {
