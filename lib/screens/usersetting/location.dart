@@ -18,34 +18,29 @@ class _EditLocationState extends State<EditLocation> {
         child: Scaffold(
       backgroundColor: ColorTheme.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: ColorTheme.white,
-        bottom: PreferredSize(
-            preferredSize: Size.fromHeight(48.0),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: [
-                      InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(Icons.arrow_back_ios,
-                              color: ColorTheme.btnshade2)),
-                      sizedboxwidth(context, 30),
-                      Text(
-                        "Locations",
-                        style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height / 35,
-                            color: ColorTheme.btnshade2,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  )),
-            )),
-      ),
+          automaticallyImplyLeading: false,
+          backgroundColor: ColorTheme.white,
+          leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_ios, color: ColorTheme.btnshade2)),
+          title: Text(
+            "Locations",
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.height / 35,
+                color: ColorTheme.btnshade2,
+                fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            IconButton(
+              onPressed: (){
+
+              },
+              icon: Icon(Icons.add, color: ColorTheme.black,),
+            )
+          ],
+        ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),

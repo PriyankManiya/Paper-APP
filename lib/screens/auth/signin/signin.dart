@@ -7,6 +7,7 @@ import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
 import 'package:paper_app/helper/controller/signincontroller.dart';
 import 'package:paper_app/screens/auth/forgetpwd/forgetpassword.dart';
+import 'package:paper_app/screens/auth/signup/signup.dart';
 
 class SignIn extends StatefulWidget {
   SignIn({Key key}) : super(key: key);
@@ -148,8 +149,8 @@ class _SignInState extends State<SignIn> {
                       // transition: Transition.cupertino,
                       // binding: SignUpBind());
 
-                      // Navigator.push(context,
-                      //     CupertinoPageRoute(builder: (context) => SignUp()));
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) => SignUp()));
                     },
                     child: RichText(
                         text: TextSpan(

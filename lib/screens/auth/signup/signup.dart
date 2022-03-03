@@ -165,21 +165,25 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   sizedbox(context, 25),
-                  InkWell(
-                    onTap: () {
-                      checkSignUp();
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 55,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: boxDecoration,
-                      child: Text(
-                        "SIGNUP",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height / 55,
-                            color: ColorTheme.white),
+                  Obx(
+                      ()=> signupcontroller.isLoading.value
+                        ? CupertinoActivityIndicator()
+                        : InkWell(
+                      onTap: () {
+                        checkSignUp();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 55,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: boxDecoration,
+                        child: Text(
+                          "SIGNUP",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: MediaQuery.of(context).size.height / 55,
+                              color: ColorTheme.white),
+                        ),
                       ),
                     ),
                   ),
@@ -222,7 +226,9 @@ class _SignUpState extends State<SignUp> {
     if (!isValid) {
       return;
     }
+
     loginFormKey.currentState.save();
-    Get.to(() => Bottombar(), transition: Transition.cupertino);
+    signupcontroller.signUp();
+    // Get.to(() => Bottombar(), transition: Transition.cupertino);
   }
 }

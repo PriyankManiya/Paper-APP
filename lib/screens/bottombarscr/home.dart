@@ -188,11 +188,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          PreferredSize(
-            preferredSize: Size(MediaQuery.of(context).size.width, 101),
-            child: Container(
-              color: ColorTheme.lightgrey,
-              child: SafeArea(
+          Padding(
+            padding: EdgeInsets.only(top: 50),
+            child: PreferredSize(
+              preferredSize: Size(MediaQuery.of(context).size.width, 50),
+              child: Container(
+                color: ColorTheme.btnshade2,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5),
                   child: Column(
@@ -314,7 +315,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 6),
+            padding: EdgeInsets.only(top: 200),
             child: Container(
                 child: Column(
               children: [
@@ -373,128 +374,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             ),
                           ),
                         ),
-                        // Expanded(
-                        //   child: SearchChoices.single(
-                        //     isExpanded: true,
-                        //     items: countryList
-                        //         .map(
-                        //           (e) => DropdownMenuItem(
-                        //             child: Text(e.name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
-                        //             value: e.code,
-                        //           ),
-                        //         )
-                        //         .toList(),
-                        //         icon: SizedBox.shrink(),
-                        //         underline:SizedBox.shrink() ,
-                        //         padding: 0,
-                        //     searchInputDecoration: InputDecoration(
-                        //         border: OutlineInputBorder(
-                        //           borderSide: BorderSide(
-                        //             color: ColorTheme.btnshade2,
-                        //           ),
-                        //         ),
-                        //         focusedBorder: OutlineInputBorder(
-                        //           borderSide: BorderSide(
-                        //             color: ColorTheme.btnshade2,
-                        //           ),
-                        //         ),
-                        //         enabledBorder: OutlineInputBorder(
-                        //           borderSide: BorderSide(
-                        //             color: ColorTheme.btnshade2,
-                        //           ),
-                        //         )),
-                        //     closeButton: SizedBox.shrink(),
-                        //     displayClearIcon: false,
-                        //     value: countryCode,
-
-                        //     onChanged: (value) async {
-                        //       // print("value:::: $value");
-                        //        setState(() {
-                        //           // countryname = value.name;
-                        //           countryCode = value.toString();
-                        //         });
-                        //         print("value:::: $value");
-                        //         GetStorage getStorage = GetStorage();
-                        //         getStorage.write("countrycode", value);
-
-                        //         forYouController.fetchMarketnews(
-                        //             page: 1,
-                        //             topic: "NEWS",
-                        //             nextUrl: null,
-                        //             change: "0");
-                        //         await local_controller.fetchMarketnews(
-                        //             page: 2,
-                        //             topic: "local",
-                        //             nextUrl: null,
-                        //             change: "0");
-                        //         await sports_controller.fetchMarketnews(
-                        //             page: 1,
-                        //             topic: "SPORTS",
-                        //             nextUrl: null,
-                        //             change: "0");
-
-                        //         await weather_controller.fetchMarketnews(
-                        //             page: 1,
-                        //             topic: "WEATHER",
-                        //             nextUrl: null,
-                        //             change: "0");
-                        //         await money_controller.fetchMarketnews(
-                        //             page: 1,
-                        //             topic: "MONEY",
-                        //             nextUrl: null,
-                        //             change: "0");
-                        //         await lifestyle_controller.fetchMarketnews(
-                        //             page: 1,
-                        //             topic: "LIFESTYLE",
-                        //             nextUrl: null,
-                        //             change: "0");
-                        //         await healt_fitness_controller.fetchMarketnews(
-                        //             page: 1,
-                        //             topic: "HEALTH & FITNESS",
-                        //             nextUrl: null,
-                        //             change: "0");
-                        //         await food_drink_controller.fetchMarketnews(
-                        //             page: 1,
-                        //             topic: "FOOD & DRINK",
-                        //             nextUrl: null,
-                        //             change: "0");
-                        //         await travel_controller.fetchMarketnews(
-                        //             page: 1,
-                        //             topic: "TRAVEL",
-                        //             nextUrl: null,
-                        //             change: "0");
-
-                        //            for (int i = 0; i < countryList.length; i++){
-                        //              if (value == countryList[i].code){
-                        //                setState(() {
-                        //                   countryname = countryList[i].name;
-                        //                });
-
-                        //                break;
-                        //              }
-                        //            }
-                        //            getStorage.write("countryname", countryname);
-                        //         try {
-                        //           var addresses = await Geocoder.local
-                        //               .findAddressesFromQuery(countryname);
-                        //           Address first = addresses.first;
-                        //           print("${first.coordinates.latitude}");
-                        //           GetStorage getStorage = GetStorage();
-                        //           getStorage.write(
-                        //               "clatitude", first.coordinates.latitude);
-                        //           getStorage.write(
-                        //               "clongitude", first.coordinates.longitude);
-                        //           weatherController.getWeather();
-                        //           // addStore();
-                        //         } catch (e) {
-                        //           // Toast.show("Invalid Address", context, gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-                        //         }
-                        //     },
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   width: 5.0,
-                        // ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 4,
                           height: 32,
@@ -689,9 +568,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               transitionDuration: const Duration(milliseconds: 800),
               transitionCurve: Curves.easeInOut,
               physics: const BouncingScrollPhysics(),
+              backgroundColor: Colors.white.withOpacity(0.3),
               axisAlignment: 0.0,
               openAxisAlignment: 0.0,
               width: 600,
+
               debounceDelay: const Duration(milliseconds: 500),
               onQueryChanged: (query) {
                 // Call your model, bloc, controller here.
@@ -699,6 +580,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 searchNewsController.fetchMarketnews(
                     nextUrl: null, search: query);
               },
+
               transition: CircularFloatingSearchBarTransition(),
               builder: (context, transition) {
                 return ClipRRect(
@@ -801,3 +683,4 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 }
+
