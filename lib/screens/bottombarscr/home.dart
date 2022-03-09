@@ -711,6 +711,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 physics: const BouncingScrollPhysics(),
                 // axisAlignment: 0.0,
                 elevation: 0,
+                automaticallyImplyBackButton: false,
+                closeOnBackdropTap: false,
                 actions: [
                   Image.asset(
                     ImageProvide.seach,
