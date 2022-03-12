@@ -34,92 +34,90 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Container(
-            margin: EdgeInsets.only(left: 20, top: 5),
-            child: IconButton(
-              icon: Icon(
-                Icons.close,
-                color: ColorTheme.grey,
-                size: 30,
-              ),
-              onPressed: () {
-                navigator.pop(context);
-              },
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Container(
+          margin: EdgeInsets.only(left: 20, top: 5),
+          child: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: ColorTheme.grey,
+              size: 30,
             ),
+            onPressed: () {
+              navigator.pop(context);
+            },
           ),
         ),
-        backgroundColor: ColorTheme.white,
-        body: Form(
-          key: forgotkey,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(horizontal: 22),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  sizedbox(context, 30),
-                  Image.asset(ImageProvide.paperlogo,
-                      height: MediaQuery.of(context).size.height / 28),
-                  sizedbox(context, 15),
-                  Text(
-                    "Forgot Password",
-                    style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height / 45),
-                  ),
-                  sizedbox(context, 10),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.center,
-                    child: TextFormField(
-                      controller: emailController,
-                      cursorColor: ColorTheme.black,
-                      cursorHeight: 15,
-                      validator: (value) {
-                        return validateEmail(value);
-                      },
-                      style: TextStyle(color: ColorTheme.black),
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        prefixIcon: Image.asset(ImageProvide.gmail),
-                        hintText: "Emails Address",
-                        fillColor: ColorTheme.textboxgrey,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
+      ),
+      backgroundColor: ColorTheme.white,
+      body: Form(
+        key: forgotkey,
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(horizontal: 22),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                sizedbox(context, 30),
+                Image.asset(ImageProvide.paperlogo,
+                    height: MediaQuery.of(context).size.height / 28),
+                sizedbox(context, 15),
+                Text(
+                  "Forgot Password",
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height / 45),
+                ),
+                sizedbox(context, 10),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: TextFormField(
+                    controller: emailController,
+                    cursorColor: ColorTheme.black,
+                    cursorHeight: 15,
+                    validator: (value) {
+                      return validateEmail(value);
+                    },
+                    style: TextStyle(color: ColorTheme.black),
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      prefixIcon: Image.asset(ImageProvide.gmail),
+                      hintText: "Emails Address",
+                      fillColor: ColorTheme.textboxgrey,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
                   ),
-                  sizedbox(context, 20),
-                  Obx(
-                    ()=>signinController.forgotLoader.value ? CupertinoActivityIndicator() : InkWell(
-                      onTap: () {
-                        checkvalidation();
-                      },
-                      child: Container(
-                        height: 55,
-                        width: MediaQuery.of(context).size.width,
-                        alignment: Alignment.center,
-                        decoration: boxDecoration,
-                        child: Text("Send",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: MediaQuery.of(context).size.height / 55,
-                                color: ColorTheme.white)),
-                      ),
+                ),
+                sizedbox(context, 20),
+                Obx(
+                  ()=>signinController.forgotLoader.value ? CupertinoActivityIndicator() : InkWell(
+                    onTap: () {
+                      checkvalidation();
+                    },
+                    child: Container(
+                      height: 55,
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      decoration: boxDecoration,
+                      child: Text("Send",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: MediaQuery.of(context).size.height / 55,
+                              color: ColorTheme.white)),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
         ),

@@ -8,31 +8,30 @@ class LocationAccess extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: ColorTheme.white,
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 22),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              sizedbox(context, 10),
-              Text("Allow Location",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.height / 30,
-                  )),
-              SizedBox(height: 10),
-              Text("Let's find your location",
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.height / 60,
-                  )),
-              sizedbox(context, 10),
-              Image.asset(ImageProvide.location),
-            ],
-          ),
-        ),
+    padding: EdgeInsets.symmetric(horizontal: 22),
+    child: SingleChildScrollView(
+      child: Column(
+        children: [
+          sizedbox(context, 10),
+          Text("Allow Location",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: MediaQuery.of(context).size.height / 30,
+              )),
+          SizedBox(height: 10),
+          Text("Let's find your location",
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.height / 60,
+              )),
+          sizedbox(context, 10),
+          Image.asset(ImageProvide.location),
+        ],
       ),
-    ));
+    ),
+      ),
+    );
   }
 }

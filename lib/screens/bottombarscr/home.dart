@@ -333,54 +333,54 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(EditLocation());
-                            },
-                            child: Row(
-                              children: [
-                                weatherController.isLoading.value
-                                    ? SizedBox(
-                                        width: 70.0,
-                                        height: 20.0,
-                                        child: Shimmer.fromColors(
-                                          baseColor: Colors.grey,
-                                          highlightColor:
-                                              Colors.grey.withOpacity(0.5),
-                                          child: Container(
-                                            width: 50.0,
-                                            height: 20.0,
-                                            color: Colors.white,
-                                          ),
-                                          // child: Text(
-                                          //   '60.0',
-                                          //   textAlign: TextAlign.center,
-                                          //   style: TextStyle(
-                                          //     fontSize: 20.0,
-                                          //     fontWeight: FontWeight.bold,
-                                          //   ),
-                                          // ),
-                                        ),
-                                      )
-                                    : Text(
-                                        "${weatherController.weather.value.name}",
-                                        style: TextStyle(
-                                            color: ColorTheme.black,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                SizedBox(
-                                  width: 5.0,
-                                ),
-                                Image.asset(
-                                  ImageProvide.edit,
-                                  height: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: InkWell(
+                        //     onTap: () {
+                        //       Get.to(EditLocation());
+                        //     },
+                        //     child: Row(
+                        //       children: [
+                        //         weatherController.isLoading.value
+                        //             ? SizedBox(
+                        //                 width: 70.0,
+                        //                 height: 20.0,
+                        //                 child: Shimmer.fromColors(
+                        //                   baseColor: Colors.grey,
+                        //                   highlightColor:
+                        //                       Colors.grey.withOpacity(0.5),
+                        //                   child: Container(
+                        //                     width: 50.0,
+                        //                     height: 20.0,
+                        //                     color: Colors.white,
+                        //                   ),
+                        //                   // child: Text(
+                        //                   //   '60.0',
+                        //                   //   textAlign: TextAlign.center,
+                        //                   //   style: TextStyle(
+                        //                   //     fontSize: 20.0,
+                        //                   //     fontWeight: FontWeight.bold,
+                        //                   //   ),
+                        //                   // ),
+                        //                 ),
+                        //               )
+                        //             : Text(
+                        //                 "${weatherController.weather.value.name}",
+                        //                 style: TextStyle(
+                        //                     color: ColorTheme.black,
+                        //                     fontSize: 12,
+                        //                     fontWeight: FontWeight.bold),
+                        //               ),
+                        //         SizedBox(
+                        //           width: 5.0,
+                        //         ),
+                        //         Image.asset(
+                        //           ImageProvide.edit,
+                        //           height: 20,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         // Expanded(
                         //   child: SearchChoices.single(
                         //     isExpanded: true,
@@ -504,7 +504,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         //   width: 5.0,
                         // ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width / 4,
+                          width: MediaQuery.of(context).size.width / 2,
                           height: 32,
                           child: Theme(
                             data: ThemeData(

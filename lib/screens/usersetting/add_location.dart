@@ -103,98 +103,96 @@ class _AddLocationState extends State<AddLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            _initialPosition == null
-                ? Center(child: CupertinoActivityIndicator())
-                : Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      GoogleMap(
-                        myLocationEnabled: true,
-                        markers: Set<Marker>.of(_markers),
-                        initialCameraPosition: CameraPosition(
-                          target: _initialPosition,
-                          zoom: 14.4746,
-                        ),
-                        mapType: MapType.normal,
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
-                        },
-                        onTap: (argument) {
-                          _handleTap(argument);
-                          setState(() {
-                            lastPosition = argument;
-                          });
-                        },
+      body: Stack(
+        children: [
+          _initialPosition == null
+              ? Center(child: CupertinoActivityIndicator())
+              : Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    GoogleMap(
+                      myLocationEnabled: true,
+                      markers: Set<Marker>.of(_markers),
+                      initialCameraPosition: CameraPosition(
+                        target: _initialPosition,
+                        zoom: 14.4746,
                       ),
-                      Align(
-                        alignment: Alignment(0, .9),
-                        child: MaterialButton(
-                          color: ColorTheme.btnshade1,
-                          onPressed: () async {
-                            // GetStorage getStorage = GetStorage();
-                            // getStorage.write("clatitude", _markers[0].position.latitude);
-                            // getStorage.write("clongitude", _markers[0].position.longitude);
-                            // tempController.getWeather();
-                            // print("lat : ${_markers[0].position.latitude} long : ${_markers[0].position.longitude}");
-                            // Get.back();
-                            final coordinates = new Coordinates(
-                                _markers[0].position.latitude,
-                                _markers[0].position.longitude);
-                            var addresses = await Geocoder.local
-                                .findAddressesFromCoordinates(coordinates);
-                            // print("Adresss:::${_markers[0].position.latitude}");
-                            var first = addresses.first;
-                            print("Address:::::::${first.addressLine}");
-                            LocationModel employee = LocationModel(
-                                address: first.addressLine,
-                                postcode: first.postalCode);
-                            DBHelper dbHelper = DBHelper();
-                            dbHelper.insertEmployee(employee);
-                            Get.back();
-                            print(
-                                "AddressList:::${await dbHelper.getEmployees()}");
-                          },
-                          child: Text(
-                            "Set Location",
-                            style: TextStyle(
-                                color: ColorTheme.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
+                      mapType: MapType.normal,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                      onTap: (argument) {
+                        _handleTap(argument);
+                        setState(() {
+                          lastPosition = argument;
+                        });
+                      },
+                    ),
+                    Align(
+                      alignment: Alignment(0, .9),
+                      child: MaterialButton(
+                        color: ColorTheme.btnshade1,
+                        onPressed: () async {
+                          // GetStorage getStorage = GetStorage();
+                          // getStorage.write("clatitude", _markers[0].position.latitude);
+                          // getStorage.write("clongitude", _markers[0].position.longitude);
+                          // tempController.getWeather();
+                          // print("lat : ${_markers[0].position.latitude} long : ${_markers[0].position.longitude}");
+                          // Get.back();
+                          final coordinates = new Coordinates(
+                              _markers[0].position.latitude,
+                              _markers[0].position.longitude);
+                          var addresses = await Geocoder.local
+                              .findAddressesFromCoordinates(coordinates);
+                          // print("Adresss:::${_markers[0].position.latitude}");
+                          var first = addresses.first;
+                          print("Address:::::::${first.addressLine}");
+                          LocationModel employee = LocationModel(
+                              address: first.addressLine,
+                              postcode: first.postalCode);
+                          DBHelper dbHelper = DBHelper();
+                          dbHelper.insertEmployee(employee);
+                          Get.back();
+                          print(
+                              "AddressList:::${await dbHelper.getEmployees()}");
+                        },
+                        child: Text(
+                          "Set Location",
+                          style: TextStyle(
+                              color: ColorTheme.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                    ],
-                  ),
-            /* PlacesAutocompleteField(
-              apiKey: "AIzaSyDKCJPi6Jo_8lPM78Vzcq-hrHf-1tf5fkg",
-              mode: Mode.overlay,
-
-            )*/
-            TextField(
-              onChanged: (value) async {
-                var googlePlace = GooglePlace("AIzaSyDKCJPi6Jo_8lPM78Vzcq-hrHf-1tf5fkg");
-                var result = await googlePlace.search.getTextSearchJson("restaurants in Sydney",).then((value) {
-                  print("Search::::${value}");
-                }).catchError((onError){
-                  print("Error::::::$onError");
-                });
-
-              },
-              decoration: InputDecoration(
-                hintText: "Seek your location here",
-                focusColor: Colors.white,
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                prefixIcon: Icon(Icons.map),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.cancel),
+                    ),
+                  ],
                 ),
+          /* PlacesAutocompleteField(
+            apiKey: "AIzaSyDKCJPi6Jo_8lPM78Vzcq-hrHf-1tf5fkg",
+            mode: Mode.overlay,
+
+          )*/
+          TextField(
+            onChanged: (value) async {
+              var googlePlace = GooglePlace("AIzaSyDKCJPi6Jo_8lPM78Vzcq-hrHf-1tf5fkg");
+              var result = await googlePlace.search.getTextSearchJson("restaurants in Sydney",).then((value) {
+                print("Search::::${value}");
+              }).catchError((onError){
+                print("Error::::::$onError");
+              });
+
+            },
+            decoration: InputDecoration(
+              hintText: "Seek your location here",
+              focusColor: Colors.white,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              prefixIcon: Icon(Icons.map),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.cancel),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

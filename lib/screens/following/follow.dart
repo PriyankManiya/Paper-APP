@@ -27,27 +27,25 @@ class _FollowDisplayState extends State<FollowDisplay> {
         flexibleSpace: Container(
           padding: EdgeInsets.only(left: 20, right: 20),
           alignment: Alignment.centerLeft,
-          child: SafeArea(
-            child: Row(
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: ColorTheme.black,
-                      size: 20,
-                    )),
-                Spacer(),
-                Image.asset(
-                  ImageProvide.outlineshare,
-                  height: MediaQuery.of(context).size.height / 40,
-                ),
-                sizedboxwidth(context, 20),
-                Icon(Icons.more_vert_rounded)
-              ],
-            ),
+          child: Row(
+            children: [
+              InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    color: ColorTheme.black,
+                    size: 20,
+                  )),
+              Spacer(),
+              Image.asset(
+                ImageProvide.outlineshare,
+                height: MediaQuery.of(context).size.height / 40,
+              ),
+              sizedboxwidth(context, 20),
+              Icon(Icons.more_vert_rounded)
+            ],
           ),
         ),
       ),

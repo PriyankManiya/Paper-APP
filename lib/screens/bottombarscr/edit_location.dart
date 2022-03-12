@@ -73,53 +73,51 @@ class _EditLocationState extends State<EditLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: _initialPosition == null
-            ? Center(child: CupertinoActivityIndicator())
-            : Stack(
-                fit: StackFit.expand,
-                children: [
-                  GoogleMap(
-                    myLocationEnabled: true,
-                    markers: Set<Marker>.of(_markers),
-                    initialCameraPosition: CameraPosition(
-                      target: _initialPosition,
-                      zoom: 14.4746,
-                    ),
-                    mapType: MapType.normal,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                    },
-                    onTap: (argument) {
-                      _handleTap(argument);
-                      setState(() {
-                        lastPosition = argument;
-                      });
-                    },
+      body: _initialPosition == null
+          ? Center(child: CupertinoActivityIndicator())
+          : Stack(
+              fit: StackFit.expand,
+              children: [
+                GoogleMap(
+                  myLocationEnabled: true,
+                  markers: Set<Marker>.of(_markers),
+                  initialCameraPosition: CameraPosition(
+                    target: _initialPosition,
+                    zoom: 14.4746,
                   ),
-                  Align(
-                    alignment: Alignment(0, .9),
-                    child: MaterialButton(
-                      color: ColorTheme.btnshade1,
-                      onPressed: (){
-                        GetStorage getStorage = GetStorage();
-                        getStorage.write("clatitude", _markers[0].position.latitude);
-                        getStorage.write("clongitude", _markers[0].position.longitude);
-                        tempController.getWeather();
-                        print("lat : ${_markers[0].position.latitude} long : ${_markers[0].position.longitude}");
-                        Get.back();
-                      },
-                        child: Text(
-                      "Set Location",
-                      style: TextStyle(
-                          color: ColorTheme.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                ],
-              ),
-      ),
+                  mapType: MapType.normal,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                  onTap: (argument) {
+                    _handleTap(argument);
+                    setState(() {
+                      lastPosition = argument;
+                    });
+                  },
+                ),
+                Align(
+                  alignment: Alignment(0, .9),
+                  child: MaterialButton(
+                    color: ColorTheme.btnshade1,
+                    onPressed: (){
+                      GetStorage getStorage = GetStorage();
+                      getStorage.write("clatitude", _markers[0].position.latitude);
+                      getStorage.write("clongitude", _markers[0].position.longitude);
+                      tempController.getWeather();
+                      print("lat : ${_markers[0].position.latitude} long : ${_markers[0].position.longitude}");
+                      Get.back();
+                    },
+                      child: Text(
+                    "Set Location",
+                    style: TextStyle(
+                        color: ColorTheme.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  )),
+                ),
+              ],
+            ),
     );
   }
 }
