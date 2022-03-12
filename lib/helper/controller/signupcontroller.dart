@@ -75,7 +75,7 @@ class SignupController extends GetxController {
           GetStorage storage = GetStorage();
           storage.write("token", signIn.token);
           storage.write("id", signIn.data.id);
-          Get.off(Bottombar());
+          Get.offAll(Bottombar());
         } else {
           Get.snackbar("Opps", signInResponse["message"],
               snackStyle: SnackStyle.FLOATING);
