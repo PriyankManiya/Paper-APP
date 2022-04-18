@@ -14,6 +14,7 @@ import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/history_article_controller.dart';
 import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/helper/model/news_model.dart' as news_model;
+import 'package:share_plus/share_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsDetails extends StatefulWidget {
@@ -134,8 +135,13 @@ class _NewsDetailsState extends State<NewsDetails> {
                           height: MediaQuery.of(context).size.height / 30),
                 ),
                 Spacer(),
-                Image.asset(ImageProvide.share,
-                    height: MediaQuery.of(context).size.height / 25),
+                GestureDetector(
+                  onTap : () {
+                     Share.share(widget.subCard.url, subject: 'Articale Link');
+                  },
+                  child: Image.asset(ImageProvide.share,
+                      height: MediaQuery.of(context).size.height / 25),
+                ),
                 Padding(padding: EdgeInsets.only(right: 5))
               ],
             ),
