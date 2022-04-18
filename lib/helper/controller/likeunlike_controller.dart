@@ -35,10 +35,12 @@ class LikeUnlikeController extends GetxController {
         
           like = Like.fromJson(likeResponse);
           print("you have Like successfully.");
+          Get.snackbar("Success", likeResponse["message"],
+              snackStyle: SnackStyle.FLOATING);
           
         } else {
-          Get.snackbar("Opps", likeResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", likeResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${likeResponse["message"]}");
         }
 
@@ -74,8 +76,8 @@ class LikeUnlikeController extends GetxController {
           print("you have UnLike successfully.");
           
         } else {
-          Get.snackbar("Opps", likeResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", likeResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${likeResponse["message"]}");
         }
 
@@ -110,8 +112,8 @@ class LikeUnlikeController extends GetxController {
           likeList(like.data);
           // print("Like get successfully.");
         } else {
-          Get.snackbar("Opps", getlikeResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", getlikeResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${getlikeResponse["message"]}");
         }
       } catch (e) {

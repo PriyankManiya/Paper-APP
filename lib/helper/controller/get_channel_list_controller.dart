@@ -66,8 +66,8 @@ class GetChannelListController extends GetxController {
           // print("ISFOLLOW : ${channelList[0].isFollow}");
 
         } else {
-          Get.snackbar("Opps", followingListResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", followingListResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${followingListResponse["message"]}");
         }
       } catch (e) {

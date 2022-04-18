@@ -32,8 +32,8 @@ class FollowController extends GetxController {
           FollowingList following = FollowingList.fromJson(followingListResponse);
           followingList(following.data);
         } else {
-          Get.snackbar("Opps", followingListResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", followingListResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${followingListResponse["message"]}");
         }
       } catch (e) {
@@ -73,8 +73,8 @@ class FollowController extends GetxController {
           // storage.write("token", signIn.token);
           // Get.off(Bottombar());
         } else {
-          Get.snackbar("Opps", followResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", followResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${followResponse["message"]}");
         }
 
@@ -112,8 +112,8 @@ class FollowController extends GetxController {
           getList();
 
         } else {
-          Get.snackbar("Opps", unfollowResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", unfollowResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${unfollowResponse["message"]}");
         }
 

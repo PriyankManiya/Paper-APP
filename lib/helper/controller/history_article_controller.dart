@@ -38,8 +38,8 @@ class HistoryArticleController extends GetxController {
           SaveArticle saveArticle = SaveArticle.fromJson(saveArticleResponse);
           print("Article Save History Successfully");
         } else {
-          Get.snackbar("Opps", saveArticleResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", saveArticleResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${saveArticleResponse["message"]}");
         }
       } catch (e) {
@@ -69,8 +69,8 @@ class HistoryArticleController extends GetxController {
           savedList(saveArticle.data);
           print("Article Get Successfully");
         } else {
-          Get.snackbar("Opps", getArticleResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", getArticleResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${getArticleResponse["message"]}");
         }
       } catch (e) {
@@ -105,8 +105,8 @@ class HistoryArticleController extends GetxController {
           // print("Article Remove Successfully");
           getHistoryArticle();
         } else {
-          Get.snackbar("Opps", removeArticleResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", removeArticleResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${removeArticleResponse["message"]}");
         }
       } catch (e) {

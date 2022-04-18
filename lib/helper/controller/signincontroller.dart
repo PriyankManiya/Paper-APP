@@ -59,8 +59,8 @@ class SigninController extends GetxController {
           storage.write("id", signIn.data.id);
           Get.off(Bottombar());
         } else {
-          Get.snackbar("Opps", signInResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", signInResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${signInResponse["message"]}");
         }
 
@@ -91,8 +91,8 @@ class SigninController extends GetxController {
           // storage.write("id", signIn.data.id);
           Get.to(EmailCode());
         } else {
-          Get.snackbar("Opps", signInResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", signInResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${signInResponse["message"]}");
           forgotLoader(false);
         }
@@ -128,8 +128,8 @@ class SigninController extends GetxController {
           }
 
         } else {
-          Get.snackbar("Opps", signInResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", signInResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${signInResponse["message"]}");
           otpLoader(false);
         }
@@ -161,8 +161,8 @@ class SigninController extends GetxController {
           // storage.write("id", signIn.data.id);
           Get.to(SignInScreen());
         } else {
-          Get.snackbar("Opps", signInResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", signInResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${signInResponse["message"]}");
           resetLoader(false);
         }
@@ -276,8 +276,8 @@ class SigninController extends GetxController {
               storage.write("id", socialSignin.data.id);
               Get.off(Bottombar());
             } else {
-              Get.snackbar("Opps", signInResponse["message"],
-                  snackStyle: SnackStyle.FLOATING);
+              // Get.snackbar("Opps", signInResponse["message"],
+              //     snackStyle: SnackStyle.FLOATING);
               print("${signInResponse["message"]}");
             }
             // print("Sing in success : ${signIn.token}");

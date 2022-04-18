@@ -48,6 +48,7 @@ class _NewsDetailsState extends State<NewsDetails> {
 
     print("Status : ${articleController.isSaved.value}");
   }
+  TextEditingController commentController = TextEditingController();
 
   bool isLoading = true;
 
@@ -70,10 +71,23 @@ class _NewsDetailsState extends State<NewsDetails> {
                       child: TextFormField(
                         cursorColor: ColorTheme.black,
                         cursorHeight: 15,
-                        validator: (value) {
-                          return;
+                        controller: commentController,
+                        onFieldSubmitted: (val) {
+                          Get.snackbar("Sucess", "Comment added successfully.",
+                              snackStyle: SnackStyle.FLOATING);
+                              setState(() {
+                                commentController.text = "";
+                              });
                         },
-                        style: TextStyle(color: ColorTheme.white),
+                        onSaved: (val) {
+                          Get.snackbar("Sucess", "Comment added successfully.",
+                              snackStyle: SnackStyle.FLOATING);
+                              setState(() {
+                                commentController.text = "";
+                              });
+                        },
+                        
+                        style: TextStyle(color: ColorTheme.black),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           hintText: "Your Comment",
@@ -233,11 +247,11 @@ class _NewsDetailsState extends State<NewsDetails> {
                         //     i++) {
                         //   if (widget.subCard.provider.id ==
                         //       widget.subCard.provider.id) {
-                          setState(() {
-                            widget.subCard.provider.follow = false;
-                          });
-                            
-                          // }
+                        setState(() {
+                          widget.subCard.provider.follow = false;
+                        });
+
+                        // }
                         // }
                         // newsController
                         //     .newsList
@@ -259,15 +273,15 @@ class _NewsDetailsState extends State<NewsDetails> {
                         //         today_Controller
                         //             .localList.value.value[0].subCards.length;
                         //     i++) {
-                          // if (widget.subCard.provider.id ==
-                          //     widget.subCard.provider.id) {
-                            setState(() {
-                               widget.subCard.provider.follow = true;
+                        // if (widget.subCard.provider.id ==
+                        //     widget.subCard.provider.id) {
+                        setState(() {
+                          widget.subCard.provider.follow = true;
 
-                            widget.subCard.provider.followid = id;
-                            });
-                           
-                          // }
+                          widget.subCard.provider.followid = id;
+                        });
+
+                        // }
                         // }
                       }
                     },

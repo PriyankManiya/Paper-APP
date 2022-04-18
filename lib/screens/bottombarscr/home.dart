@@ -309,7 +309,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 //           ),
           Container(
             color: ColorTheme.btnshade2,
-            padding: EdgeInsets.only(top: 80),
+            padding: EdgeInsets.only(top: 90),
             child: TabBar(
               isScrollable: true,
               indicatorPadding: EdgeInsets.all(0),

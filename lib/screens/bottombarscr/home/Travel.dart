@@ -13,6 +13,7 @@ import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class TravelScreen extends StatefulWidget {
@@ -587,14 +588,27 @@ FollowController followController = Get.put(FollowController());
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 20),
                                             child: GetBuilder(
-                                              init: travel_controller,
-                                              builder: (_) {
-                                                return InkWell(
-                                                   onTap: () async {
+                                                init: travel_controller,
+                                                builder: (_) {
+                                                  return InkWell(
+                                                    onTap: () async {
                                                       // print(
-                                                      //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
+                                                      //     "Like : ${travel_controller.localList.value.value[0].subCards[index].like}");
 
-                                                      if (travel_controller
+                                                      
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        //like
+
+                                                        GestureDetector(
+                                                          onTap: () async{
+                                                            if (travel_controller
                                                               .localList
                                                               .value
                                                               .value[0]
@@ -618,12 +632,12 @@ FollowController followController = Get.put(FollowController());
                                                             .value[0]
                                                             .subCards[index]
                                                             .like = false;
-                                                            travel_controller
-                                                                .localList
-                                                                .value
-                                                                .value[0]
-                                                                .subCards[index]
-                                                                .totallike--;
+                                                        travel_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .totallike--;
                                                       } else {
                                                         String likeid =
                                                             await likeUnlikeController.like(
@@ -650,45 +664,41 @@ FollowController followController = Get.put(FollowController());
                                                             .subCards[index]
                                                             .likeid = likeid;
 
-                                                            travel_controller
-                                                                .localList
-                                                                .value
-                                                                .value[0]
-                                                                .subCards[index]
-                                                                .totallike++;
+                                                        travel_controller
+                                                            .localList
+                                                            .value
+                                                            .value[0]
+                                                            .subCards[index]
+                                                            .totallike++;
                                                       }
 
                                                       travel_controller.update();
-                                                    },
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
-                                                    children: [
-                                                      //like
-                                                      travel_controller
-                                                                .localList
-                                                                .value
-                                                                .value[0]
-                                                                .subCards[index]
-                                                                .like
-                                                            ? Image.asset(
-                                                                ImageProvide.like,
-                                                                color: ColorTheme
-                                                                    .btnshade2,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    40)
-                                                            : Image.asset(
-                                                                ImageProvide.like,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    40),
+                                                          },
+                                                          child: Container(
+                                                            child: travel_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .like
+                                                                ? Image.asset(
+                                                                    ImageProvide.like,
+                                                                    color: ColorTheme
+                                                                        .btnshade2,
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        40)
+                                                                : Image.asset(
+                                                                    ImageProvide.like,
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        40),
+                                                          ),
+                                                        ),
                                                         sizedboxwidth(
                                                             context, 25),
                                                         travel_controller
@@ -722,50 +732,84 @@ FollowController followController = Get.put(FollowController());
                                                                             .height /
                                                                         50),
                                                               ),
-                                                      Spacer(),
-                                                      //comment
-                                                      Image.asset(ImageProvide.cmt,
-                                                          height: MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              40),
-                                                      sizedboxwidth(context, 25),
-                                                      Text(
-                                                        "38",
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize:
-                                                                MediaQuery.of(context)
-                                                                        .size
-                                                                        .height /
-                                                                    50),
-                                                      ),
-                                                      Spacer(),
-                                                      //share
-                                                      Image.asset(
-                                                          ImageProvide.outlineshare,
-                                                          height: MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              40),
-                                                      sizedboxwidth(context, 25),
-                                                      Text(
-                                                        "22",
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize:
-                                                                MediaQuery.of(context)
-                                                                        .size
-                                                                        .height /
-                                                                    50),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            ),
+                                                        Spacer(),
+                                                        //comment
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Get.to(
+                                          () => NewsDetails(
+                                              subCard: travel_controller
+                                                  .localList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index]),
+                                          transition: Transition.cupertino);
+                                                          },
+                                                          child: Image.asset(
+                                                              ImageProvide.cmt,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40),
+                                                        ),
+                                                        sizedboxwidth(
+                                                            context, 25),
+                                                        Text(
+                                                          '9',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  50),
+                                                        ),
+                                                        Spacer(),
+                                                        //share
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Share.share(travel_controller
+                                                  .localList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index].url, subject: 'Articale Link');
+                                                          },
+                                                          child: Row(
+                                                            children: [
+                                                              Image.asset(
+                                                                  ImageProvide
+                                                                      .outlineshare,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      40),
+                                                                      sizedboxwidth(
+                                                            context, 25),
+                                                        Text(
+                                                          "22",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  50),
+                                                        ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        
+                                                      ],
+                                                    ),
+                                                  );
+                                                }),
                                           )
-                                        ],
+
+                                           ],
                                       ),
                                     ),
                                   );

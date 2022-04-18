@@ -42,8 +42,8 @@ class ArticleController extends GetxController {
           getArticle();
           print("Article Save Successfully");
         } else {
-          Get.snackbar("Opps", saveArticleResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", saveArticleResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${saveArticleResponse["message"]}");
         }
       } catch (e) {
@@ -74,8 +74,8 @@ class ArticleController extends GetxController {
           
           // print("Article Save Successfully ${jsonDecode(savedList[0].articleDetails)['\$type']}");
         } else {
-          Get.snackbar("Opps", getArticleResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", getArticleResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${getArticleResponse["message"]}");
         }
       } catch (e) {
@@ -133,8 +133,8 @@ class ArticleController extends GetxController {
           // print("Article Remove Successfully");
           getArticle();
         } else {
-          Get.snackbar("Opps", removeArticleResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", removeArticleResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${removeArticleResponse["message"]}");
         }
       } catch (e) {

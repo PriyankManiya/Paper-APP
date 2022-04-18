@@ -13,6 +13,7 @@ import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class LifeStyleScreen extends StatefulWidget {
@@ -596,9 +597,22 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                                   return InkWell(
                                                     onTap: () async {
                                                       // print(
-                                                      //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
+                                                      //     "Like : ${lifestyle_controller.localList.value.value[0].subCards[index].like}");
 
-                                                      if (lifestyle_controller
+                                                      
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        //like
+
+                                                        GestureDetector(
+                                                          onTap: () async{
+                                                            if (lifestyle_controller
                                                               .localList
                                                               .value
                                                               .value[0]
@@ -606,13 +620,15 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                                               .like ==
                                                           true) {
                                                         print("Dislike");
-                                                        likeUnlikeController.unlike(
-                                                            id: lifestyle_controller
-                                                                .localList
-                                                                .value
-                                                                .value[0]
-                                                                .subCards[index]
-                                                                .likeid);
+                                                        likeUnlikeController
+                                                            .unlike(
+                                                                id: lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[
+                                                                        index]
+                                                                    .likeid);
 
                                                         lifestyle_controller
                                                             .localList
@@ -660,39 +676,33 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                                             .totallike++;
                                                       }
 
-                                                      lifestyle_controller
-                                                          .update();
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        //like
-                                                        lifestyle_controller
-                                                                .localList
-                                                                .value
-                                                                .value[0]
-                                                                .subCards[index]
-                                                                .like
-                                                            ? Image.asset(
-                                                                ImageProvide.like,
-                                                                color: ColorTheme
-                                                                    .btnshade2,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    40)
-                                                            : Image.asset(
-                                                                ImageProvide.like,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    40),
+                                                      lifestyle_controller.update();
+                                                          },
+                                                          child: Container(
+                                                            child: lifestyle_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .like
+                                                                ? Image.asset(
+                                                                    ImageProvide.like,
+                                                                    color: ColorTheme
+                                                                        .btnshade2,
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        40)
+                                                                : Image.asset(
+                                                                    ImageProvide.like,
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        40),
+                                                          ),
+                                                        ),
                                                         sizedboxwidth(
                                                             context, 25),
                                                         lifestyle_controller
@@ -728,17 +738,29 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                                               ),
                                                         Spacer(),
                                                         //comment
-                                                        Image.asset(
-                                                            ImageProvide.cmt,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                40),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Get.to(
+                                          () => NewsDetails(
+                                              subCard: lifestyle_controller
+                                                  .localList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index]),
+                                          transition: Transition.cupertino);
+                                                          },
+                                                          child: Image.asset(
+                                                              ImageProvide.cmt,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40),
+                                                        ),
                                                         sizedboxwidth(
                                                             context, 25),
                                                         Text(
-                                                          "38",
+                                                          '9',
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight.w600,
@@ -750,15 +772,25 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                                         ),
                                                         Spacer(),
                                                         //share
-                                                        Image.asset(
-                                                            ImageProvide
-                                                                .outlineshare,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                40),
-                                                        sizedboxwidth(
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Share.share(lifestyle_controller
+                                                  .localList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index].url, subject: 'Articale Link');
+                                                          },
+                                                          child: Row(
+                                                            children: [
+                                                              Image.asset(
+                                                                  ImageProvide
+                                                                      .outlineshare,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      40),
+                                                                      sizedboxwidth(
                                                             context, 25),
                                                         Text(
                                                           "22",
@@ -771,6 +803,10 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                                                       .height /
                                                                   50),
                                                         ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        
                                                       ],
                                                     ),
                                                   );

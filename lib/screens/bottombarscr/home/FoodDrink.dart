@@ -13,6 +13,7 @@ import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FoodDrinkScreen extends StatefulWidget {
@@ -720,9 +721,22 @@ FollowController followController = Get.put(FollowController());
                                                   return InkWell(
                                                     onTap: () async {
                                                       // print(
-                                                      //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
+                                                      //     "Like : ${food_drink_controller.localList.value.value[0].subCards[index].like}");
 
-                                                      if (food_drink_controller
+                                                      
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        //like
+
+                                                        GestureDetector(
+                                                          onTap: () async{
+                                                            if (food_drink_controller
                                                               .localList
                                                               .value
                                                               .value[0]
@@ -730,13 +744,15 @@ FollowController followController = Get.put(FollowController());
                                                               .like ==
                                                           true) {
                                                         print("Dislike");
-                                                        likeUnlikeController.unlike(
-                                                            id: food_drink_controller
-                                                                .localList
-                                                                .value
-                                                                .value[0]
-                                                                .subCards[index]
-                                                                .likeid);
+                                                        likeUnlikeController
+                                                            .unlike(
+                                                                id: food_drink_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[
+                                                                        index]
+                                                                    .likeid);
 
                                                         food_drink_controller
                                                             .localList
@@ -784,39 +800,33 @@ FollowController followController = Get.put(FollowController());
                                                             .totallike++;
                                                       }
 
-                                                      food_drink_controller
-                                                          .update();
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        //like
-                                                        food_drink_controller
-                                                                .localList
-                                                                .value
-                                                                .value[0]
-                                                                .subCards[index]
-                                                                .like
-                                                            ? Image.asset(
-                                                                ImageProvide.like,
-                                                                color: ColorTheme
-                                                                    .btnshade2,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    40)
-                                                            : Image.asset(
-                                                                ImageProvide.like,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    40),
+                                                      food_drink_controller.update();
+                                                          },
+                                                          child: Container(
+                                                            child: food_drink_controller
+                                                                    .localList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .like
+                                                                ? Image.asset(
+                                                                    ImageProvide.like,
+                                                                    color: ColorTheme
+                                                                        .btnshade2,
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        40)
+                                                                : Image.asset(
+                                                                    ImageProvide.like,
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        40),
+                                                          ),
+                                                        ),
                                                         sizedboxwidth(
                                                             context, 25),
                                                         food_drink_controller
@@ -852,17 +862,29 @@ FollowController followController = Get.put(FollowController());
                                                               ),
                                                         Spacer(),
                                                         //comment
-                                                        Image.asset(
-                                                            ImageProvide.cmt,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                40),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Get.to(
+                                          () => NewsDetails(
+                                              subCard: food_drink_controller
+                                                  .localList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index]),
+                                          transition: Transition.cupertino);
+                                                          },
+                                                          child: Image.asset(
+                                                              ImageProvide.cmt,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40),
+                                                        ),
                                                         sizedboxwidth(
                                                             context, 25),
                                                         Text(
-                                                          "38",
+                                                          '9',
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight.w600,
@@ -874,15 +896,25 @@ FollowController followController = Get.put(FollowController());
                                                         ),
                                                         Spacer(),
                                                         //share
-                                                        Image.asset(
-                                                            ImageProvide
-                                                                .outlineshare,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                40),
-                                                        sizedboxwidth(
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Share.share(food_drink_controller
+                                                  .localList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index].url, subject: 'Articale Link');
+                                                          },
+                                                          child: Row(
+                                                            children: [
+                                                              Image.asset(
+                                                                  ImageProvide
+                                                                      .outlineshare,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      40),
+                                                                      sizedboxwidth(
                                                             context, 25),
                                                         Text(
                                                           "22",
@@ -895,12 +927,17 @@ FollowController followController = Get.put(FollowController());
                                                                       .height /
                                                                   50),
                                                         ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        
                                                       ],
                                                     ),
                                                   );
                                                 }),
                                           )
-                                        ],
+
+                                          ],
                                       ),
                                     ),
                                   );

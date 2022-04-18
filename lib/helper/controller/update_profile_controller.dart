@@ -44,8 +44,8 @@ class UpdateProfileController extends GetxController {
           // storage.write("token", signIn.token);
           // Get.off(Bottombar());
         } else {
-          Get.snackbar("Opps", updateProfileResponse["message"],
-              snackStyle: SnackStyle.FLOATING);
+          // Get.snackbar("Opps", updateProfileResponse["message"],
+          //     snackStyle: SnackStyle.FLOATING);
           print("${updateProfileResponse["message"]}");
         }
 

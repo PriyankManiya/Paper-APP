@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 import 'package:paper_app/constants/colortheme.dart';
 import 'package:paper_app/constants/customespace.dart';
 import 'package:paper_app/constants/imageprovider.dart';
@@ -12,8 +16,6 @@ import 'package:paper_app/helper/controller/fetchnews_controller.dart';
 import 'package:paper_app/helper/controller/follow_controller.dart';
 import 'package:paper_app/helper/controller/likeunlike_controller.dart';
 import 'package:paper_app/screens/newsdetail/newsdetail.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class ForYouScreen extends StatefulWidget {
   String topic;
@@ -605,7 +607,20 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                       // print(
                                                       //     "Like : ${newsController.newsList.value.value[0].subCards[index].like}");
 
-                                                      if (newsController
+                                                      
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        //like
+
+                                                        GestureDetector(
+                                                          onTap: () async{
+                                                            if (newsController
                                                               .newsList
                                                               .value
                                                               .value[0]
@@ -670,37 +685,32 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                       }
 
                                                       newsController.update();
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        //like
-                                                        newsController
-                                                                .newsList
-                                                                .value
-                                                                .value[0]
-                                                                .subCards[index]
-                                                                .like
-                                                            ? Image.asset(
-                                                                ImageProvide.like,
-                                                                color: ColorTheme
-                                                                    .btnshade2,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    40)
-                                                            : Image.asset(
-                                                                ImageProvide.like,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    40),
+                                                          },
+                                                          child: Container(
+                                                            child: newsController
+                                                                    .newsList
+                                                                    .value
+                                                                    .value[0]
+                                                                    .subCards[index]
+                                                                    .like
+                                                                ? Image.asset(
+                                                                    ImageProvide.like,
+                                                                    color: ColorTheme
+                                                                        .btnshade2,
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        40)
+                                                                : Image.asset(
+                                                                    ImageProvide.like,
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height /
+                                                                        40),
+                                                          ),
+                                                        ),
                                                         sizedboxwidth(
                                                             context, 25),
                                                         newsController
@@ -736,17 +746,29 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                               ),
                                                         Spacer(),
                                                         //comment
-                                                        Image.asset(
-                                                            ImageProvide.cmt,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                40),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Get.to(
+                                          () => NewsDetails(
+                                              subCard: newsController
+                                                  .newsList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index]),
+                                          transition: Transition.cupertino);
+                                                          },
+                                                          child: Image.asset(
+                                                              ImageProvide.cmt,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  40),
+                                                        ),
                                                         sizedboxwidth(
                                                             context, 25),
                                                         Text(
-                                                          "38",
+                                                          '9',
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight.w600,
@@ -758,15 +780,25 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                         ),
                                                         Spacer(),
                                                         //share
-                                                        Image.asset(
-                                                            ImageProvide
-                                                                .outlineshare,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                40),
-                                                        sizedboxwidth(
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Share.share(newsController
+                                                  .newsList
+                                                  .value
+                                                  .value[0]
+                                                  .subCards[index].url, subject: 'Articale Link');
+                                                          },
+                                                          child: Row(
+                                                            children: [
+                                                              Image.asset(
+                                                                  ImageProvide
+                                                                      .outlineshare,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height /
+                                                                      40),
+                                                                      sizedboxwidth(
                                                             context, 25),
                                                         Text(
                                                           "22",
@@ -779,6 +811,10 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                                                       .height /
                                                                   50),
                                                         ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        
                                                       ],
                                                     ),
                                                   );
